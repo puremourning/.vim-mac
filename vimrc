@@ -98,3 +98,8 @@ set colorcolumn=+1
 let g:ycm_seed_identifiers_with_syntax=1
 let g:ycm_autoclose_preview_window_after_completion=0
 let g:ycm_autoclose_preview_window_after_insertion=0
+
+" enable modelines
+set modeline
+set modelines=5
+
