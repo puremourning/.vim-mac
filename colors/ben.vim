@@ -4,7 +4,6 @@
 " grey on black
 " optimized for TFT panels
 
-set background=dark
 hi clear
 if exists("syntax_on")
   syntax reset
@@ -16,6 +15,7 @@ let g:colors_name = "ben"
 " GUI Comment : #80a0ff = Light blue
 
 set background=dark
+hi Normal ctermfg=white ctermbg=black guifg=white guibg=black
 
 hi Normal     guifg=white guibg=black
 hi Type       term=bold ctermfg=Cyan guifg=#80a0ff 

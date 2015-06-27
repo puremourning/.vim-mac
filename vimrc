@@ -1,3 +1,6 @@
+" use comma for commands
+let mapleader=','
+
 " enable syntax hilighting
 syn on
 
@@ -8,10 +11,18 @@ runtime! vundle_plugins
 behave xterm
 
 " enable my colour scheme
-colorscheme ben
+if has('gui_running') 
+    colorscheme ben
+else
+    colorscheme darkblue
+    set cursorline
+endif
 
 " set the font
 set guifont=Lucida_Console:h9:cDEFAULT
+
+" visual selection copied to clipboard
+set guioptions+=a
 
 " set the height and width (might be broken columns for diff)
 " set lines=50 columns=80
@@ -98,8 +109,9 @@ set colorcolumn=+1
 let g:ycm_seed_identifiers_with_syntax=1
 let g:ycm_autoclose_preview_window_after_completion=0
 let g:ycm_autoclose_preview_window_after_insertion=0
+let g:ycm_confirm_extra_conf=0
+let g:ycm_server_log_level='debug'
 
 " enable modelines
 set modeline
 set modelines=5
-

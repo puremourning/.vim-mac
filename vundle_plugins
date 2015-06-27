@@ -7,9 +7,20 @@ call vundle#begin()
 Plugin 'gmarik/Vundle.vim'
 Plugin 'Valloric/YouCompleteMe'
 Plugin 'scrooloose/nerdtree'
+Plugin 'taglist.vim'
 
 call vundle#end()
 filetype plugin indent on
 
+" taglist mapping
+noremap <silent> <Leader>t :TlistToggle<CR>
+
+" taglist config
+let g:TList_Use_Right_Window = 1
+let g:TList_Inc_Winwidth = 0
+let g:Tlist_WinWidth = 45
+let g:TList_GainFocus_On_ToggleOpen = 1
+let g:TList_Ctags_Cmd = 'ctags'
+let g:TList_Show_One_File = 1
 
 "    vim:ft=vim:foldmethod=marker
