@@ -11,8 +11,9 @@ runtime! vundle_plugins
 behave xterm
 
 " enable my colour scheme
+set background=dark
 if has('gui_running') 
-    colorscheme ben
+    colorscheme solarized
 else
     colorscheme darkblue
     set cursorline
