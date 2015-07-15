@@ -112,7 +112,20 @@ let g:ycm_autoclose_preview_window_after_completion=0
 let g:ycm_autoclose_preview_window_after_insertion=0
 let g:ycm_confirm_extra_conf=0
 let g:ycm_server_log_level='debug'
+let g:ycm_always_populate_location_list=1
+
+" vim-gitgutter config
+let g:gitgutter_sign_column_always = 1
 
 " enable modelines
 set modeline
 set modelines=5
+
+" always have spelling turned on, even if annoying
+set spell
+
+" Map YouCompleteMe shortcuts
+nnoremap <F2>   :YcmCompleter GetTypeQuick<CR>
+nnoremap <S-F2> :YcmCompleter GetType<CR>
+nnoremap <F3>   :YcmCompleter FixItQuick<CR>
+nnoremap <S-F3> :YcmCompleter FixIt<CR>

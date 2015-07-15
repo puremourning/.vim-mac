@@ -11,6 +11,7 @@ Plugin 'taglist.vim'
 Plugin 'sjl/gundo.vim'
 Plugin 'altercation/vim-colors-solarized'
 Plugin 'hallison/vim-markdown'
+Plugin 'airblade/vim-gitgutter'
 
 call vundle#end()
 filetype plugin indent on
