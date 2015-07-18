@@ -93,7 +93,7 @@ set formatoptions+=r
 "set title
 
 " Split and next for vertical windows
-command! -nargs=0 Vsn set columns=161 | set lines=80 | vsplit | next
+command! -nargs=0 Vsn set columns=163 | set lines=80 | vsplit | next
 
 command! DiffOrig vert new 
      \ | set bt=nofile 
@@ -124,8 +124,3 @@ set modelines=5
 " always have spelling turned on, even if annoying
 set spell
 
-" Map YouCompleteMe shortcuts
-nnoremap <F2>   :YcmCompleter GetTypeQuick<CR>
-nnoremap <S-F2> :YcmCompleter GetType<CR>
-nnoremap <F3>   :YcmCompleter FixItQuick<CR>
-nnoremap <S-F3> :YcmCompleter FixIt<CR>
