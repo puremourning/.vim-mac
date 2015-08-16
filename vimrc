@@ -106,17 +106,6 @@ command! DiffOrig vert new
 " Highlight (textwidth? + 1)th colum
 set colorcolumn=+1
 
-" YCM config
-let g:ycm_seed_identifiers_with_syntax=1
-let g:ycm_autoclose_preview_window_after_completion=0
-let g:ycm_autoclose_preview_window_after_insertion=0
-let g:ycm_confirm_extra_conf=0
-let g:ycm_server_log_level='debug'
-let g:ycm_always_populate_location_list=1
-
-" vim-gitgutter config
-let g:gitgutter_sign_column_always = 1
-
 " enable modelines
 set modeline
 set modelines=5
