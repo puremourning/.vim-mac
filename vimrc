@@ -12,12 +12,14 @@ behave xterm
 
 " enable my colour scheme
 set background=dark
+colorscheme solarized
 if has('gui_running') 
-    colorscheme solarized
-else
-    colorscheme darkblue
     set cursorline
 endif
+
+" enable mouse support and sensible copy/paste
+set mouse+=a
+set clipboard=autoselect
 
 " set the font
 set guifont=Lucida_Console:h9:cDEFAULT
