@@ -16,9 +16,7 @@ behave xterm
 " enable my colour scheme
 set background=dark
 colorscheme solarized
-if has('gui_running') 
-    set cursorline
-endif
+set cursorline
 
 " enable mouse support and sensible copy/paste
 set mouse+=a
