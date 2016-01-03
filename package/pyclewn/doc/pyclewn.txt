@@ -1,0 +1,1243 @@
+*pyclewn.txt*                                   Last change: 2015 April 3
+
+
+                            PYCLEWN USER MANUAL
+
+The Pyclewn user guide                              *pyclewn*
+
+1. Introduction                                     |pyclewn-intro|
+2. Starting pyclewn                                 |:Pyclewn|
+3. Options                                          |pyclewn-options|
+4. Using pyclewn                                    |pyclewn-using|
+5. Gdb                                              |pyclewn-gdb|
+6. Pdb                                              |pyclewn-pdb|
+7. Key mappings                                     |pyclewn-mappings|
+8. Watched variables                                |pyclewn-variables|
+9. Pyclewn windows                                  |pyclewn-windows|
+
+
+==============================================================================
+1. Introduction                                     *pyclewn-intro*
+
+
+Pyclewn is a python program that allows the use of Vim as a front end to a
+debugger. Pyclewn supports the gdb and the pdb debuggers. Pyclewn uses the
+netbeans protocol to control Vim.
+
+The debugger output is redirected to a Vim buffer. The debugger commands are
+mapped to Vim user-defined commands with a common letter prefix (the default
+is the |C| letter) and completion is available on Vim command line.
+
+
+Pyclewn currently supports the following debuggers:
+
+    * gdb:      version 7.1 and above, pyclewn uses the gdb MI interface.
+
+    * pdb:      the Python debugger.
+
+    * simple:   a fake debugger implemented in python to test pyclewn
+                internals.
+
+
+Pyclewn provides the following features:
+---------------------------------------
+* A debugger command can be mapped in Vim to a key sequence using Vim key
+  mappings. This allows, for example, to set/clear a breakpoint or print a
+  variable value at the current cursor or mouse position by just hitting a
+  key.
+
+* A sequence of gdb commands can be run from a Vim script when the
+  |async-option| is set. This may be useful in a key mapping.
+
+* Breakpoints and the line in the current frame are highlighted in the source
+  code. Disabled breakpoints are noted with a different highlighting color.
+  Pyclewn automatically finds the source file for the breakpoint if it exists,
+  and tells Vim to load and display the file and highlight the line.
+
+* The value of an expression or variable is displayed in a balloon in gvim
+  when the mouse pointer is hovering over the selected expression or the
+  variable.
+
+* Similarly to gdb, one may attach to a running python process with the pdb
+  debugger, interrupt the process, manage a debugging session and terminate
+  the debugging session by detaching from the process. A new debugging session
+  may be conducted later on this same process, possibly from another Vim
+  instance.
+
+* A gdb expression can be watched in a Vim window. The expression value is
+  updated and highlighted whenever it has changed. When the expression is a
+  structure or class instance, it can be expanded (resp. folded) to show
+  (resp. hide) its members and their values. This feature is only available
+  with gdb.
+
+* With gdb, one can jump with the <CR> key or the mouse to the corresponding
+  source code line from a "(clewn)_breakpoints" window or switch to the
+  corresponding frame from a "(clewn)_backtrace" window, or switch to the
+  correponding thread with a "(clewn)_threads" window.
+
+* The |project-command| saves the current gdb settings to a project file that
+  may be sourced later by the gdb "source" command. These settings are the
+  working directory, the debuggee program file name, the program arguments and
+  the breakpoints. The sourcing and saving of the project file can be
+  automated to occur on each gdb startup and termination, whith the
+  |project-file| command line option. The ``project`` command is currently only
+  available with gdb.
+
+* Completion on Vim command line.
+
+
+The remaining sections of this manual are:
+-----------------------------------------
+    2. |:Pyclewn| explains how to start pyclewn.
+
+    3. |pyclewn-options| lists pyclewn options and their usage.
+
+    4. |pyclewn-using| explains how to use the pyclewn features common to all
+        supported debuggers.
+
+    5. |pyclewn-gdb| details the topics relevant to pyclewn and the gdb
+        debugger.
+
+    6. |pyclewn-pdb| details the topics relevant to pyclewn and the pdb
+        debugger.
+
+    7. |pyclewn-mappings| lists the pyclewn key mappings and how to use them.
+
+    8. |pyclewn-variables| explains how to use the variable debugger window
+        with gdb.
+
+    9. |pyclewn-windows| list the windows management functions that can
+        be implemented to customize the behavior of pyclewn.
+
+==============================================================================
+2. Starting pyclewn                                 *:Pyclewn*
+
+
+Start pyclewn from Vim:
+-----------------------
+The |:Pyclewn| Vim command requires at least Vim 7.3. Start pyclewn from Vim
+with the command: >
+
+    :Pyclewn [debugger] [args]
+
+Where "debugger" is either "gdb" or "pdb" and defaults to "gdb", and "args"
+are the arguments passed to the debugger. Please note that double quotes in
+|:Pyclewn| arguments are not supported. For example, to debug
+"foobar foobar_arg" with gdb, run the commmand: >
+
+    :Pyclewn gdb --args foobar foobar_arg
+
+The gdb debugger is started upon the invocation of the first gdb command. For
+example, load foobar with the gdb command "file" and start gbd by typing on
+Vim command line: >
+
+    :Cfile foobar
+
+To just start gdb with a command that does not have any effect: >
+
+    :Cecho
+
+To terminate pyclewn and the Vim netbeans interface, run the following
+command: >
+
+    :Cexitclewn
+
+To know if the netbeans interface is connected, run the following command: >
+
+    :echo has("netbeans_enabled")
+
+The |:Pyclewn| command does the following:
+
+    * spawn pyclewn
+    * start the Vim netbeans interface and connect it to pyclewn
+    * source a script automatically generated by pyclewn containing utility
+      functions and the debugger commands as Vim commands
+
+
+Global variables         *pyclewn_python* *pyclewn_args* *pyclewn_connection*
+----------------
+When starting pyclewn from Vim, the pyclewn command line arguments and
+connection details may be set with the following global variables:
+
+    * |pyclewn_terminal|: start pyclewn in a terminal (see |pyclewn-terminal|)
+    * |pyclewn_python|: the program to use as python
+    * |pyclewn_args|: pyclewn arguments
+    * |pyclewn_connection|: pyclewn connection parameters
+
+When those global variables are not set, pyclewn is spawned with the
+following values:
+
+    * pyclewn_terminal: ""
+    * pyclewn_python: "python"
+    * gdb pyclewn_connection: "localhost:3219:changeme"
+    * pdb pyclewn_connection: "localhost:3220:changeme"
+    * pyclewn_args:
+        "--window=top --maxlines=10000 --background=Cyan,Green,Magenta"
+
+
+Trouble shooting ':Pyclewn'                             *pyclewn-troubleshoot*
+---------------------------
+Pyclewn is a Python process when used with gdb and it is a Python thread when
+used with pdb, so there are two different methods to trouble shoot the startup
+sequence.
+
+                                                        *pyclewn-terminal*
+
+Trouble shooting gdb is done by setting the |pyclewn_terminal| global variable
+to have pyclewn started in a terminal instead of as a daemon, and to visualize
+the log traces at the "info" log level.|pyclewn_terminal| value is a comma
+separated list of the arguments needed to start the terminal and a program
+running in this terminal. For example, with xterm: >
+
+    :let g:pyclewn_terminal = "xterm, -e"
+
+When pyclewn fails (its exit code is not zero), the terminal remains open for
+10 minutes so that the log traces may be examined. Type <Ctl-C> to close the
+terminal.
+
+                                                        *pyclewn-ping*
+
+To investigate why Vim fails to attach to a Python process when running the
+":Pyclewn pdb" command, use the Pyclewn vim.ping() function and run: >
+
+    python -c "from clewn.vim import ping; ping()"
+
+The command tells wether no process is listening to the default socket address
+or if there is a process ready to be attached to or if the process is busy
+with an active debugging session running. The function signature is: >
+
+    ping(host='127.0.0.1', port=3220)
+
+
+Start pyclewn from a shell:
+---------------------------
+Start pyclewn with: >
+
+    python -m clewn [options] [debugger]
+
+"debugger" defaults to "gdb".
+
+So pyclewn with the gdb debugger is simply started as: >
+
+    python -m clewn
+
+
+Start pyclewn from a Vim script:
+--------------------------------
+For example, to debug with gdb a program named foobar, write the following
+script.vim: >
+
+    " A function to test the ':Pyclewn' command in a script.
+    function PyclewnScripting()
+        " This function can be called while the previous netbeans session is
+        " still open.
+        if has("netbeans_enabled")
+            echo "Error: netbeans is already connected."
+            call input("Press the <Enter> key to continue.")
+            return
+        endif
+
+        let g:pyclewn_args="--gdb=async"
+        Pyclewn gdb
+        Cfile foobar
+        Cstart
+    endfunc
+
+and run the command: >
+
+    gvim -S script.vim -c "call PyclewnScripting()"
+
+==============================================================================
+3. Options                                          *pyclewn-options*
+
+
+The pyclewn options can be set:
+
+    * on the command line
+
+    * with the |pyclewn_python|, |pyclewn_args| and |pyclewn_connection| Vim
+      global variables when starting pyclewn with the |:Pyclewn| command
+
+    * as the keyword parameters of the pdb function
+
+
+Options:
+  --version                   show program's version number and exit
+  -h, --help                  show this help message and exit
+  -g PARAM_LIST, --gdb=PARAM_LIST
+                              set gdb PARAM_LIST
+  -d, --daemon                run as a daemon (default 'False')
+  -e EDITOR, --editor=EDITOR  set Vim program to EDITOR
+  -c ARGS, --cargs=ARGS       set Vim arguments to ARGS
+  -p PGM, --pgm=PGM           set the debugger pathname to PGM
+  -a ARGS, --args=ARGS        set the debugger arguments to ARGS
+  --terminal=TERMINAL         set the terminal to use with the inferiortty
+                              command (default 'xterm,-e')
+  --run                       allow the debuggee to run after the pdb() call
+                              (default 'False')
+  --tty=TTY                   use TTY for input/output by the python script
+                              being debugged (default '/dev/null')
+  -w LOCATION, --window=LOCATION
+                              open the debugger console window at LOCATION
+                              which may be one of (top, bottom, left,
+                              right, none, usetab), the default is
+                              top; when LOCATION is usetab set the console
+                              and the clewn buffers in their own tab page
+  -m LNUM, --maxlines=LNUM    set the maximum number of lines of the debugger
+                              console window to LNUM (default 10000 lines)
+  -x PREFIX, --prefix=PREFIX  set the commands prefix to PREFIX (default 'C')
+  -b COLORS, --background=COLORS
+                              COLORS is a comma separated list of the three
+                              colors of the breakpoint enabled, breakpoint
+                              disabled and frame sign background colors, in
+                              this order (default 'Cyan,Green,Magenta')
+  -n CONN, --netbeans=CONN    set netBeans connection parameters to CONN with
+                              CONN as 'host[:port[:passwd]]'
+  -l LEVEL, --level=LEVEL     set the log level to LEVEL: critical, error,
+                              warning, info, debug, nbdebug (default error)
+  -f FILE, --file=FILE        set the log file name to FILE
+
+
+The full description of pyclewn options follows:
+------------------------------------------------
+--version           Show program's version number and exit.
+
+-h
+--help              Show this help message and exit.
+
+-g {PARAM_LIST}
+--gdb={PARAM_LIST}  The PARAM_LIST option parameter is a comma separated list
+                    of parameters and is mandatory when the option is present.
+                    So, to run gdb with no specific parameter, the following
+                    commands are equivalent: >
+
+                        python -m clewn
+                        python -m clewn -g ""
+                        python -m clewn --gdb=
+.
+                    There are two optional parameters:
+
+                        * the "async" keyword sets the |async-option|
+                        * the project file name sets the |project-file|
+
+                    The project file name can be an absolute pathname, a
+                    relative pathname starting with '.' or a home relative
+                    pathname starting with '~'. The directory of the project
+                    file name must be an existing directory.
+                    For example: >
+
+                        python -m clewn --gdb=async,./project_name
+
+-d
+--daemon            Run as a daemon (default 'False'): pyclewn is detached
+                    from the terminal from where it has been launched, which
+                    means that this terminal cannot be used as a controlling
+                    terminal for the program to debug, and cannot be used for
+                    printing the pyclewn logs as well.
+
+-e {EDITOR}
+--editor={EDITOR}   Set Vim program to EDITOR. EDITOR must be in one
+                    of the directories listed in the PATH environment
+                    variable, or the absolute pathname of the Vim executable.
+                    When this command line option is not set, pyclewn uses the
+                    value of the EDITOR environment variable, and if this
+                    environment variable is not set either, then pyclewn
+                    defaults to using "gvim" as the name of the program to
+                    spawn. Vim is not spawned by pyclewn when this option is
+                    set to an empty string or when the debugger is pdb.
+
+-c {ARGS}
+--cargs={ARGS}      Set the editor program arguments to ARGS, possibly double
+                    quoted (same as option --args).
+
+-p {PGM}
+--pgm={PGM}         Set the debugger program to PGM. PGM must be in one of the
+                    directories listed in the PATH environment variable.
+
+-a {ARGS}
+--args={ARGS}       Set the debugger program arguments to ARGS. These
+                    arguments may be double quoted. For example, start gdb
+                    with the program foobar and "this is foobar argument" as
+                    foobar's argument: >
+
+                    python -m clewn -a '--args foobar "this is foobar argument"'
+
+--terminal=TERMINAL Set the terminal to use with the inferiortty command for
+                    running gdb or pdb inferior (default 'xterm,-e'). The
+                    option is a comma separated list of the arguments needed
+                    to start the terminal and a program running in this
+                    terminal, e.g. 'tmux,split-window'.
+
+--run               By default the python debuggee is stopped at the first
+                    statement after the call to pdb(). Enabling this option
+                    allows the debuggee to run after the call to pdb().
+
+--tty={TTY}         Use TTY for input/output by the python script being
+                    debugged. The default is "/dev/null".
+
+-w {LOCATION}
+--window={LOCATION} The debugger console window is created at LOCATION, which
+                    may be one of top, bottom, left or right. The default is
+                    top. When LOCATION is none, no windows are created. See
+                    also |pyclewn-windows|.
+                    When LOCATION is usetab, the console and the Pyclewn
+                    buffers are loaded in windows of a dedicated tab page, see
+                    |pyclewn-usetab|
+
+-m {LNUM}
+--maxlines={LNUM}   Set the maximum number of lines of the debugger console
+                    window to LNUM (default 10000 lines). When the number of
+                    lines in the buffer reaches LNUM, 10% of LNUM first lines
+                    are deleted from the buffer.
+
+-x {PREFIX}
+--prefix={PREFIX}   Set the user defined Vim commands prefix to PREFIX
+                    (default |C|). The prefix may be more than one letter
+                    long. The first letter must be upper case.
+
+-b {COLORS}
+--background={COLORS}
+                    COLORS is a comma separated list of the three colors of
+                    the breakpoint enabled, breakpoint disabled and frame sign
+                    background colors, in this order (default
+                    'Cyan,Green,Magenta'). The color names are case sensitive.
+                    See |highlight-ctermbg| for the list of the valid color
+                    names.
+
+                    This option has no effect when Vim version is vim72 or
+                    older.
+
+-n {CONN}
+--netbeans={CONN}   Set netBeans connection parameters to CONN with CONN as
+                    'host[:port[:passwd]]', (the default is
+                    '127.0.0.1:3219:changeme' for gdb and
+                    '127.0.0.1:3220:changeme' for pdb). Pyclewn listens on
+                    host:port, with host being a name or the IP address of one
+                    of the local network interfaces in standard dot notation.
+
+-l {LEVEL}
+--level={LEVEL}     Set the log level to LEVEL: critical, error, warning, info,
+                    debug or nbdebug (default critical). Level nbdebug is very
+                    verbose and logs all the netbeans pdu as well as all the
+                    debug traces. Critical error messages are printed on
+                    stderr. No logging is done on stderr (including critical
+                    error messages) when the "--level" option is set to
+                    something else than "critical" and the "--file" option is
+                    set.
+
+-f {FILE}
+--file={FILE}       Set the log file name to FILE.
+
+==============================================================================
+4. Using pyclewn                                            *pyclewn-using*
+
+
+Commands:                                           *Ccommand* *C*
+---------
+The prefix letter |C| is the default Vim command prefix used to map debugger
+commands to Vim user-defined commands. These commands are called |Ccommand| in
+this manual. The prefix can be changed with a command line option.
+
+A debugger command can be entered on Vim command line with the |C| prefix. It is
+also possible to enter the command as the first argument of the |C| command. In
+the following example with gdb, both methods are equivalent: >
+
+    :Cfile /path/to/foobar
+    :C file /path/to/foobar
+
+The second method is useful when the command is a user defined command in the
+debugger (user defined commands built by <define> in gdb), and therefore not a
+Vim command. It is also needed for gdb command names that cannot be mapped to
+a Vim command because Vim does not accept non alphanumeric characters within
+command names (for example <core-file> in gdb).
+
+To get help on the pyclewn commands, use Chelp.
+
+Pyclewn commands can be mapped to keys, or called within a Vim script or a
+menu.
+
+Note:
+The gdb debugger cannot handle requests asynchronously, so the
+|async-option| must be set, when mapping a key to a sequence of commands.
+With this option set, one can build for example the following mapping: >
+
+    :map <F8> :Cfile /path/to/foobar <Bar> Cbreak main <Bar> Crun <CR>
+
+Note:
+Quotes and backslashes must be escaped on Vim command line. For example, to
+print foo with a string literal as first argument to the foo function: >
+
+    :Cprint foo(\"foobar\", 1)
+
+And to do the same thing with the string including a new line: >
+
+    :Cprint foo(\"foobar\\n\", 1)
+
+
+Using tab pages:                                    *pyclewn-usetab*
+----------------
+Set the "--window" option to "usetab" to have the console and the Pyclewn
+buffers loaded in windows of a dedicated tab page, for example: >
+
+    let pyclewn_args="--window=usetab" | Pyclewn
+
+The tab page is created at the first command. See |pyclewn-windows| to change
+the disposition of the windows within this tab page.
+
+Pyclewn sets 'switchbuf' to "usetab" when the "--window" option is set to
+"usetab".  Starting with Vim version 7.4.663 and when the 'switchbuf' option
+is set to "usetab", the Vim netbeans interface searches for all the tab pages
+when opening a file instead of restricting the search to the current tab page.
+This allows a workflow where each source code may have its own tab page.
+
+Note: If you set a breakpoint or step the debuggee (or run any command that
+updates the Vim signs) from the clewn buffers tab page and use a Vim version
+older than 7.4.663  or if there is no window available in any tab page for the
+corresponding file, then one of the clewn buffers will be replaced by this
+file.
+
+
+Completion:
+-----------
+Command line completion in Vim is usually done using the <Tab> key (set by the
+'wildchar' option). To get the list of all valid completion matches, type
+CTRL-D. For example, to list all the debugger commands (assuming the
+default |C| prefix is being used): >
+
+    :C<CTRL-D>
+
+And to get the list of all the possible arguments of the gdb "show" command
+(note the space after the word "show"): >
+
+    :Cshow <CTRL-D>
+
+See also the 'wildmenu' option. With this option, the possible matches are
+shown just above the command line and can be selected with the arrow keys.
+
+Full |gdb-completion| is available on Vim command line after gdb has been
+started by the first pyclewn command.
+
+
+Command line search:
+--------------------
+Use the powerful command line search capabilities of the Vim command line.
+For example, you want to type again, possibly after a little editing, one of
+the commands previously entered: >
+
+    :Cprint (*(foo*)0x0123ABCD)->next->next->part1->something_else.aaa
+
+You can get rapidly to this command by using the Vim command line window
+|cmdline-window|: >
+
+    :<CTRL-F>
+    /something_else
+    <CR>
+
+or from normal mode >
+    q:
+    /something_else
+    <CR>
+
+
+Vim in a terminal
+-----------------
+The debuggee output is redirected to '/dev/null' when the name of the program
+is "vim" or "vi". Use the |inferiortty| command to redirect the debuggee
+output to a terminal.
+
+Do not use the "--daemon" command line option when running Vim in a console.
+
+
+Balloon:
+--------
+A variable is evaluated by the debugger and displayed in a balloon in gvim,
+when the mouse pointer is hovering over the the variable. To get the
+evaluation of an expression, first select the expression in visual mode in the
+source code and point the mouse over the selected expression. Disable this
+feature with the |Cballooneval| command.
+
+==============================================================================
+5. Gdb                                              *pyclewn-gdb*
+
+
+When gdb is started, it automatically executes commands from its init file,
+normally called '.gdbinit'. See the gdb documentation.
+
+
+                                                    *clewn-list-buffers*
+
+The clewn list buffers:
+-----------------------
+Three buffers are updated by Pyclewn whenever the state of the debuggee
+changes. The buffers list the backtrace, the threads and the breakpoints. From
+a window loaded with one of these buffers and with the <CR> key or the mouse,
+one may:
+
+    * "(clewn)_backtrace": switch to the corresponding frame.
+
+    * "(clewn)_threads": switch to the correponding thread.
+
+    * "(clewn)_breakpoints": jump to the corresponding source code line.
+      The following keys are also mapped in this window:
+
+        +       toggle the breakpoint state between enable/disable
+        CTRL-K  delete the breakpoint
+
+Pyclewn creates those three windows upon starting except when the "--window"
+option is set to "none". See |pyclewn-windows| to customize the
+disposition of the windows.
+
+
+                                                    *inferior_tty*
+
+Debuggee standard input and output:
+-----------------------------------
+When starting pyclewn from a terminal and using gvim, pyclewn creates a pseudo
+terminal that is the the controlling terminal of the program to debug.
+Programs debugged by gdb, including those based on curses and termios such as
+Vim, run in this terminal. A <Ctl-C> typed in the terminal interrupts the
+debuggee.
+
+When pyclewn is started from Vim with the |:Pyclewn| command, there is no
+terminal associated with pyclewn. The |inferiortty| command provides the same
+functionality as above and spawns the controlling terminal (using the
+--terminal option, default xterm) of the debuggee and sets accordingly gdb
+'inferior-tty' variable and the TERM environment variable. The gdb
+'inferior-tty' variable MUST be set BEFORE the inferior is started.
+
+
+                                                    *async-option*
+Async option:
+-------------
+The gdb event loop is not asynchronous in most configurations, which means
+that gdb cannot handle a command while the previous one is being processed and
+discards it.
+When gdb is run with the |async-option| set, pyclewn queues the commands in a
+fifo and send a command to gdb, only when gdb is ready to process the command.
+This allows the key mappings of a sequence of gdb commands. To set the
+|async-option| , see |pyclewn-options|.
+
+
+                                                    *gdb-keys*
+List of the gdb default key mappings:
+-------------------------------------
+These keys are mapped after the |Cmapkeys| Vim command is run.
+
+        CTRL-Z  send an interrupt to gdb and the program it is running
+        B       info breakpoints
+        L       info locals
+        A       info args
+        S       step
+        CTRL-N  next: next source line, skipping all function calls
+        F       finish
+        R       run
+        Q       quit
+        C       continue
+        W       where
+        X       foldvar
+        CTRL-U  up: go up one frame
+        CTRL-D  down: go down one frame
+
+cursor position: ~
+        CTRL-B  set a breakpoint on the line where the cursor is located
+        CTRL-K  clear all breakpoints on the line where the cursor is located
+
+mouse pointer position: ~
+        CTRL-P  print the value of the variable defined by the mouse pointer
+                position
+        CTRL-X  print the value that is referenced by the address whose
+                value is that of the variable defined by the mouse pointer
+                position
+
+
+                                                    *$cdir*
+Source path:
+-----------
+Pyclewn automatically locates the source file with the help of gdb, by using
+the debugging information stored in the file that is being debugged when the
+gdb "directories" setting has a component named "$cdir" (the default). This is
+useful when the program to debug is the result of multiple compilation units
+located in different directories.
+
+
+                                                    *gdb-completion*
+Completion:
+-----------
+Full |gdb-completion| is available on Vim command line after gdb has been
+started by the first pyclewn command and when gdb is not busy, i.e. the
+debuggee *must* be stopped.
+
+There is a catch. After a debugging session has been stopped by a ":Cquit"
+command, there is no gdb program running and completion does not work for the
+first command, the one that is used to spawn gdb. To workaround this problem,
+start the new session with ":Cmapkeys" or a gdb command that does nothing such
+as ":Cecho". This will spawn gdb and completion is now available for all
+commands. Note that this problem does not occur for the first debugging
+session, only after a ":Cquit" (because the first session comes with a set of
+static completions and use Vim file completion).
+
+                                                    *gdb-balloon*
+Balloon evaluation:
+-------------------
+To dereference a pointer "ptr" to a structure and show its members, select an
+expression that dereferences the pointer, for example "*ptr", and hover above
+the selected area with the mouse. Another solution is to hover with the mouse
+above "ptr" and type <C-X>.
+
+
+                                      *Cproject* *project-command* *project-file*
+Project file:
+-------------
+The pyclewn |project-command| name is "project". This command saves the current
+gdb settings to a project file that may be sourced later by the gdb "source"
+command.
+
+These settings are:
+    * current working directory
+    * debuggee program file name
+    * program arguments
+    * all the breakpoints (at most one breakpoint per source line is saved)
+
+The argument of the |project-command| is the pathname of the project file.
+For example: >
+
+    :Cproject /path/to/project
+
+When the "--gdb" option is set with a project filename (see |pyclewn-options|),
+the project file is automatically sourced when a a gdb session is started, and
+the project file is automatically saved when the gdb session or Vim session,
+is terminated.
+
+Note: When gdb sources the project file and cannot set a breakpoint because,
+for example, it was set in a shared library that was loaded at the time the
+project file was saved, gdb ignores silently the breakpoint (see gdb help on
+"set breakpoint pending").
+
+
+Limitations:
+------------
+When setting breakpoints on an overloaded method, pyclewn bypasses the gdb
+prompt for the multiple choice and sets automatically all breakpoints.
+
+In order to set a pending breakpoint (for example in a shared library that has
+not yet been loaded by gdb), you must explicitly set the breakpoint pending
+mode to "on", with the command: >
+
+    :Cset breakpoint pending on
+
+After a "detach" gdb command, the frame sign remains highlighted because
+gdb/mi considers the frame as still valid.
+
+When answering "Abort" to a dialog after pyclewn attempts to edit a buffer and
+set a breakpoint in a file already opened within another Vim session, the
+breakpoint is set in gdb, but not highlighted in the corresponding buffer.
+However, it is possible to |bwipeout| a buffer at any time, and load it again in
+order to restore the correct highlighting of all the breakpoints in the
+buffer.
+
+
+Pyclewn commands:
+-----------------
+The |Ccommand| list includes all the gdb commands and some pyclewn specific
+commands that are listed here:
+
+                                                            *Cballooneval*
+    * Cballooneval   enable or disable showing text in the Vim balloon; this
+                     can also accomplished with the 'ballooneval' Vim option
+                     but using |Cballooneval| allows also the mappings such as
+                     CTRL-P to be still functioning after showing text in the
+                     balloon has been disabled.
+
+    *|Cdbgvar|       add a watched variable or expression to the
+                     (clewn)_variables buffer.
+
+    *|Cdelvar|       delete a watched variable from the (clewn)_variables
+                     buffer.
+
+    * Cdumprepr      print on the console pyclewn internal structures that
+                     may be used for debugging pyclewn.
+
+    * Cexitclewn     close the debugging session and |bwipeout| the Pyclewn
+                     buffers
+
+    *|Cfoldvar|      collapse/expand the members of a watched structure or
+                     class instance.
+
+    * Chelp          print on the console, help on the pyclewn specific
+                     commands (those on this list) in addition to the help on
+                     the debugger commands.
+                                                    *inferiortty*
+    * Cinferiortty   spawn the controlling terminal (default xterm) of the
+                     debuggee and sets accordingly gdb 'inferior-tty' variable
+                     and the TERM environment variable; this command  MUST be
+                     issued BEFORE starting the inferior.
+
+    * Cloglevel      print or set the log level dynamically from inside Vim.
+
+    *|Cmapkeys|      map pyclewn keys.
+
+    *|Cproject|      save the current gdb settings to a project file.
+
+    *|Csetfmtvar|    set the output format of the value of a watched variable.
+
+    * Csigint        send a <C-C> character to the debugger to interrupt the
+                     running program that is being debugged; only with gdb,
+                     and when pyclewn and gdb communicate over a pseudo
+                     terminal.
+
+    * Cunmapkeys     unmap the pyclewn keys, this Vim command does not invoke
+                     pyclewn.
+
+
+List of illegal gdb commands:
+-----------------------------
+The following gdb commands cannot be run from pyclewn:
+
+        complete
+        edit
+        end
+        set annotate
+        set confirm
+        set height
+        set width
+        shell
+
+==============================================================================
+6. Pdb                                              *pyclewn-pdb*
+
+
+Start a python script from Vim and debug it, or attach to a running python
+process and start the debugging session.
+
+
+Start a python script from Vim and debug it:
+-------------------------------------------
+To debug a python script named "script.py", run the Vim command (arg1, arg2,
+... being the script.py command line arguments): >
+
+    :Pyclewn pdb script.py arg1 arg2 ...
+
+Or, more conveniently, debug the python script being edited in Vim as the
+current buffer with: >
+
+    :Pyclewn pdb %:p
+
+The script is started without a controlling terminal unless the "tty" option
+has been set (see below). The |Cinferiortty| command spawns a controlling
+terminal (using the --terminal option that defaults to xterm) connected to a
+pseudo tty, and redirects all three standard streams of the script to this
+pseudo tty.
+
+One may also redirect the script output to another tty, using the "tty" option
+and setting the |pyclewn_args| Vim global variable before starting the script.
+For example: >
+
+    :let g:pyclewn_args="--tty=/dev/pts/4"
+
+The ":Cquit" command and the Vim ":quitall" command terminate the debugging
+session and the script being debugged. Both commands MUST be issued at the pdb
+prompt.
+
+
+Attach to a python process and debug it: >
+----------------------------------------
+To debug a python process after having attached to it, first insert the
+following statement in the debuggee source code before starting it: >
+
+    import clewn.vim as vim; vim.pdb()
+
+By default, the debuggee is stopped at the first statement following the call
+to vim.pdb(). To let the debuggee run instead, then use the "run" option: >
+
+    import clewn.vim as vim; vim.pdb(run=True)
+
+Next, attach to the process and start the debugging session by running the Vim
+command: >
+
+    :Pyclewn pdb
+
+See also |pyclewn-ping|.
+
+Notes:
+The current debugging session may be terminated with the ":Cdetach" or the Vim
+":quitall" command. Another debugging session with the same process can be
+started later with the ":Pyclewn pdb" command.
+
+The ":Cdetach", ":Cquit" or the Vim ":quitall" commands do not terminate the
+debuggee. To kill the debuggee, issue the following command at the pdb prompt:
+>
+    :C import sys; sys.exit(1)
+
+When the python process is not attached, typing two <Ctl-C> instead of one, is
+needed to kill the process. This is actually a feature that allows the process
+to run without any tracing overhead (before the first <Ctl-C>) when it is not
+attached and no breakpoints are being set (there is still the small overhead
+of the context switches between the idle clewn thread and the target thread).
+
+
+Pdb commands:
+-------------
+The commands "interrupt", "detach" and "threadstack" are new pdb commands and
+are the only commands that are available at the "[running...]" prompt when the
+debuggee is running. Use the "help" command (and completion on the first
+argument of the help command) to get help on each command.
+
+The following list describes the pdb commands that are new or behave
+differently from the pdb commands of the Python standard library:
+
+                                                    *Cinterrupt*
+interrupt
+    This command interrupts the debuggee and is available from the
+    "[running...]" prompt.
+
+                                                    *Cinferiortty*
+inferiortty
+    Without argument, the pdb command "inferiortty" spawns a terminal
+    connected to a pseudo tty and redirects all three standard streams to this
+    pseudo tty.
+    With the name of an existing pseudo tty as an argument, "inferiortty'
+    redirects all three standard streams to this pseudo tty (convenient for
+    re-using the same pseudo tty across multiple debugging sessions).
+    This command can be issued after the script has been started.
+
+                                                    *Cdetach*
+detach
+    This command terminates the debugging session by closing the netbeans
+    socket. The debuggee is free to run and does not stop at the breakpoints.
+    To start another debugging session, run the command: >
+
+        :Pyclewn pdb
+
+.   The breakpoints becomes effective again when the new session starts up.
+    Available from the "[running...]" prompt and from the pdb prompt.
+
+                                                    *Cquit*
+quit
+    This command terminates the debugging session by closing the netbeans
+    socket, and removes the python trace function. The pyclewn thread in
+    charge of handling netbeans connection terminates and it is not possible
+    anymore to attach to the process. Since there is no trace function, the
+    breakpoints are ineffective and the process performance is not impaired
+    anymore by the debugging overhead.
+
+    When the script has been started from Vim, this command terminates the
+    script.
+
+                                                    *Cthreadstack*
+threadstack
+    The command uses the sys._current_frames() function from the standard
+    library to print a stack of the frames for all the threads.
+    The function sys._current_frames() is available since python 2.5.
+    Available from the "[running...]" prompt and from the pdb prompt.
+
+                                                    *Cclear*
+clear
+    This command is the same as the Python standard library "clear" command,
+    except it requires at least one parameter and therefore, it is not
+    possible to clear all the breakpoints in one shot with the "clear" command
+    without parameters.
+
+the prefix alone:
+    There is no "!" pdb command as in the Python standard library since Vim
+    does not allow this character in a command name. However, the equivalent
+    way to execute a python statement in the context of the current frame is
+    with the command prefix alone, for example: >
+
+        :C global list_options; list_options = ['-l']
+        :C import sys; sys.exit(1)
+
+.   The first word of the statement must not be a pdb command and will be
+    expanded if it is an alias.
+
+not implemented:
+    The following pdb commands are not implemented: list, ll, whatis, source,
+    display, undisplay, interact, run, restart.
+
+
+                                                    *pdb-pdbrc*
+The initialisation file .pdbrc:
+-------------------------------
+This file is read at initialisation and its commands are executed on startup.
+See the pdb python documentation for the location of this file. Breakpoints
+can be set through this file, or aliases may be defined. One useful alias
+entered in the file would be for example: >
+
+    alias kill import sys; sys.exit(1)
+
+So that the debuggee may be killed with the command: >
+
+    :C kill
+
+
+                                                    *pdb-keys*
+List of the pdb default key mappings:
+-------------------------------------
+These keys are mapped after the |Cmapkeys| Vim command is run.
+
+        CTRL-Z  interrupt the pdb process
+        B       list all breaks, including for each breakpoint, the number of
+                times that breakpoint has been hit, the current ignore count,
+                and the associated condition if any
+        A       print the argument list of the current function
+        S       step
+        CTRL-N  next: next source line, skipping all function calls
+        R       continue execution until the current function returns
+        C       continue
+        W       where
+        CTRL-U  up: go up one frame
+        CTRL-D  down: go down one frame
+
+cursor position: ~
+        CTRL-B  set a breakpoint on the line where the cursor is located
+        CTRL-K  clear all breakpoints on the line where the cursor is located
+
+mouse pointer position: ~
+        CTRL-P  print the value of the selected expression defined by the
+                mouse pointer position
+
+
+Pyclewn commands:
+-----------------
+The |Ccommand| list includes pdb commands and some pyclewn specific commands
+that are listed here:
+
+    *|Cballooneval|  enable or disable showing text in the Vim balloon
+
+    * Cdumprepr      print on the console pyclewn internal structures that
+                     may be used for debugging pyclewn
+
+    * Cexitclewn     close the debugging session and |bwipeout| the Pyclewn
+                     buffers
+
+    * Cloglevel      print or set the log level dynamically from inside Vim
+
+    *|Cmapkeys|      map pyclewn keys
+
+    * Cunmapkeys     unmap the pyclewn keys, this Vim command does not invoke
+                     pyclewn
+
+
+Troubleshooting:
+----------------
+* Pyclewn error messages can be logged in a file with the "--file" option.
+  When starting the debuggee from Vim, use the |pyclewn_args| Vim global
+  variable before starting the script: >
+
+    :let g:pyclewn_args="--file=/path/to/logfile"
+
+When attaching to a python process, use the corresponding keyword argument: >
+
+    import clewn.vim as vim; vim.pdb(file='/path/to/logfile')
+
+
+* To conduct two debugging sessions simultaneously (for example when debugging
+  pyclewn with pyclewn), change the netbeans socket port with the
+  |pyclewn_connection| Vim global variable before starting the script: >
+
+    :let g:pyclewn_connection="localhost:3222:foo"
+
+And change the corresponding keyword argument: >
+
+    import clewn.vim as vim; vim.pdb(netbeans='localhost:3222:foo')
+
+
+Limitations:
+------------
+The |Cinterrupt| command does not properly interrupt the input() Python
+function. Workaround: after the Cinterrupt command has been issued while at
+the prompt displayed by input(), enter some data to allow the input() function
+to complete execution of its C code implementation, this allows pdb to gain
+control when back in python code and to stop.
+
+==============================================================================
+7. Key mappings                                     *pyclewn-mappings*
+
+
+All |Ccommand| can be mapped to Vim keys using the Vim |:map-commands|.
+For example, to set a breakpoint at the current cursor position: >
+
+    :map <F8> :exe "Cbreak " . expand("%:p") . ":" . line(".")<CR>
+
+Or to print the value of the variable under the cursor: >
+
+    :map <F8> :exe "Cprint " . expand("<cword>") <CR>
+
+
+                                                    *Cmapkeys*
+Pyclewn key mappings:
+---------------------
+This section describes another mapping mechanism where pyclewn maps Vim keys
+by reading a configuration file. This is done when the |Cmapkeys| Vim command
+is run. The pyclewn keys mapping is mostly useful for the pyclewn casual user.
+When the configuration file cannot be found, pyclewn sets the default key
+mappings. See |gdb-keys| for the list of default key mappings for gdb and
+|pdb-keys| for the list of default key mappings for pdb.
+
+Please note that pyclewn relies on the Vim |balloon-eval| feature to get the
+text under the mouse position when expanding the ${text} macro. This feature
+is not available with Vim console. So in this case you must build your own
+key mapping as in the above example.
+
+The configuration file is named .pyclewn_keys.{debugger}, where debugger is
+the name of the debugger. The default placement for this file is
+$CLEWNDIR/.pyclewn_keys.{debugger}, or $HOME/.pyclewn_keys.{debugger}.
+
+To customize pyclewn key mappings copy the configurations files found in the
+distribution to the proper directory: >
+
+    cp runtime/.pyclewn_keys.gdb        $CLEWNDIR
+
+or >
+
+    cp runtime/.pyclewn_keys.gdb        $HOME
+
+The comments in the configuration file explain how to customize the key
+mappings.
+
+Copy these files to the $CLEWNDIR or $HOME directory, and customize the key
+mappings.
+
+==============================================================================
+8. Watched variables                                *pyclewn-variables*
+
+
+The Watched Variables feature is available with the gdb debugger. The Vim
+watched variables buffer is named "(clewn)_variables".
+
+                                                    *Cdbgvar*
+The |Cdbgvar| command is used to create a gdb watched variable in the Variables
+buffer from any valid expression. A valid expression is an expression that is
+valid in the current frame. The argument of the |Cdbgvar| pyclewn command is
+the expression to be watched. For example, to create a watched variable for
+the expression "len - max":
+>
+    :Cdbgvar len - max
+
+Upon creation, the watched variable is given a name by gdb, for example: >
+    <var1>
+The watched variables buffer, "(clewn)_variables", is created upon creation of
+the first watched variable.
+
+                                                    *Cfoldvar*
+When the watched variable is a structure or class instance, it can be expanded
+and collapsed with the |Cfoldvar| command to display all its members and their
+values as children watched variables. The argument of the |Cfoldvar| command
+is the line number of the watched variable to expand, in the watched variable
+window. For example: >
+
+    :Cfoldvar 1
+
+The |Cfoldvar| command is mapped to <CR> and to the double-click on the mouse
+left-button so that it is easy to expand/collapse the tree with the mouse or
+<CR> key.
+
+
+                                                    *Cdelvar*
+A gdb watched variable can be deleted with the |Cdelvar| pyclewn command.
+The argument of the |Cdelvar| command is the name of the variable as given by
+gdb upon creation.
+For example: >
+
+    :Cdelvar var1
+
+When the watched variable is a structure or class instance and it has been
+expanded, all its children are also deleted.
+
+
+                                                    *Csetfmtvar*
+Set the output format of the value of the watched variable <name>
+to be <format>: >
+
+    :Csetfmtvar <name> <format>
+
+Parameter <name> is the gdb/mi name of the watched variable or one of its
+children.
+Parameter <format> is one of the strings in the following list:
+
+    {binary | decimal | hexadecimal | octal | natural}
+
+The "natural" format is the default format chosen automatically based on the
+variable type (like "decimal" for an int, "hexadecimal" for pointers, etc.).
+For a variable with children, the format is set only on the variable itself,
+and the children are not affected.
+
+Note: The setting of the format of a child watched variable is lost after
+folding one of its parents (because the child is actually not watched anymore
+by gdb after the folding).
+
+
+Highlighting:
+-------------
+When the value of a watched variable has changed, it is highlighted with the
+"Special" highlight group.
+
+When a watched variable becomes out of scope, it is highlighted with the
+"Comment" highlight group.
+
+The foreground and background colors used by these highlight groups are setup
+by the |:colorscheme| currently in use.
+
+==============================================================================
+9. Pyclewn windows                                *pyclewn-windows*
+
+
+All the Vim functions defined by pyclewn that manage windows can be overriden.
+When the following functions are defined, they will be called by pyclewn
+instead of calling the corresponding functions defined in
+"autoload/pyclewn/buffers.vim": >
+
+
+    Pyclewn_CreateWindows(debugger, window)
+        Create the windows of the console and the '(clewn)_breakpoints',
+        '(clewn)_backtrace' and '(clewn)_threads' buffers. This function is
+        called at the first Pyclewn command.
+          'debugger': the debugger being run
+          'window':   the value of the '--window' option, i.e. "top", "bottom",
+                      "left", "right" or "none".
+
+    Pyclewn_CreateTabWindows(debugger)
+        Called when the '--window' option is set to "usetab". Create the
+        windows of the console and the '(clewn)_breakpoints',
+        '(clewn)_backtrace' and '(clewn)_threads' buffers in a tab page. The
+        tab page has been already created. This function is called at the
+        first Pyclewn command.
+          'debugger': the debugger being run
+
+    Pyclewn_DbgvarSplit()
+        Display the '(clewn)_variables' buffer in a window, split if needed.
+        The function is called before the 'Cdbgvar' command is executed.
+
+    Pyclewn_GotoFrame(fname)
+        Display the frame source code in a window. The function is called
+        after the <CR> key or the mouse is used in a '(clewn)_backtrace'
+        window. The line number is not available (to avoid screen blinks) in
+        this window, but the ensuing 'Cframe' command will automatically move
+        the cursor to the right place.
+
+          'fname': the source code full path name.
+
+    Pyclewn_GotoBreakpoint(fname, lnum)
+        Display the breakpoint source code in a window. The function is called
+        after the <CR> key or the mouse is used in a '(clewn)_breakpoints'
+        window.
+
+          'fname': the source code full path name.
+          'lnum':  the source code line number.
+
+The Pyclewn_CreateWindows() and Pyclewn_CreateTabWindows() functions must
+set a window local variable in the "(clewn)_console", "(clewn)_breakpoints",
+"(clewn)_backtrace" and "(clewn)_threads" windows with: >
+
+    let w:pyclewn_window = 1
+
+This variable is used by Pyclewn to prevent a source code buffer to be loaded
+in one of those windows. It is safer to check the implementation of these
+functions by verifying that: >
+
+    echo exists("w:pyclewn_window")
+
+prints "1" for all the above windows and "0" for all other windows including
+"(clewn)_empty".
+
+==============================================================================
+vim:tw=78:ts=8:ft=help:norl:et:

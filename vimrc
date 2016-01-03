@@ -7,6 +7,9 @@ syn on
 "Vundle plugins
 runtime! vundle_plugins
 
+"Local packages
+runtime! packages.vim
+
 " default to xterm behaviour
 behave xterm
 
