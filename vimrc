@@ -15,8 +15,9 @@ set background=dark
 if has('gui_running') 
     colorscheme solarized
 else
-    colorscheme darkblue
-    set cursorline
+    "colorscheme darkblue
+    "set cursorline
+    colorscheme solarized
 endif
 
 " set the font
@@ -113,3 +114,24 @@ set modelines=5
 " always have spelling turned on, even if annoying
 set spell
 
+"let g:ycm_filepath_completion_use_working_dir=1
+
+let g:ycm_key_list_select_completion = ['<TAB>', '<Down>', '<C-N>' ]
+let g:ycm_key_list_previews_completion = ['<S-TAB>', '<Up>', '<C-P>' ]
+
+let g:ycm_filetype_blacklist = {
+      \ 'tagbar' : 1,
+      \ 'qf' : 1,
+      \ 'notes' : 1,
+      \ 'unite' : 1,
+      \ 'vimwiki' : 1,
+      \ 'pandoc' : 1,
+      \ 'infolog' : 1,
+      \}
+
+set mouse+=a
+set ttymouse=sgr
+set clipboard+=autoselect
+set title
+
+"let g:EclimDisabled = 1

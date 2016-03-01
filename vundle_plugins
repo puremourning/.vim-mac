@@ -1,4 +1,4 @@
-set nocompatible
+set nocompatible 
 filetype off
 
 " YCM config
@@ -20,14 +20,49 @@ let g:ycm_collect_identifiers_from_tags_files=1
 " vim-gitgutter config
 let g:gitgutter_sign_column_always = 1
 
-
 " taglist config
-let g:TList_Use_Right_Window = 1
-let g:TList_Inc_Winwidth = 0
+let g:Tlist_Use_Right_Window = 1
 let g:Tlist_WinWidth = 45
-let g:TList_GainFocus_On_ToggleOpen = 1
-let g:TList_Ctags_Cmd = 'ctags'
-let g:TList_Show_One_File = 1
+let g:Tlist_GainFocus_On_ToggleOpen = 0
+let g:Tlist_Ctags_Cmd = 'ctags'
+let g:Tlist_Show_One_File = 0
+let g:Tlist_Sort_Type = 'name'
+
+" airline
+let g:airline#extensions#whitespace#enabled = 1
+let g:airline#extensions#whitespace#checks = [ 'indent', 'trailing' ]
+let g:airline#extensions#whitespace#show_message = 1
+
+" UltiSnips triggering
+let g:UltiSnipsExpandTrigger = '<C-j>'
+let g:UltiSnipsJumpForwardTrigger = '<C-j>'
+let g:UltiSnipsJumpBackwardTrigger = '<C-k>'
+
+" indent guides
+let g:indent_guides_start_level = 2
+let g:indent_guides_guide_size = 1
+let g:indent_guides_enable_on_vim_startup = 0
+
+" syntastic
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
+
+let g:syntastic_python_checkers = [ 'flake8' ]
+let g:syntastic_python_flake8_args = '--select=F,C9'
+let g:syntastic_python_flake8_exec = '~/Development/YouCompleteMe/tests/bin/flake8'
+
+let g:syntastic_cpp_checkers = [ 'cppcheck' ]
+let g:syntastic_cpp_cppcheck_args = '--enable=warning,style,performance,portability,information --std=c++03'
+
+" windowswap mappings
+let g:windowswap_map_keys = 0
+nnoremap <silent> <leader>ww :call WindowSwap#EasyWindowSwap()<CR>
+
+" tern for vim
+let g:tern_show_signature_in_pum = 1
+let g:tern_show_argument_hints = 'on_move'
 
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
@@ -36,6 +71,7 @@ Plugin 'gmarik/Vundle.vim'
 
 if get(g:, 'benj_test_ycm')
     Plugin 'puremourning/YouCompleteMe', { 'pinned': 1 }
+    Plugin 'davits/DyeVim'
 else
     Plugin 'puremourning/YouCompleteMe', { 'name': 'YouCompleteMe-Clean' }
 endif
@@ -49,11 +85,25 @@ Plugin 'airblade/vim-gitgutter'
 Plugin 'tpope/vim-repeat'
 Plugin 'bling/vim-airline'
 Plugin 'godlygeek/tabular'
+Plugin 'SirVer/ultisnips'
+Plugin 'wesQ3/vim-windowswap'
+Plugin 'rdnetto/YCM-Generator'
+Plugin 'nathanaelkane/vim-indent-guides'
+Plugin 'ntpeters/vim-better-whitespace'
+Plugin 'Valloric/ListToggle'
+Plugin 'honza/vim-snippets'
+Plugin 'rust-lang/rust.vim'
+Plugin 'tfnico/vim-gradle'
+Plugin 'artur-shaik/vim-javacomplete2'
+Plugin 'scrooloose/syntastic'
+Plugin 'stephpy/vim-yaml'
+Plugin 'saltstack/salt-vim'
 
 call vundle#end()
 filetype plugin indent on
 
 " taglist mapping
 noremap <silent> <Leader>t :TlistToggle<CR>
+
 
 " vim:ft=vim:foldmethod=marker
