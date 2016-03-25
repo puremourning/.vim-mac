@@ -1,0 +1,2 @@
+source $PYCLEWN/bin/activate
+source $PYCLEWN/bin/setup

@@ -1,7 +1,17 @@
 
 " Options
-let g:pyclewn_args = '--level=debug --file=~/.pyclewn_log' 
-let g:pyclewn_terminal = 'terminal'
+let s:pyclewn_terminal =
+            \ 'PYCLEWN=' . 
+            \ expand( '~/.vim/bundle/YouCompleteMe-Clean/third_party/ycmd/runtime' ) . 
+            \ ', ' .
+            \ expand( '~/.vim/run_terminal' )
+
+if has( 'gui_running' )
+  let g:pyclewn_terminal = s:pyclewn_terminal
+endif
+
+let g:pyclewn_args = '--level=debug --file=' . expand( '~/.pyclewn_log' ) 
+            \ . ' --terminal "' . expand( '~/.vim/run_terminal' ) . '"'
 
 " Configure packages
 

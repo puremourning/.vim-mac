@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+echo '
+on run argv
+  set arguments to ""
+  repeat with arg in argv
+     set arguments to arguments & " " & arg
+   end repeat
+  tell application "Terminal"
+    activate
+    set newTab to do script(arguments)
+  end tell
+end run
+' | osascript - "$@"
