@@ -18,10 +18,6 @@ set background=dark
 colorscheme solarized
 set cursorline
 
-" enable mouse support and sensible copy/paste
-set mouse+=a
-set clipboard=autoselect
-
 " set the font
 set guifont=Lucida_Console:h9:cDEFAULT
 
@@ -71,10 +67,10 @@ set cpoptions=aABceFs
 set scrolloff=5
 
 " Some shortcuts for commenting things
-map ,! :s/^/!/<CR>  
+map ,! :s/^/!/<CR>
 map !, :s/^\([ ]*\)!/\1/<CR>
 map ,db ma%:'a,.d<CR>
-map ,c :s/^/\/\//<CR>  
+map ,c :s/^/\/\//<CR>
 map ,,c :s/^\([ ]*\)\/\//\1/<CR>
 
 " Some windowsisms are hard to let go of
@@ -98,12 +94,12 @@ set formatoptions+=r
 " Split and next for vertical windows
 command! -nargs=0 Vsn set columns=163 | set lines=80 | vsplit | next
 
-command! DiffOrig vert new 
-     \ | set bt=nofile 
-     \ | r # 
-     \ | 0d_ 
-     \ | diffthis 
-     \ | wincmd p 
+command! DiffOrig vert new
+     \ | set bt=nofile
+     \ | r #
+     \ | 0d_
+     \ | diffthis
+     \ | wincmd p
      \ | diffthis
 
 " Highlight (textwidth? + 1)th colum
@@ -116,3 +112,24 @@ set modelines=5
 " always have spelling turned on, even if annoying
 set spell
 
+" Better mouse support
+set mouse+=a
+set ttymouse=sgr
+set clipboard+=autoselect
+set title
+
+" don't indent namespaces
+set cinoptions+=N-s
+" align continuations within open parens with the start of the parens
+set cinoptions+=(0
+" but when the last char of the prev line is the open parens, just indent 1 sw
+set cinoptions+=Ws
+" line up close brackets on their own line like blocks
+set cinoptions+=m1
+" enable sane java and javascript indenting
+set cinoptions+=j1,J1
+
+" try and tidy up the default vim python indentation
+let g:pyindent_continue = 'shiftwidth()'
+let g:pyindent_nested_paren = 'shiftwidth()'
+let g:pyindent_open_paren = 'shiftwidth()'

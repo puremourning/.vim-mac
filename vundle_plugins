@@ -32,6 +32,11 @@ let g:Tlist_Ctags_Cmd = 'ctags'
 let g:Tlist_Show_One_File = 1
 let g:Tlist_Sort_Type = 'name'
 
+" UltiSnips triggering
+let g:UltiSnipsExpandTrigger = '<C-j>'
+let g:UltiSnipsJumpForwardTrigger = '<C-j>'
+let g:UltiSnipsJumpBackwardTrigger = '<C-k>'
+
 " syntastic config
 let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
@@ -39,8 +44,14 @@ let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
 let g:syntastic_aggregate_errors = 1
 
-let g:syntastic_python_flake8_args = '--select=F,C9'
 let g:syntastic_cpp_checkers = [ 'cppcheck' ]
+
+" indent lines
+let g:indentLine_enabled = 0
+
+" windowswap mappings
+let g:windowswap_map_keys = 0
+nnoremap <silent> <leader>ww :call WindowSwap#EasyWindowSwap()<CR>
 
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
@@ -62,9 +73,15 @@ Plugin 'airblade/vim-gitgutter'
 Plugin 'tpope/vim-repeat'
 Plugin 'bling/vim-airline'
 Plugin 'godlygeek/tabular'
-
+Plugin 'SirVer/ultisnips'
+Plugin 'wesQ3/vim-windowswap'
+Plugin 'Yggdroot/indentLine'
+Plugin 'ntpeters/vim-better-whitespace'
+Plugin 'Valloric/ListToggle'
+Plugin 'honza/vim-snippets'
 Plugin 'scrooloose/syntastic'
 Plugin 'vim-scripts/applescript.vim'
+Plugin 'stephpy/vim-yaml'
 
 call vundle#end()
 filetype plugin indent on
