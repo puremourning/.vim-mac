@@ -10,6 +10,14 @@ runtime! vundle_plugins
 "Local packages
 runtime! packages.vim
 
+set nocompatible
+set wildmode=longest:full,full
+set wildmenu
+" For gf and :find
+set path+=**
+
+set wildignore=*.pyc
+
 " default to xterm behaviour
 behave xterm
 
@@ -27,11 +35,8 @@ set guioptions+=a
 " set the height and width (might be broken columns for diff)
 " set lines=50 columns=80
 
-" Allow tab-completion in the command line mode
-cnoremap <TAB> <C-L>
-
 " Set up indenting, and searching
-set shiftwidth=4 smartindent expandtab incsearch showmatch smartcase
+set shiftwidth=4 expandtab incsearch showmatch smartcase autoindent
 
 " use clever case searches when ignorecase is turned on
 set smartcase
@@ -57,12 +62,6 @@ set ruler
 " show partial commands
 set showcmd
 
-" default compatibility mode for vim6
-set cpoptions=aABceFs
-
-" use long messages
-"set shortmess=
-
 " make sure that there are always 5 lines of context when scrolling
 set scrolloff=5
 
@@ -85,11 +84,6 @@ imap <S-Del> <BS>
 set textwidth=80
 " enable carriage return auto-commenting
 set formatoptions+=r
-
-" use a fancy title for vim windows
-"let hostname = expand("`hostname`")
-"auto BufEnter * let &titlestring = hostname . "/" . expand("%:p")
-"set title
 
 " Split and next for vertical windows
 command! -nargs=0 Vsn set columns=163 | set lines=80 | vsplit | next
