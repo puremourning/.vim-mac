@@ -53,6 +53,13 @@ let g:indentLine_enabled = 0
 let g:windowswap_map_keys = 0
 nnoremap <silent> <leader>ww :call WindowSwap#EasyWindowSwap()<CR>
 
+" taglist mapping
+noremap <silent> <Leader>t :TlistToggle<CR>
+
+" CommandT
+" we use <leader>t for taglist
+nnoremap <silent> <leader>T :CommandT<CR>
+
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 
@@ -85,11 +92,9 @@ Plugin 'stephpy/vim-yaml'
 Plugin 'tpope/vim-surround'
 Plugin 'tommcdo/vim-exchange'
 Plugin 'tpope/vim-fugitive'
+Plugin 'wincent/command-t'
 
 call vundle#end()
 filetype plugin indent on
-
-" taglist mapping
-noremap <silent> <Leader>t :TlistToggle<CR>
 
 " vim:ft=vim:foldmethod=marker
