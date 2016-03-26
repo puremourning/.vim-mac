@@ -1,0 +1,6 @@
+snippet clewn "clewn pdb" b
+import os
+if 'PYCLEWN_DEBUG' in os.environ and os.environ[ 'PYCLEWN_DEBUG' ]:
+	import clewn.vim as clewn_vim
+	clewn_vim.pdb()
+endsnippet
