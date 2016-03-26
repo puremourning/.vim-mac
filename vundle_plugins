@@ -82,6 +82,8 @@ Plugin 'honza/vim-snippets'
 Plugin 'scrooloose/syntastic'
 Plugin 'vim-scripts/applescript.vim'
 Plugin 'stephpy/vim-yaml'
+Plugin 'tpope/vim-surround'
+Plugin 'tommcdo/vim-exchang'
 
 call vundle#end()
 filetype plugin indent on
