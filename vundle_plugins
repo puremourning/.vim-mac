@@ -83,7 +83,8 @@ Plugin 'scrooloose/syntastic'
 Plugin 'vim-scripts/applescript.vim'
 Plugin 'stephpy/vim-yaml'
 Plugin 'tpope/vim-surround'
-Plugin 'tommcdo/vim-exchang'
+Plugin 'tommcdo/vim-exchange'
+Plugin 'tpope/vim-fugitive'
 
 call vundle#end()
 filetype plugin indent on
