@@ -59,6 +59,7 @@ noremap <silent> <Leader>t :TlistToggle<CR>
 " CommandT
 " we use <leader>t for taglist
 nnoremap <silent> <leader>T :CommandT<CR>
+let g:CommandTFileScanner='find'
 
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
@@ -91,8 +92,10 @@ Plugin 'vim-scripts/applescript.vim'
 Plugin 'stephpy/vim-yaml'
 Plugin 'tpope/vim-surround'
 Plugin 'tommcdo/vim-exchange'
-Plugin 'tpope/vim-fugitive'
+" NOTE: vim-fugitive breaks pyclewn
+"Plugin 'tpope/vim-fugitive'
 Plugin 'wincent/command-t'
+Plugin 'leafgarland/typescript-vim'
 
 call vundle#end()
 filetype plugin indent on
