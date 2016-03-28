@@ -27,9 +27,9 @@ let g:gitgutter_sign_column_always = 1
 let g:Tlist_Use_Right_Window = 1
 let g:Tlist_Inc_Winwidth = 0
 let g:Tlist_WinWidth = 45
-let g:Tlist_GainFocus_On_ToggleOpen = 1
+let g:Tlist_GainFocus_On_ToggleOpen = 0
 let g:Tlist_Ctags_Cmd = 'ctags'
-let g:Tlist_Show_One_File = 1
+let g:Tlist_Show_One_File = 0
 let g:Tlist_Sort_Type = 'name'
 
 " UltiSnips triggering
@@ -46,8 +46,10 @@ let g:syntastic_aggregate_errors = 1
 
 let g:syntastic_cpp_checkers = [ 'cppcheck' ]
 
-" indent lines
-let g:indentLine_enabled = 0
+" indent guides
+let g:indent_guides_start_level = 2
+let g:indent_guides_guide_size = 1
+let g:indent_guides_enable_on_vim_startup = 0
 
 " windowswap mappings
 let g:windowswap_map_keys = 0
@@ -82,14 +84,18 @@ Plugin 'tpope/vim-repeat'
 Plugin 'bling/vim-airline'
 Plugin 'godlygeek/tabular'
 Plugin 'SirVer/ultisnips'
+Plugin 'rust-lang/rust.vim'
+Plugin 'tfnico/vim-gradle'
+Plugin 'artur-shaik/vim-javacomplete2'
 Plugin 'wesQ3/vim-windowswap'
-Plugin 'Yggdroot/indentLine'
+Plugin 'nathanaelkane/vim-indent-guides'
 Plugin 'ntpeters/vim-better-whitespace'
 Plugin 'Valloric/ListToggle'
 Plugin 'honza/vim-snippets'
 Plugin 'scrooloose/syntastic'
 Plugin 'vim-scripts/applescript.vim'
 Plugin 'stephpy/vim-yaml'
+Plugin 'saltstack/salt-vim'
 Plugin 'tpope/vim-surround'
 Plugin 'tommcdo/vim-exchange'
 " NOTE: vim-fugitive breaks pyclewn

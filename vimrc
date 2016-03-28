@@ -36,7 +36,7 @@ set guioptions+=a
 " set lines=50 columns=80
 
 " Set up indenting, and searching
-set shiftwidth=4 expandtab incsearch showmatch smartcase autoindent
+set shiftwidth=2 expandtab incsearch showmatch smartcase autoindent
 
 " use clever case searches when ignorecase is turned on
 set smartcase
@@ -108,8 +108,13 @@ set spell
 
 " Better mouse support
 set mouse+=a
-set ttymouse=sgr
-set clipboard+=autoselect
+if !has( 'nvim' )
+  set ttymouse=sgr
+  set clipboard+=autoselect
+else
+  let g:python_host_prog = '/usr/bin/python2.7'
+  let g:ycm_path_to_python_interpreter = '/usr/bin/python2.7'
+endif
 set title
 
 " don't indent namespaces
@@ -122,8 +127,3 @@ set cinoptions+=Ws
 set cinoptions+=m1
 " enable sane java and javascript indenting
 set cinoptions+=j1,J1
-
-" try and tidy up the default vim python indentation
-let g:pyindent_continue = 'shiftwidth()'
-let g:pyindent_nested_paren = 'shiftwidth()'
-let g:pyindent_open_paren = 'shiftwidth()'
