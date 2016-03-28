@@ -130,8 +130,13 @@ let g:ycm_filetype_blacklist = {
       \}
 
 set mouse+=a
-set ttymouse=sgr
-set clipboard+=autoselect
+if !has( 'nvim' )
+    set ttymouse=sgr
+    set clipboard+=autoselect
+else
+    let g:python_host_prog = '/usr/bin/python2.7'
+    let g:ycm_path_to_python_interpreter = '/usr/bin/python2.7'
+endif
 set title
 
 "let g:EclimDisabled = 1
