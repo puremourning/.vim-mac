@@ -108,8 +108,11 @@ set spell
 
 " Better mouse support
 set mouse+=a
-set ttymouse=sgr
-set clipboard+=autoselect
+set nohls
+if !has( 'nvim' )
+    set ttymouse=sgr
+    set clipboard+=autoselect
+endif
 set title
 
 " don't indent namespaces
@@ -127,3 +130,6 @@ set cinoptions+=j1,J1
 let g:pyindent_continue = 'shiftwidth()'
 let g:pyindent_nested_paren = 'shiftwidth()'
 let g:pyindent_open_paren = 'shiftwidth()'
+
+let g:python_host_prog = 'python'
+let g:python3_host_prog = 'python3'
