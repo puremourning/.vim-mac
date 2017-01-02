@@ -23,7 +23,16 @@ behave xterm
 
 " enable my colour scheme
 set background=dark
-colorscheme solarized
+
+if has( 'termguicolors' )
+    set termguicolors
+    let &t_8f = "\<Esc>[38:2:%lu:%lu:%lum"
+    let &t_8b = "\<Esc>[48:2:%lu:%lu:%lum"
+    colorscheme solarized8_dark
+else
+    colorscheme solarized
+endif
+
 set cursorline
 
 " set the font
@@ -36,7 +45,10 @@ set guioptions+=a
 " set lines=50 columns=80
 
 " Set up indenting, and searching
-set shiftwidth=4 expandtab incsearch showmatch smartcase autoindent
+set shiftwidth=2 expandtab incsearch showmatch smartcase autoindent
+
+" Don't let the python ftplugin override these settings!
+let g:python_recommended_style = 0
 
 " use clever case searches when ignorecase is turned on
 set smartcase

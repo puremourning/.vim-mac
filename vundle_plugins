@@ -53,14 +53,6 @@ let g:indentLine_enabled = 0
 let g:windowswap_map_keys = 0
 nnoremap <silent> <leader>ww :call WindowSwap#EasyWindowSwap()<CR>
 
-" taglist mapping
-noremap <silent> <Leader>t :TlistToggle<CR>
-
-" CommandT
-" we use <leader>t for taglist
-nnoremap <silent> <leader>T :CommandT<CR>
-let g:CommandTFileScanner='find'
-
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 
@@ -69,13 +61,14 @@ Plugin 'gmarik/Vundle.vim'
 if get(g:, 'benj_test_ycm')
     Plugin 'puremourning/YouCompleteMe', { 'pinned': 1 }
 else
-    Plugin 'puremourning/YouCompleteMe', { 'name': 'YouCompleteMe-Clean' }
+    Plugin 'puremourning/YouCompleteMe', { 'name': 'YouCompleteMe-Clean', 'pinned': 1 }
 endif
 
 Plugin 'scrooloose/nerdtree'
 Plugin 'taglist.vim'
 Plugin 'sjl/gundo.vim'
 Plugin 'altercation/vim-colors-solarized'
+Plugin 'lifepillar/vim-solarized8'
 Plugin 'hallison/vim-markdown'
 Plugin 'airblade/vim-gitgutter'
 Plugin 'tpope/vim-repeat'
@@ -96,6 +89,12 @@ Plugin 'tommcdo/vim-exchange'
 "Plugin 'tpope/vim-fugitive'
 Plugin 'wincent/command-t'
 Plugin 'leafgarland/typescript-vim'
+Plugin 'rust-lang/rust.vim'
+Plugin 'cespare/vim-toml'
+Plugin 'chrisbra/csv.vim'
+Plugin 'AndrewRadev/splitjoin.vim'
+Plugin 'lyuts/vim-rtags'
+Plugin 'gerw/vim-HiLinkTrace'
 
 call vundle#end()
 filetype plugin indent on
