@@ -53,50 +53,47 @@ let g:indentLine_enabled = 0
 let g:windowswap_map_keys = 0
 nnoremap <silent> <leader>ww :call WindowSwap#EasyWindowSwap()<CR>
 
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
-
-Plugin 'gmarik/Vundle.vim'
+call plug#begin( '~/.vim/bundle' )
 
 if get(g:, 'benj_test_ycm')
-    Plugin 'puremourning/YouCompleteMe', { 'pinned': 1 }
+    Plug 'puremourning/YouCompleteMe', { 'frozen': 1,
+          \ 'do': './install.py --all --system-libclang --system-boost' }
 else
-    Plugin 'puremourning/YouCompleteMe', { 'name': 'YouCompleteMe-Clean', 'pinned': 1 }
+    Plug 'puremourning/YouCompleteMe', { 'as': 'YouCompleteMe-Clean',
+          \ 'do': './install.py --all --system-libclang --system-boost' }
 endif
 
-Plugin 'scrooloose/nerdtree'
-Plugin 'taglist.vim'
-Plugin 'sjl/gundo.vim'
-Plugin 'altercation/vim-colors-solarized'
-Plugin 'lifepillar/vim-solarized8'
-Plugin 'hallison/vim-markdown'
-Plugin 'airblade/vim-gitgutter'
-Plugin 'tpope/vim-repeat'
-Plugin 'bling/vim-airline'
-Plugin 'godlygeek/tabular'
-Plugin 'SirVer/ultisnips'
-Plugin 'wesQ3/vim-windowswap'
-Plugin 'Yggdroot/indentLine'
-Plugin 'ntpeters/vim-better-whitespace'
-Plugin 'Valloric/ListToggle'
-Plugin 'honza/vim-snippets'
-Plugin 'scrooloose/syntastic'
-Plugin 'vim-scripts/applescript.vim'
-Plugin 'stephpy/vim-yaml'
-Plugin 'tpope/vim-surround'
-Plugin 'tommcdo/vim-exchange'
-" NOTE: vim-fugitive breaks pyclewn
-"Plugin 'tpope/vim-fugitive'
-Plugin 'wincent/command-t'
-Plugin 'leafgarland/typescript-vim'
-Plugin 'rust-lang/rust.vim'
-Plugin 'cespare/vim-toml'
-Plugin 'chrisbra/csv.vim'
-Plugin 'AndrewRadev/splitjoin.vim'
-Plugin 'lyuts/vim-rtags'
-Plugin 'gerw/vim-HiLinkTrace'
+Plug 'scrooloose/nerdtree'
+Plug 'taglist.vim'
+Plug 'sjl/gundo.vim'
+Plug 'altercation/vim-colors-solarized'
+Plug 'lifepillar/vim-solarized8'
+Plug 'hallison/vim-markdown'
+Plug 'airblade/vim-gitgutter'
+Plug 'tpope/vim-repeat'
+Plug 'bling/vim-airline'
+Plug 'godlygeek/tabular'
+Plug 'SirVer/ultisnips'
+Plug 'wesQ3/vim-windowswap'
+Plug 'Yggdroot/indentLine'
+Plug 'ntpeters/vim-better-whitespace'
+Plug 'Valloric/ListToggle'
+Plug 'honza/vim-snippets'
+Plug 'scrooloose/syntastic'
+Plug 'vim-scripts/applescript.vim'
+Plug 'stephpy/vim-yaml'
+Plug 'tpope/vim-surround'
+Plug 'tommcdo/vim-exchange'
+Plug 'wincent/command-t', { 'do': 'rake make' }
+Plug 'leafgarland/typescript-vim'
+Plug 'rust-lang/rust.vim'
+Plug 'cespare/vim-toml'
+Plug 'chrisbra/csv.vim'
+Plug 'AndrewRadev/splitjoin.vim'
+Plug 'lyuts/vim-rtags'
+Plug 'gerw/vim-HiLinkTrace'
 
-call vundle#end()
+call plug#end()
 filetype plugin indent on
 
 " vim:ft=vim:foldmethod=marker
