@@ -1,3 +1,485 @@
+" Vimball Archiver by Charles E. Campbell
+UseVimball
+finish
+autoload/pyclewn/start.vim	[[[1
+224
+" vi:set ts=8 sts=4 sw=4 et tw=80:
+" Pyclewn run time file.
+" Maintainer:   <xdegaye at users dot sourceforge dot net>
+"
+" Configure VIM to be used with pyclewn and netbeans.
+"
+if exists("s:did_start")
+    finish
+endif
+let s:did_start = 1
+
+" The following global variables define how pyclewn is started. They may be
+" changed to suit your preferences.
+function s:init(debugger)
+    if exists("g:pyclewn_terminal")
+        let s:terminal = g:pyclewn_terminal
+    else
+        let s:terminal = ""
+    endif
+
+    if exists("g:pyclewn_python")
+        let s:python = g:pyclewn_python
+    else
+        let s:python = "python"
+    endif
+
+    if exists("g:pyclewn_args")
+        let s:args = g:pyclewn_args
+    else
+        let s:args = "--window=top --maxlines=10000 --background=Cyan,Green,Magenta"
+    endif
+
+    if exists("g:pyclewn_connection")
+        let s:connection = g:pyclewn_connection
+    else
+        if a:debugger == "gdb"
+            let s:connection = "127.0.0.1:3219:changeme"
+        elseif a:debugger == "pdb"
+            let s:connection = "127.0.0.1:3220:changeme"
+        else
+            let s:connection = "127.0.0.1:3221:changeme"
+        endif
+    endif
+
+    " Uncomment the following line to print full traces in a file named
+    " 'logfile' for debugging purpose (or change g:pyclewn_args).
+    " let s:args .= " --level=nbdebug --file=logfile"
+    if s:terminal != ""
+        let s:args .= " --level=info"
+    endif
+
+    let l:fixed_args = "--editor= --netbeans=" . s:connection . " --cargs="
+    if s:terminal != ""
+        let s:fixed = l:fixed_args
+    else
+        let s:fixed = "--daemon " . l:fixed_args
+    endif
+endfunction
+
+" Run the 'Cinterrupt' command to open the console.
+function s:interrupt(args)
+    " find the prefix
+    let argl = split(a:args)
+    let prefix = "C"
+    let idx = index(argl, "-x")
+    if idx == -1
+        let idx = index(argl, "--prefix")
+        if idx == -1
+            for item in argl
+                if stridx(item, "--prefix") == 0
+                    let pos = stridx(item, "=")
+                    if pos != -1
+                        let prefix = strpart(item, pos + 1)
+                    endif
+                endif
+            endfor
+        endif
+    endif
+
+    if idx != -1 && len(argl) > idx + 1
+        let prefix = argl[idx + 1]
+    endif
+
+    " hack to prevent Vim being stuck in the command line with '--More--'
+    echohl WarningMsg
+    echo "About to run the 'interrupt' command."
+    call inputsave()
+    call input("Press the <Enter> key to continue.")
+    call inputrestore()
+    echohl None
+    exe prefix . "interrupt"
+endfunction
+
+" Check wether pyclewn successfully wrote the script file.
+function s:pyclewn_ready(filename)
+    let l:cnt = 1
+    echohl WarningMsg
+    while l:cnt < 20
+        echon "."
+        let l:cnt = l:cnt + 1
+        if filereadable(a:filename)
+            break
+        endif
+        sleep 200m
+    endwhile
+    echohl None
+    if !filereadable(a:filename)
+        throw "Error: pyclewn failed to start."
+    endif
+    call s:info("Creation of vim script file \"" . a:filename . "\": OK.\n")
+endfunction
+
+" Start pyclewn and vim netbeans interface.
+function s:start(args, pdb_attach)
+    if !exists(":nbstart")
+        call s:error("Error: the ':nbstart' vim command does not exist.")
+        return
+    endif
+    if has("netbeans_enabled")
+        call s:error("Error: netbeans is already enabled and connected.")
+        return
+    endif
+    if !executable(s:python)
+        call s:error("Error: '" . s:python . "' cannot be found or is not an executable.")
+        return
+    endif
+    let l:tmpfile = tempname()
+
+    " Remove the Console and the list buffers from the previous session.
+    for l:idx in range(bufnr('$'))
+        let l:bufno = l:idx + 1
+        if bufname(l:bufno) =~# "^(clewn)_"
+            exe l:bufno . "bwipeout"
+        endif
+    endfor
+
+    " Start pyclewn and netbeans.
+    if a:pdb_attach
+        call s:info("Attaching to a Python process.\n")
+    else
+        call s:info("Starting pyclewn.\n")
+    endif
+    let l:run_pyclewn = s:python . " -m clewn " . s:fixed . l:tmpfile . " " . a:args
+    if s:terminal == ""
+        exe "silent !" . l:run_pyclewn . " &"
+    else
+        let l:run_terminal = join(split(s:terminal, ","), " ")
+        exe "silent !" . l:run_terminal . " sh -c '" . l:run_pyclewn . " || sleep 600' &"
+    endif
+
+    call s:info("Running nbstart, <C-C> to interrupt.\n")
+    call s:pyclewn_ready(l:tmpfile)
+    exe "nbstart :" . s:connection
+
+    " Source vim script.
+    if has("netbeans_enabled")
+        exe "source " . l:tmpfile
+        call s:info("The netbeans socket is connected.\n")
+        let argl = split(a:args)
+        if index(argl, "pdb") == len(argl) - 1
+            call s:interrupt(a:args)
+        endif
+    else
+        throw "Error: the netbeans socket could not be connected."
+    endif
+endfunction
+
+function pyclewn#start#StartClewn(...)
+    let l:debugger = "gdb"
+    if a:0 != 0
+        let l:debugger = a:1
+    endif
+    call s:init(l:debugger)
+
+    let l:args = s:args
+    if a:0 != 0
+        if index(["gdb", "pdb", "simple"], a:1) == -1
+            call s:error("Unknown debugger '" . a:1 . "'.")
+            return
+        endif
+        if a:0 > 1
+            let l:args .= " --args \"" . join(a:000[1:], ' ') . "\""
+        endif
+        let l:args .= " " . a:1
+    endif
+
+    try
+        call s:start(l:args, a:0 == 1 && a:1 == "pdb")
+    catch /^Vim:Interrupt$/
+        return
+    catch /.*/
+        call s:info("The 'Pyclewn' command has been aborted.\n")
+        let l:err = v:exception . "\n"
+        if a:0 == 1 && a:1 == "pdb"
+            let l:err .= "Could not find a Python process to attach to.\n"
+        else
+            let l:err .= "To get the cause of the problem set the global variable"
+            let l:err .= " 'pyclewn_terminal' to:\n"
+            let l:err .= ":let g:pyclewn_terminal = \"xterm, -e\"\n"
+        endif
+        call s:error(l:err)
+        " The vim console screen is garbled, redraw the screen.
+        if !has("gui_running")
+            redraw!
+        endif
+        " Clear the command line.
+        echo "\n"
+    endtry
+endfunction
+
+function s:info(msg)
+    echohl WarningMsg
+    echo a:msg
+    echohl None
+endfunction
+
+function s:error(msg)
+    echohl ErrorMsg
+    echo a:msg
+    call inputsave()
+    call input("Press the <Enter> key to continue.")
+    call inputrestore()
+    echohl None
+endfunction
+autoload/pyclewn/buffers.vim	[[[1
+243
+" vi:set ts=8 sts=4 sw=4 et tw=80:
+" Pyclewn run time file.
+" Maintainer:   <xdegaye at users dot sourceforge dot net>
+"
+" Manage pyclewn buffers.
+"
+if exists("s:did_buffers")
+    finish
+endif
+let s:did_buffers = 1
+
+"---------------------   AUTOLOAD FUNCTIONS   ---------------------
+
+" Load the Pyclewn buffers in their windows. This function is called at the
+" first Pyclewn command.
+"
+"   'debugger': the debugger being run
+"   'window':   the value of the '--window' option, i.e. "top", "bottom",
+"               "left", "right", "none" or "usetab".
+"
+function pyclewn#buffers#CreateWindows(debugger, window)
+    " Add the clewn buffers to the buffer list.
+    badd (clewn)_console
+    if a:debugger == "gdb"
+        badd (clewn)_breakpoints
+        badd (clewn)_backtrace
+        badd (clewn)_threads
+    endif
+    if bufname("%") == ""
+        edit (clewn)_empty
+        set nobuflisted
+    endif
+
+    if a:window == "usetab"
+        set switchbuf=usetab
+        let l:tabno = tabpagenr()
+        tabnew
+        set nobuflisted
+        if exists("*Pyclewn_CreateTabWindows")
+            call Pyclewn_CreateTabWindows(a:debugger)
+        else
+            call s:create_tab_windows(a:debugger)
+        endif
+        exe "tabnext " . l:tabno
+    else
+        if exists("*Pyclewn_CreateWindows")
+            call Pyclewn_CreateWindows(a:debugger, a:window)
+        else
+            call s:create_windows(a:debugger, a:window)
+        endif
+    endif
+endfunction
+
+" Display the '(clewn)_variables' buffer in a window, split if needed. The
+" function is called before the 'Cdbgvar' command is executed.
+function pyclewn#buffers#DbgvarSplit()
+    if exists("*Pyclewn_DbgvarSplit")
+        call Pyclewn_DbgvarSplit()
+        return
+    endif
+    call s:goto_window("(clewn)_variables", "")
+endfunction
+
+" Display the frame source code in a window. The function is called after the
+" <CR> key or the mouse is used in a '(clewn)_backtrace' window. The line number
+" is not available (to avoid screen blinks) in this window, but the ensuing
+" 'Cframe' command will automatically move the cursor to the right place.
+"   'fname': the source code full path name.
+function pyclewn#buffers#GotoFrame(fname)
+    if exists("*Pyclewn_GotoFrame")
+        call Pyclewn_GotoFrame(a:fname)
+        return
+    endif
+    call s:goto_window(a:fname, "")
+endfunction
+
+" Display the breakpoint source code in a window. The function is called after
+" the <CR> key or the mouse is used in a '(clewn)_breakpoints' window.
+"   'fname': the source code full path name.
+"   'lnum':  the source code line number.
+function pyclewn#buffers#GotoBreakpoint(fname, lnum)
+    if exists("*Pyclewn_GotoBreakpoint")
+        call Pyclewn_GotoBreakpoint(a:fname, a:lnum)
+        return
+    endif
+    call s:goto_window(a:fname, a:lnum)
+endfunction
+
+"-------------------   END AUTOLOAD FUNCTIONS   -------------------
+
+" Create the clewn buffers windows in a tab page.
+function s:create_tab_windows(debugger)
+    edit (clewn)_console
+    if a:debugger == "gdb"
+        split
+        let w:pyclewn_window = 1
+        wincmd w
+        edit (clewn)_threads
+        let w:pyclewn_window = 1
+        split
+        edit (clewn)_breakpoints
+        let w:pyclewn_window = 1
+        split
+        edit (clewn)_backtrace
+        let w:pyclewn_window = 1
+
+        " Resize the windows to have the 'breakpoints' and 'threads' windows
+        " with a height of 8 and 4.
+        2wincmd j
+        resize 4
+        wincmd k
+        let l:breakpoints_height = winheight(0)
+        wincmd k
+        let l:backtrace_height = winheight(0) + l:breakpoints_height - 8
+        if l:backtrace_height > 0
+            exe "resize " . l:backtrace_height
+        endif
+    endif
+endfunction
+
+" Create the clewn buffers windows according to the 'window' value.
+function s:create_windows(debugger, window)
+    let l:bufno = bufnr("%")
+    let l:spr = &splitright
+    let l:sb = &splitbelow
+    set nosplitbelow
+    set nosplitright
+
+    if a:window == "top"
+        1wincmd w
+        exe &previewheight . "split"
+        edit (clewn)_console
+
+    elseif a:window == "bottom"
+        exe winnr("$") . "wincmd w"
+        set splitbelow
+        exe &previewheight . "split"
+        set nosplitbelow
+        edit (clewn)_console
+
+    elseif a:window == "right"
+        set splitright
+        vsplit
+        set nosplitright
+        edit (clewn)_console
+
+    elseif a:window == "left"
+        vsplit
+        edit (clewn)_console
+
+    else    " none
+        let &splitbelow = l:sb
+        let &splitright = l:spr
+        return
+    endif
+
+    let w:pyclewn_window = 1
+    if a:debugger == "gdb"
+        let l:split_cmd = "split"
+        if a:window == "top"
+            exe (&previewheight - 4) . "split"
+            let w:pyclewn_window = 1
+            wincmd w
+            let l:split_cmd = "vsplit"
+        elseif a:window == "bottom"
+            4split
+            let l:split_cmd = "vsplit"
+        elseif a:window == "right" || a:window == "left"
+            split
+        endif
+
+        edit (clewn)_threads
+        let w:pyclewn_window = 1
+        exe l:split_cmd
+        edit (clewn)_backtrace
+        let w:pyclewn_window = 1
+        exe l:split_cmd
+        edit (clewn)_breakpoints
+        let w:pyclewn_window = 1
+    endif
+
+    let &splitbelow = l:sb
+    let &splitright = l:spr
+    exe bufwinnr(l:bufno) . "wincmd w"
+endfunction
+
+function s:goto_window(fname, lnum)
+    " Search for a window in the tab pages, starting first with the current tab
+    " page.
+    let l:curtab = tabpagenr()
+    for l:tabidx in range(tabpagenr('$'))
+        let l:tabno = ((l:tabidx + l:curtab - 1) % tabpagenr('$')) + 1
+        for l:bufno in tabpagebuflist(l:tabno)
+            if expand("#" . l:bufno . ":p") == a:fname || expand("#" . l:bufno) == a:fname
+                if l:curtab != l:tabno
+                    exe "tabnext " . l:tabno
+                endif
+                exe bufwinnr(l:bufno) . "wincmd w"
+                if a:lnum != ""
+                    call cursor(a:lnum, 0)
+                endif
+                return
+            endif
+        endfor
+    endfor
+
+    " Search for a non clewn buffer window to split, starting with the current
+    " tab page and possibly using a '(clewn)_empty' window.
+    try
+        for l:tabidx in range(tabpagenr('$'))
+            let l:tabno = ((l:tabidx + l:curtab - 1) % tabpagenr('$')) + 1
+            for l:bufno in tabpagebuflist(l:tabno)
+                if bufname(l:bufno) !~# "^(clewn)_" || bufname(l:bufno) == "(clewn)_empty"
+                    if l:curtab != l:tabno
+                        exe "tabnext " . l:tabno
+                    endif
+                    exe bufwinnr(l:bufno) . "wincmd w"
+                    throw "break"
+                endif
+            endfor
+        endfor
+    catch /break/
+    endtry
+
+    " Split the window except if it is '(clewn)_empty'.
+    let l:do_split = 1
+    if bufname("%") == "(clewn)_empty"
+        let l:do_split = 0
+        exe "edit " . a:fname
+    endif
+
+    " Always split '(clewn)_variables' to work around windows switching caused
+    " by goto_last().
+    if l:do_split || a:fname == "(clewn)_variables"
+        split
+        exe "edit " . a:fname
+    endif
+
+    if a:lnum != ""
+        call cursor(a:lnum, 0)
+    endif
+endfunction
+
+autoload/pyclewn/version.vim	[[[1
+4
+
+function pyclewn#version#RuntimeVersion()
+    return "2.3.ebf5a92ef1c1"
+endfunction
+doc/pyclewn.txt	[[[1
+1257
 *pyclewn.txt*                                   Last change: 2015 December 3
 
 
@@ -1255,3 +1737,180 @@ prints "1" for all the above windows and "0" for all other windows including
 
 ==============================================================================
 vim:tw=78:ts=8:ft=help:norl:et:
+plugin/pyclewn.vim	[[[1
+11
+" Pyclewn run time file.
+" Maintainer:   <xdegaye at users dot sourceforge dot net>
+
+" Enable balloon_eval.
+if has("balloon_eval")
+    set ballooneval
+    set balloondelay=100
+endif
+
+" The 'Pyclewn' command starts pyclewn and vim netbeans interface.
+command -nargs=* -complete=file Pyclewn call pyclewn#start#StartClewn(<f-args>)
+syntax/clewn_variables.vim	[[[1
+25
+" Vim syntax file
+" Language:	debugger variables window syntax file
+" Maintainer:	<xdegaye at users dot sourceforge dot net>
+" Last Change:	Oct 8 2007
+
+if exists("b:current_syntax")
+    finish
+endif
+
+syn region dbgVarChged display contained matchgroup=dbgIgnore start="={\*}"ms=s+1 end="$"
+syn region dbgDeScoped display contained matchgroup=dbgIgnore start="={-}"ms=s+1 end="$"
+syn region dbgVarUnChged display contained matchgroup=dbgIgnore start="={=}"ms=s+1 end="$"
+
+syn match dbgItem display transparent "^.*$"
+    \ contains=dbgVarUnChged,dbgDeScoped,dbgVarChged,dbgVarNum
+
+syn match dbgVarNum display contained "^\s*\d\+:"he=e-1
+
+high def link dbgVarChged   Special
+high def link dbgDeScoped   Comment
+high def link dbgVarNum	    Identifier
+high def link dbgIgnore	    Ignore
+
+let b:current_syntax = "clewn_variables"
+
+macros/.pyclewn_keys.gdb	[[[1
+49
+# .pyclewn_keys.gdb file
+#
+# The default placement for this file is $CLEWNDIR/.pyclewn_keys.gdb, or
+# $HOME/.pyclewn_keys.gdb
+#
+# Key definitions are of the form `KEY:COMMAND'
+# where the following macros are expanded:
+#    ${text}:   the word or selection below the mouse
+#    ${fname}:  the current buffer full pathname
+#    ${lnum}:   the line number at the cursor position
+#
+# All characters following `#' up to the next new line are ignored.
+# Leading blanks on each line are ignored. Empty lines are ignored.
+#
+# To tune the settings in this file, you will have to uncomment them,
+# as well as change them, as the values on the commented-out lines
+# are the default values. You can also add new entries. To remove a
+# default mapping, use an empty GDB command.
+#
+# Supported key names:
+#       . key function: F1 to F20
+#             e.g., `F11:continue'
+#       . modifier (C-,S-,M-) + function key
+#             e.g., `C-F5:run'
+#       . modifier (or modifiers) + character
+#             e.g., `S-Q:quit', `C-S-B:info breakpoints'
+#
+# Note that a modifier is required for non-function keys. So it is not possible
+# to map a lower case character with this method (use the Vim 'map' command
+# instead).
+#
+# C-B : break "${fname}":${lnum} # set breakpoint at current line
+# C-D : down
+# C-K : clear "${fname}":${lnum} # clear breakpoint at current line
+# C-N : next
+# C-P : print ${text}            # print value of selection at mouse position
+# C-U : up
+# C-X : print *${text}           # print value referenced by word at mouse position
+# C-Z : sigint                   # kill the inferior running program
+# S-A : info args
+# S-B : info breakpoints
+# S-C : continue
+# S-F : finish
+# S-L : info locals
+# S-Q : quit
+# S-R : run
+# S-S : step
+# S-W : where
+# S-X : foldvar ${lnum}          # expand/collapse a watched variable
+macros/.pyclewn_keys.pdb	[[[1
+44
+# .pyclewn_keys.pdb file
+#
+# The default placement for this file is $CLEWNDIR/.pyclewn_keys.pdb, or
+# $HOME/.pyclewn_keys.pdb
+#
+# Key definitions are of the form `KEY:COMMAND'
+# where the following macros are expanded:
+#    ${text}:   the word or selection below the mouse
+#    ${fname}:  the current buffer full pathname
+#    ${lnum}:   the line number at the cursor position
+#
+# All characters following `#' up to the next new line are ignored.
+# Leading blanks on each line are ignored. Empty lines are ignored.
+#
+# To tune the settings in this file, you will have to uncomment them,
+# as well as change them, as the values on the commented-out lines
+# are the default values. You can also add new entries. To remove a
+# default mapping, use an empty GDB command.
+#
+# Supported key names:
+#       . key function: F1 to F20
+#             e.g., `F11:continue'
+#       . modifier (C-,S-,M-) + function key
+#             e.g., `C-F5:run'
+#       . modifier (or modifiers) + character
+#             e.g., `S-Q:quit', `C-S-B:info breakpoints'
+#
+# Note that a modifier is required for non-function keys. So it is not possible
+# to map a lower case character with this method (use the Vim 'map' command
+# instead).
+#
+# C-B : break "${fname}:${lnum}" # set breakpoint at current line
+# C-D : down
+# C-K : clear "${fname}:${lnum}" # clear breakpoint at current line
+# C-N : next
+# C-P : p ${text}                # print value of selection at mouse position
+# C-U : up
+# C-Z : interrupt
+# S-A : args
+# S-B : break
+# S-C : continue
+# S-R : return
+# S-S : step
+# S-W : where
+macros/.pyclewn_keys.simple	[[[1
+38
+# .pyclewn_keys.simple file
+#
+# The default placement for this file is $CLEWNDIR/.pyclewn_keys.simple, or
+# $HOME/.pyclewn_keys.simple
+#
+# Key definitions are of the form `KEY:COMMAND'
+# where the following macros are expanded:
+#    ${text}:   the word or selection below the mouse
+#    ${fname}:  the current buffer full pathname
+#    ${lnum}:   the line number at the cursor position
+#
+# All characters following `#' up to the next new line are ignored.
+# Leading blanks on each line are ignored. Empty lines are ignored.
+#
+# To tune the settings in this file, you will have to uncomment them,
+# as well as change them, as the values on the commented-out lines
+# are the default values. You can also add new entries. To remove a
+# default mapping, use an empty GDB command.
+#
+# Supported key names:
+#       . key function: F1 to F20
+#             e.g., `F11:continue'
+#       . modifier (C-,S-,M-) + function key
+#             e.g., `C-F5:run'
+#       . modifier (or modifiers) + character
+#             e.g., `S-Q:quit', `C-S-B:info breakpoints'
+#
+# Note that a modifier is required for non-function keys. So it is not possible
+# to map a lower case character with this method (use the Vim 'map' command
+# instead).
+#
+# C-B : break ${fname}:${lnum}   # set breakpoint at current line
+# C-K : clear ${fname}:${lnum}   # clear breakpoint at current line
+# C-P : print ${text}            # print value of selection at mouse position
+# C-Z : interrupt                # interrupt the execution of the target
+# S-C : continue
+# S-Q : quit
+# S-S : step

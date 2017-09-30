@@ -142,15 +142,11 @@ function s:start(args, pdb_attach)
     endif
     let l:run_pyclewn = s:python . " -m clewn " . s:fixed . l:tmpfile . " " . a:args
     if s:terminal == ""
-        let l:command = "silent !" . l:run_pyclewn . " &"
+        exe "silent !" . l:run_pyclewn . " &"
     else
         let l:run_terminal = join(split(s:terminal, ","), " ")
-        " exe "silent !" . l:run_terminal . " -c '" . l:run_pyclewn . " || sleep 600' &"
-        let l:command = "silent !" . l:run_terminal . " -c '" . l:run_pyclewn . " || sleep 600' &"
+        exe "silent !" . l:run_terminal . " sh -c '" . l:run_pyclewn . " || sleep 600' &"
     endif
-
-    echom "Running pyclewn with command: " . l:command
-    exe l:command
 
     call s:info("Running nbstart, <C-C> to interrupt.\n")
     call s:pyclewn_ready(l:tmpfile)

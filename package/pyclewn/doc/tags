@@ -28,6 +28,7 @@ pdb-pdbrc	pyclewn.txt	/*pdb-pdbrc*
 project-command	pyclewn.txt	/*project-command*
 project-file	pyclewn.txt	/*project-file*
 pyclewn	pyclewn.txt	/*pyclewn*
+pyclewn-dynamic-variable	pyclewn.txt	/*pyclewn-dynamic-variable*
 pyclewn-gdb	pyclewn.txt	/*pyclewn-gdb*
 pyclewn-intro	pyclewn.txt	/*pyclewn-intro*
 pyclewn-mappings	pyclewn.txt	/*pyclewn-mappings*
