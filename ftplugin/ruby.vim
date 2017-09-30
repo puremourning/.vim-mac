@@ -1,0 +1,1 @@
+setlocal omnifunc=ben_test_omnifunc#Complete
