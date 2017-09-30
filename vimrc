@@ -25,6 +25,7 @@ behave xterm
 set background=dark
 colorscheme solarized
 set cursorline
+set noshowmode
 
 " set the font
 set guifont=Lucida_Console:h9:cDEFAULT
@@ -127,3 +128,6 @@ set cinoptions+=Ws
 set cinoptions+=m1
 " enable sane java and javascript indenting
 set cinoptions+=j1,J1
+
+nnoremap <A-S-}> :tabnext<CR>
+nnoremap <A-S-{> :tabprevious<CR>

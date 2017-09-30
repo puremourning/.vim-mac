@@ -5,22 +5,48 @@ filetype off
 let g:ycm_seed_identifiers_with_syntax=1
 let g:ycm_autoclose_preview_window_after_completion=0
 let g:ycm_autoclose_preview_window_after_insertion=1
-let g:ycm_confirm_extra_conf=0
+let g:ycm_confirm_extra_conf=1
 let g:ycm_server_log_level='debug'
 let g:ycm_always_populate_location_list=1
 "let g:ycm_server_use_unix_domain_socket=1
-let g:ycm_extra_conf_vim_data = [ '&filetype' ]
+let g:ycm_cpp_flags = [ '-x',  'c++', '-Wall', '-Wextra', '-Werror' ]
+let g:ycm_extra_conf_vim_data = [ 'g:ycm_cpp_flags' ]
 let g:ycm_add_preview_window_to_completeopt = 1
 let g:ycm_always_populate_location_list=1
 let g:ycm_complete_in_comments=1
 let g:ycm_collect_identifiers_from_comments_and_strings=1
 let g:ycm_collect_identifiers_from_tags_files=1
+"let g:ycm_global_ycm_extra_conf = expand( '$HOME/.vim/ycm_extra_conf_global.py' )
 "let g:ycm_show_diagnostics_ui=0
+"let g:solarized_termcolors=256
+let g:ycm_python_binray_path='python'
+let g:ycm_java_jdtls_use_clean_workspace=1
+
+let g:ycm_rust_src_path='/Users/ben/Development/rust/rust/src'
 
 let g:ycm_use_syntastic_loc_list = 1
 
 " vim-gitgutter config
-let g:gitgutter_sign_column_always = 1
+set signcolumn=yes
+
+" Adds Vim
+let g:ycm_semantic_triggers =  {
+  \   'vim' : [ '.', ':', '#' ],
+  \ }
+
+" Remove:
+"     \ 'markdown' : 1,
+"     \ 'vimwiki' : 1,
+let g:ycm_filetype_blacklist = {
+      \ 'tagbar' : 1,
+      \ 'qf' : 1,
+      \ 'notes' : 1,
+      \ 'unite' : 1,
+      \ 'text' : 1,
+      \ 'pandoc' : 1,
+      \ 'infolog' : 1,
+      \ 'mail' : 1
+      \}
 
 
 " taglist config
@@ -44,7 +70,16 @@ let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
 let g:syntastic_aggregate_errors = 1
 
+let g:syntastic_mode_map = {
+      \ 'mode': 'active',
+      \ 'active_filetypes': [ 'python' ],
+      \ 'passive_filetypes': [ 'java', 'c', 'cpp', 'objc' ]
+      \ }
+
+
 let g:syntastic_cpp_checkers = [ 'cppcheck' ]
+" TODO: Do this in the ftplugin when you know if you need cargo or rustc
+let g:syntastic_rust_checkers = [ 'cargo' ]
 
 " indent guides
 let g:indent_guides_start_level = 2
@@ -55,13 +90,16 @@ let g:indent_guides_enable_on_vim_startup = 0
 let g:windowswap_map_keys = 0
 nnoremap <silent> <leader>ww :call WindowSwap#EasyWindowSwap()<CR>
 
-" taglist mapping
-noremap <silent> <Leader>t :TlistToggle<CR>
-
 " CommandT
 " we use <leader>t for taglist
-nnoremap <silent> <leader>T :CommandT<CR>
+nnoremap <silent> <leader>t :CommandT<CR>
 let g:CommandTFileScanner='find'
+
+" vim-grep - use the silver searcher
+let g:grepprg="ag --nogroup --column"
+
+" rtags
+let g:rtagsRcCmd=expand('$HOME/Development/rtags-root/bin/rc')
 
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
@@ -86,7 +124,7 @@ Plugin 'godlygeek/tabular'
 Plugin 'SirVer/ultisnips'
 Plugin 'rust-lang/rust.vim'
 Plugin 'tfnico/vim-gradle'
-Plugin 'artur-shaik/vim-javacomplete2'
+"Plugin 'artur-shaik/vim-javacomplete2'
 Plugin 'wesQ3/vim-windowswap'
 Plugin 'nathanaelkane/vim-indent-guides'
 Plugin 'ntpeters/vim-better-whitespace'
@@ -102,6 +140,17 @@ Plugin 'tommcdo/vim-exchange'
 "Plugin 'tpope/vim-fugitive'
 Plugin 'wincent/command-t'
 Plugin 'leafgarland/typescript-vim'
+Plugin 'FooSoft/vim-argwrap'
+"Plugin 'vim-ruby/vim-ruby'
+Plugin 'tpope/vim-dispatch'
+Plugin 'teoljungberg/vim-grep'
+Plugin 'Superbil/llvm.vim'
+Plugin 'lyuts/vim-rtags'
+Plugin 'Shougo/neco-vim'
+Plugin 'toyamarinyon/vim-swift'
+Plugin 'cespare/vim-toml'
+
+"Plugin 'eclim', { 'pinned': 1 }
 
 call vundle#end()
 filetype plugin indent on
