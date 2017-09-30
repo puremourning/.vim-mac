@@ -8,4 +8,4 @@ if exists(":CompilerSet") != 2 " older Vim always used :setlocal
 endif
 
 CompilerSet errorformat=%f:%l:%c:\ %t%s:\ %m
-let &l:makeprg=findfile( 'build.py', '.;' )
+let &l:makeprg=fnamemodify( findfile( 'build.py', '.;' ), ':p' )

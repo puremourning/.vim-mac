@@ -32,4 +32,5 @@ setlocal errorformat=
         \%f:%l:\ fail:\ %m,
         \%f:%l:\ error:\ %m
 
-let &l:makeprg=findfile( 'run_tests.py', '.;' ) . ' $* 2>&1'
+let &l:makeprg=fnamemodify( findfile( 'run_tests.py', '.;' ), ':p' )
+            \ . ' $* 2>&1'
