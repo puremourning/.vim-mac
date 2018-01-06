@@ -5,8 +5,8 @@ filetype off
 let g:ycm_seed_identifiers_with_syntax=1
 let g:ycm_autoclose_preview_window_after_completion=0
 let g:ycm_autoclose_preview_window_after_insertion=1
-let g:ycm_confirm_extra_conf=1
-let g:ycm_server_log_level='debug'
+"let g:ycm_server_log_level='debug'
+let g:ycm_confirm_extra_conf=0
 let g:ycm_always_populate_location_list=1
 "let g:ycm_server_use_unix_domain_socket=1
 let g:ycm_cpp_flags = [ '-x',  'c++', '-Wall', '-Wextra', '-Werror' ]
@@ -21,13 +21,17 @@ let g:ycm_collect_identifiers_from_tags_files=1
 "let g:solarized_termcolors=256
 let g:ycm_python_binray_path='python'
 let g:ycm_java_jdtls_use_clean_workspace=1
+let g:ycm_server_log_level='debug'
+let g:ycm_keep_logfiles=1
 
 let g:ycm_rust_src_path='/Users/ben/Development/rust/rust/src'
 
 let g:ycm_use_syntastic_loc_list = 1
 
 " vim-gitgutter config
-set signcolumn=yes
+if exists( '&signcolumn' )
+  set signcolumn=yes
+endif
 
 " Adds Vim
 let g:ycm_semantic_triggers =  {
@@ -72,8 +76,7 @@ let g:syntastic_aggregate_errors = 1
 
 let g:syntastic_mode_map = {
       \ 'mode': 'active',
-      \ 'active_filetypes': [ 'python' ],
-      \ 'passive_filetypes': [ 'java', 'c', 'cpp', 'objc' ]
+      \ 'passive_filetypes': [ 'c', 'cpp', 'objc' ]
       \ }
 
 
@@ -119,7 +122,7 @@ Plugin 'altercation/vim-colors-solarized'
 Plugin 'hallison/vim-markdown'
 Plugin 'airblade/vim-gitgutter'
 Plugin 'tpope/vim-repeat'
-Plugin 'bling/vim-airline'
+"Plugin 'bling/vim-airline'
 Plugin 'godlygeek/tabular'
 Plugin 'SirVer/ultisnips'
 Plugin 'rust-lang/rust.vim'
@@ -149,6 +152,8 @@ Plugin 'lyuts/vim-rtags'
 Plugin 'Shougo/neco-vim'
 Plugin 'toyamarinyon/vim-swift'
 Plugin 'cespare/vim-toml'
+Plugin 'rdolgushin/groovy.vim'
+Plugin 'AndrewRadev/splitjoin.vim'
 
 "Plugin 'eclim', { 'pinned': 1 }
 

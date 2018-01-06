@@ -16,6 +16,9 @@ set wildmenu
 " For gf and :find
 set path+=**
 
+" Persistent undo
+set undofile
+
 set wildignore=*.pyc
 
 " default to xterm behaviour
@@ -129,5 +132,73 @@ set cinoptions+=m1
 " enable sane java and javascript indenting
 set cinoptions+=j1,J1
 
+" So i can see hard tabs
+set listchars=tab:>-
+set list
+
 nnoremap <A-S-}> :tabnext<CR>
 nnoremap <A-S-{> :tabprevious<CR>
+
+nnoremap <leader>W :botright vertical terminal ++cols=120 ++close weechat<CR>
+
+let s:modemap = {
+      \ 'n':  'NORMAL',
+      \ 'no': 'NORMAL',
+      \ 'v':  'VISUAL',
+      \ 'V':  'VISUAL',
+      \ '': 'VISUAL',
+      \ 's':  'SELECT',
+      \ 'S':  'SELECT',
+      \ 'i':  'INSERT',
+      \ 'ic': 'INSERT',
+      \ 'ix': 'INSERT',
+      \ 'R':  'REPLACE',
+      \ 'Rc': 'REPLACE',
+      \ 'Rx': 'REPLACE',
+      \ 'Rb': 'REPLACE',
+      \ 'c':  'COMMAND',
+      \ 'cv': 'COMMAND',
+      \ 'ce': 'COMMAND',
+      \ 'r':  'COMMAND',
+      \ 'rm': 'COMMAND',
+      \ 'r?': 'COMMAND',
+      \ '!':  'SHELL',
+      \ 't':  'SHELL+'
+      \ }
+
+
+function! BenGetMode()
+  let l:m=mode()
+  if has_key( s:modemap, l:m )
+    return s:modemap[ l:m ]
+  endif
+  return "ERROR"
+endfunction
+
+function! BenGetFileNameDisplay()
+  let l:winwidth = winwidth()
+  return '%.' . ( l:winwidth - 10 ) . 'f'
+endfunction
+
+set statusline=
+set statusline+=%1*
+set statusline+=\ %{BenGetMode()}\ 
+set statusline+=%2*
+set statusline+=\ %<%f
+set statusline+=%(\ [%M%R%H]%)
+set statusline+=%=
+set statusline+=%3*
+set statusline+=\ %y
+set statusline+=\ %l:%c/%L
+set statusline+=\ 
+
+hi User1 term=reverse cterm=reverse ctermfg=10 ctermbg=7 guibg=DarkGrey
+hi User2 ctermfg=10 guifg=#80a0ff
+hi User3 term=bold cterm=bold,reverse ctermfg=DarkBlue gui=bold guifg=Blue
+
+" Solarized adds reverse tothe NonCurrent versions which is annoying
+hi StatusLineNC cterm=NONE
+hi StatusLineTermNC cterm=NONE
+
+set shortmess+=c
+set noshowmode
