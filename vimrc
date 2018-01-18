@@ -175,11 +175,6 @@ function! BenGetMode()
   return "ERROR"
 endfunction
 
-function! BenGetFileNameDisplay()
-  let l:winwidth = winwidth()
-  return '%.' . ( l:winwidth - 10 ) . 'f'
-endfunction
-
 set statusline=
 set statusline+=%1*
 set statusline+=\ %{BenGetMode()}\ 
@@ -202,3 +197,8 @@ hi StatusLineTermNC cterm=NONE
 
 set shortmess+=c
 set noshowmode
+
+" OK i'm sick of typing : now
+nnoremap ; :
+" OK i'm also scik of typing escape just typing in insert mode is 
+inoremap jk <ESC>
