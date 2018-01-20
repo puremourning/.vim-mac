@@ -78,6 +78,7 @@ let g:syntastic_mode_map = {
       \ 'passive_filetypes': [ 'c', 'cpp', 'objc' ]
       \ }
 
+let g:syntastic_java_checkers = []
 
 let g:syntastic_cpp_checkers = [ 'cppcheck' ]
 " TODO: Do this in the ftplugin when you know if you need cargo or rustc
