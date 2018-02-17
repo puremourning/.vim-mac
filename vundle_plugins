@@ -79,6 +79,7 @@ let g:syntastic_mode_map = {
       \ }
 
 let g:syntastic_java_checkers = []
+let g:EclimFileTypeValidate = 0
 
 let g:syntastic_cpp_checkers = [ 'cppcheck' ]
 " TODO: Do this in the ftplugin when you know if you need cargo or rustc
