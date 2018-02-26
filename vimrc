@@ -187,13 +187,16 @@ set statusline+=\ %y
 set statusline+=\ %l:%c/%L
 set statusline+=\ 
 
-hi User1 term=reverse cterm=reverse ctermfg=10 ctermbg=7 guibg=DarkGrey
-hi User2 ctermfg=10 guifg=#80a0ff
-hi User3 term=bold cterm=bold,reverse ctermfg=DarkBlue gui=bold guifg=Blue
+augroup BenColors
+  au!
+  au ColorScheme * hi User1 term=reverse cterm=reverse ctermfg=10 ctermbg=7 guibg=DarkGrey
+  au ColorScheme * hi User2 ctermfg=10 guifg=#80a0ff
+  au ColorScheme * hi User3 term=bold cterm=bold,reverse ctermfg=DarkBlue gui=bold guifg=Blue
 
-" Solarized adds reverse tothe NonCurrent versions which is annoying
-hi StatusLineNC cterm=NONE
-hi StatusLineTermNC cterm=NONE
+  " Solarized adds reverse tothe NonCurrent versions which is annoying
+  au ColorScheme * hi StatusLineNC cterm=NONE
+  au ColorScheme * hi StatusLineTermNC cterm=NONE
+augroup END
 
 set shortmess+=c
 set noshowmode
@@ -202,3 +205,23 @@ set noshowmode
 nnoremap ; :
 " OK i'm also scik of typing escape just typing in insert mode is 
 inoremap jk <ESC>
+
+" :help emacs-keys
+" start of line
+cnoremap <C-A>         <Home>
+" back one character
+cnoremap <C-B>         <Left>
+" delete character under cursor
+cnoremap <C-D>         <Del>
+" end of line
+cnoremap <C-E>         <End>
+" forward one character
+cnoremap <C-F>         <Right>
+" recall newer command-line
+cnoremap <C-N>         <Down>
+" recall previous (older) command-line
+cnoremap <C-P>         <Up>
+" back one word
+cnoremap <Esc><C-B>    <S-Left>
+" forward one word
+cnoremap <Esc><C-F>    <S-Right>
