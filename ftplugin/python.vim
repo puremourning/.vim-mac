@@ -1,3 +1,79 @@
+function! PythonGetCurrentFunction()
+  echom s:GetCurrentFunction()
+endfunction
+
+function! s:MakeMethodName( cls, mth )
+  if a:cls != ''
+    if a:mth != ''
+      return a:cls . '.' . a:mth
+    else
+      return a:cls
+    endif
+  endif
+  return a:mth
+endfunction
+
+function! s:GetCurrentFunction()
+  " Store the cursor position; we'll need to reset it
+  let [ l:buf, l:row, l:col, l:offset ] = getpos( '.' )
+
+  let l:test_method = ''
+  let l:test_class = ''
+
+  let l:pattern = '\V\C\s\*\<\%(def\|class\)\>\s\+\(\<\w\+\>\)\w\*(\.\*\$'
+
+  let l:lnum = prevnonblank( '.' )
+
+  " Find the top-level method and class
+  while l:lnum > 0
+    call cursor( l:lnum, 1 )
+    let l:lnum = search( l:pattern, 'bcnWz' )
+
+    if l:lnum <= 0
+      call cursor( l:row, l:col )
+      return s:MakeMethodName( l:test_class, l:test_method )
+    endif
+
+    " FIXME: This is about as inefficient as it could be
+    let l:this_decl = substitute( getline( l:lnum ), l:pattern, '\1', '' )
+    let l:this_decl_is_test = match( l:this_decl, '\V\C_test\$' ) >= 0
+    let l:this_decl_is_method = match( getline( l:lnum ), '\V\C\s\*def') >= 0
+    let l:this_decl_is_class = match( getline( l:lnum ), '\V\C\s\*class') >= 0
+
+    if l:this_decl_is_test
+      if l:this_decl_is_method
+        let l:test_method = l:this_decl
+      elseif l:this_decl_is_class
+        let l:test_class = l:this_decl
+      endif
+
+      if indent( l:lnum ) == 0
+        call cursor( l:row, l:col )
+        return s:MakeMethodName( l:test_class, l:test_method )
+      endif
+    endif
+
+    let l:lnum = prevnonblank( l:lnum - 1 )
+  endwhile
+
+endfunction
+
+function! s:RunTestUnderCursor()
+  compiler ycmd_test
+  update
+  let l:test_func_name = s:GetCurrentFunction()
+
+  if l:test_func_name ==# ''
+    echo "No test method found"
+    return
+  endif
+
+  echo "Running test '" . l:test_func_name . "'"
+
+  let l:test_arg = expand( '%:p' ) . ':' . l:test_func_name
+  execute 'Make --skip-build -- ' . l:test_arg
+endfunction
+
 function! s:RunTest()
   compiler ycmd_test
   update
@@ -20,6 +96,8 @@ if ! has( 'gui_running' )
   nnoremap ® :call <SID>RunTest()<CR>
   " ® is right-option+shift+r
   nnoremap Â :call <SID>RunAllTests()<CR>
+  " † is right-option+shift+t
+  nnoremap † :call <SID>RunTestUnderCursor()<CR>
   " ƒ is right-option+b
   nnoremap ∫ :call <SID>Build()<CR>
   " å is the right-option+q
