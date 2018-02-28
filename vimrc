@@ -26,7 +26,14 @@ behave xterm
 
 " enable my colour scheme
 set background=dark
-colorscheme solarized
+let &t_8f = "\<Esc>[38:2:%lu:%lu:%lum"
+let &t_8b = "\<Esc>[48:2:%lu:%lu:%lum"
+set termguicolors
+if 0
+  colorscheme Apprentice
+else
+  colorscheme solarized8
+endif
 set cursorline
 set noshowmode
 
@@ -187,16 +194,9 @@ set statusline+=\ %y
 set statusline+=\ %l:%c/%L
 set statusline+=\ 
 
-augroup BenColors
-  au!
-  au ColorScheme * hi User1 term=reverse cterm=reverse ctermfg=10 ctermbg=7 guibg=DarkGrey
-  au ColorScheme * hi User2 ctermfg=10 guifg=#80a0ff
-  au ColorScheme * hi User3 term=bold cterm=bold,reverse ctermfg=DarkBlue gui=bold guifg=Blue
-
-  " Solarized adds reverse tothe NonCurrent versions which is annoying
-  au ColorScheme * hi StatusLineNC cterm=NONE
-  au ColorScheme * hi StatusLineTermNC cterm=NONE
-augroup END
+hi! link User1 PmenuSel
+hi! link User2 CursorLineNr
+hi! link User3 ModeMsg
 
 set shortmess+=c
 set noshowmode

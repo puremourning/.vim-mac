@@ -120,6 +120,7 @@ Plugin 'scrooloose/nerdtree'
 Plugin 'taglist.vim'
 Plugin 'sjl/gundo.vim'
 Plugin 'altercation/vim-colors-solarized'
+Plugin 'lifepillar/vim-solarized8'
 Plugin 'hallison/vim-markdown'
 Plugin 'airblade/vim-gitgutter'
 Plugin 'tpope/vim-repeat'
@@ -155,6 +156,7 @@ Plugin 'toyamarinyon/vim-swift'
 Plugin 'cespare/vim-toml'
 Plugin 'rdolgushin/groovy.vim'
 Plugin 'AndrewRadev/splitjoin.vim'
+Plugin 'romainl/Apprentice'
 
 "Plugin 'eclim', { 'pinned': 1 }
 
