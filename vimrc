@@ -152,7 +152,8 @@ set list
 nnoremap <A-S-}> :tabnext<CR>
 nnoremap <A-S-{> :tabprevious<CR>
 
-nnoremap <leader>W :botright vertical terminal ++cols=120 ++close weechat<CR>
+nnoremap <leader>W :botright vertical terminal ++cols=100 ++close
+      \ env TERM=xterm-256color weechat<CR>
 
 let s:modemap = {
       \ 'n':  'NORMAL',
