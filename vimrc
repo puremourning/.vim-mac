@@ -232,3 +232,5 @@ cnoremap <C-P>         <Up>
 cnoremap <Esc><C-B>    <S-Left>
 " forward one word
 cnoremap <Esc><C-F>    <S-Right>
+
+command! YcmLogErr :botright vertical 90YcmToggleLogs ycmd*stderr*
