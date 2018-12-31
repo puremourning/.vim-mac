@@ -19,9 +19,14 @@ let g:ycm_collect_identifiers_from_tags_files=1
 "let g:ycm_show_diagnostics_ui=0
 "let g:solarized_termcolors=256
 let g:ycm_python_binray_path='python'
-let g:ycm_java_jdtls_use_clean_workspace=1
+let g:ycm_java_jdtls_use_clean_workspace=0
+let g:ycm_java_jdtls_workspace_root_path=$HOME . '/.ycmd/java/Workspace'
+let g:ycm_java_jdtls_extension_path=[ $HOME . '/.vscode/extensions' ]
 let g:ycm_server_log_level='debug'
 let g:ycm_keep_logfiles=1
+let g:ycm_echo_current_diagnostic=1
+let g:ycm_show_diagnostics_ui=1
+let g:ycm_use_clangd='never'
 
 let g:ycm_rust_src_path='/Users/ben/Development/rust/rust/src'
 
@@ -40,13 +45,13 @@ let g:ycm_semantic_triggers =  {
 " Remove:
 "     \ 'markdown' : 1,
 "     \ 'vimwiki' : 1,
+"     \ 'text' : 1,
+"     \ 'pandoc' : 1,
 let g:ycm_filetype_blacklist = {
       \ 'tagbar' : 1,
       \ 'qf' : 1,
       \ 'notes' : 1,
       \ 'unite' : 1,
-      \ 'text' : 1,
-      \ 'pandoc' : 1,
       \ 'infolog' : 1,
       \ 'mail' : 1
       \}
@@ -72,10 +77,11 @@ let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
 let g:syntastic_aggregate_errors = 1
+let g:syntastic_python_python_exec = 'python3'
 
 let g:syntastic_mode_map = {
       \ 'mode': 'active',
-      \ 'passive_filetypes': [ 'c', 'cpp', 'objc' ]
+      \ 'passive_filetypes': [ 'c', 'cpp', 'objc', 'java', 'ruby', 'php' ]
       \ }
 
 let g:syntastic_java_checkers = []
@@ -111,9 +117,11 @@ call vundle#begin()
 Plugin 'gmarik/Vundle.vim'
 
 if get(g:, 'benj_test_ycm')
-    Plugin 'puremourning/YouCompleteMe', { 'pinned': 1 }
+  Plugin 'puremourning/YouCompleteMe', { 'pinned': 1 }
+  Plugin 'puremourning/vimspector',    { 'pinned': 1 }
 else
-    Plugin 'puremourning/YouCompleteMe', { 'name': 'YouCompleteMe-Clean' }
+  Plugin 'puremourning/YouCompleteMe', { 'name': 'YouCompleteMe-Clean' }
+  Plugin 'puremourning/vimspector',    { 'name': 'vimspector-Clean' }
 endif
 
 Plugin 'scrooloose/nerdtree'
