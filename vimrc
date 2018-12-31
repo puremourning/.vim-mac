@@ -25,13 +25,19 @@ set wildignore=*.pyc
 behave xterm
 
 " enable my colour scheme
-set background=dark
 let &t_8f = "\<Esc>[38:2:%lu:%lu:%lum"
 let &t_8b = "\<Esc>[48:2:%lu:%lu:%lum"
-set termguicolors
-if 0
-  colorscheme Apprentice
-else
+set background=dark
+let s:cs = 'apprentice_low'
+if s:cs == 'solarized'
+  colorscheme solarized
+elseif s:cs == 'apprentice'
+  set termguicolors
+  colorscheme apprentice
+elseif s:cs == 'apprentice_low'
+  colorscheme apprentice
+elseif s:cs == 'solarized8'
+  set termguicolors
   colorscheme solarized8
 endif
 set cursorline
