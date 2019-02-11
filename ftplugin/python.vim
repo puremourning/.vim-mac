@@ -116,9 +116,9 @@ endfunction
 if ! has( 'gui_running' )
   " ® is right-option+r
   nnoremap ® :call <SID>RunTest()<CR>
-  " ® is right-option+shift+r
+  " ® is right-option+r
   nnoremap Â :call <SID>RunAllTests()<CR>
-  " † is right-option+shift+t
+  " † is right-option+t
   nnoremap † :call <SID>RunTestUnderCursor()<CR>
   " Ê is right-option+shift+t
   nnoremap Ê :call <SID>RunTestUnderCursorInVimspector()<CR>

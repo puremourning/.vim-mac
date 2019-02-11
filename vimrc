@@ -102,17 +102,6 @@ set textwidth=80
 " enable carriage return auto-commenting
 set formatoptions+=r
 
-" Split and next for vertical windows
-command! -nargs=0 Vsn set columns=163 | set lines=80 | vsplit | next
-
-command! DiffOrig vert new
-     \ | set bt=nofile
-     \ | r #
-     \ | 0d_
-     \ | diffthis
-     \ | wincmd p
-     \ | diffthis
-
 " Highlight (textwidth? + 1)th colum
 set colorcolumn=+1
 
@@ -201,16 +190,16 @@ set statusline+=\ %y
 set statusline+=\ %l:%c/%L
 set statusline+=\ 
 
-hi! link User1 PmenuSel
-hi! link User2 CursorLineNr
-hi! link User3 ModeMsg
+au ColorScheme * hi! link User1 PmenuSel
+au ColorScheme * hi! link User2 CursorLineNr
+au ColorScheme * hi! link User3 ModeMsg
 
 set shortmess+=c
 set noshowmode
 
 " OK i'm sick of typing : now
 nnoremap ; :
-" OK i'm also scik of typing escape just typing in insert mode is 
+" OK i'm also sick of typing escape just typing in insert mode is
 inoremap jk <ESC>
 
 " :help emacs-keys
@@ -233,4 +222,4 @@ cnoremap <Esc><C-B>    <S-Left>
 " forward one word
 cnoremap <Esc><C-F>    <S-Right>
 
-command! YcmLogErr :botright vertical 90YcmToggleLogs ycmd*stderr*
+command! YcmLogErr :botright vertical 75YcmToggleLogs ycmd*stderr*
