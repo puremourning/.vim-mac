@@ -34,6 +34,13 @@ let g:ycm_rust_src_path='/Users/ben/Development/rust/rust/src'
 
 let g:ycm_use_syntastic_loc_list = 1
 
+let g:snips_author='Ben Jackson (puremourning@gmail.com)'
+
+let g:Verdin#cooperativemode = 1
+let g:Verdin#fuzzymatch = 0
+let g:Verdin#autocomplete = 1
+let g:Verdin#autobraketinsert = 0
+
 " vim-gitgutter config
 if exists( '&signcolumn' )
   set signcolumn=yes
@@ -113,6 +120,10 @@ let g:grepprg="ag --nogroup --column"
 " rtags
 let g:rtagsRcCmd=expand('$HOME/Development/rtags-root/bin/rc')
 
+" vimspector
+" let g:vimspector_enable_mappings = 'VISUAL_STUDIO'
+let g:vimspector_enable_mappings = 'HUMAN'
+
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 
@@ -167,6 +178,7 @@ Plugin 'cespare/vim-toml'
 Plugin 'rdolgushin/groovy.vim'
 Plugin 'AndrewRadev/splitjoin.vim'
 Plugin 'romainl/Apprentice'
+Plugin 'machakann/vim-Verdin'
 
 "Plugin 'eclim', { 'pinned': 1 }
 
