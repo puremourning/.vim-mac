@@ -26,7 +26,9 @@ let g:ycm_server_log_level='debug'
 let g:ycm_keep_logfiles=1
 let g:ycm_echo_current_diagnostic=1
 let g:ycm_show_diagnostics_ui=1
-let g:ycm_use_clangd='never'
+if !exists( 'g:ycm_use_clangd' )
+  let g:ycm_use_clangd='never'
+endif
 
 let g:ycm_rust_src_path='/Users/ben/Development/rust/rust/src'
 
