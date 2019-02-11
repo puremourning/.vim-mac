@@ -80,6 +80,28 @@ function! s:RunTest()
   Make --skip-build -- %:p
 endfunction
 
+function! s:RunTestUnderCursorInVimspector()
+  compiler ycmd_test
+  update
+  let l:test_func_name = s:GetCurrentFunction()
+
+  if l:test_func_name ==# ''
+    echo "No test method found"
+    return
+  endif
+
+  let l:test_arg = expand( '%:p' ) . ':' . l:test_func_name
+  echom "Running test '" . l:test_arg . "'"
+
+
+  " TODO: Do we need the file name here ?
+  " call vimspector#AddFunctionBreakpoint( l:test_func_name )
+  " HACK: NO IDEA WHY THIS IS NEEDED
+  call vimspector#internal#state#Reset()
+  call vimspector#ToggleBreakpoint()
+  call vimspector#LaunchWithSettings( { 'Test': l:test_arg } )
+endfunction
+
 function! s:RunAllTests()
   compiler ycmd_test
   update
@@ -98,6 +120,8 @@ if ! has( 'gui_running' )
   nnoremap Â :call <SID>RunAllTests()<CR>
   " † is right-option+shift+t
   nnoremap † :call <SID>RunTestUnderCursor()<CR>
+  " Ê is right-option+shift+t
+  nnoremap Ê :call <SID>RunTestUnderCursorInVimspector()<CR>
   " ƒ is right-option+b
   nnoremap ∫ :call <SID>Build()<CR>
   " å is the right-option+q
