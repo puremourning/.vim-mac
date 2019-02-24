@@ -30,15 +30,15 @@ let &t_8b = "\<Esc>[48:2:%lu:%lu:%lum"
 set background=dark
 let s:cs = 'apprentice_low'
 if s:cs == 'solarized'
-  colorscheme solarized
+  silent! colorscheme solarized
 elseif s:cs == 'apprentice'
   set termguicolors
-  colorscheme apprentice
+  silent! colorscheme apprentice
 elseif s:cs == 'apprentice_low'
-  colorscheme apprentice
+  silent! colorscheme apprentice
 elseif s:cs == 'solarized8'
   set termguicolors
-  colorscheme solarized8
+  silent! colorscheme solarized8
 endif
 set cursorline
 set noshowmode
