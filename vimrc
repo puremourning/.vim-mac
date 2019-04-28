@@ -24,6 +24,68 @@ set wildignore=*.pyc
 " default to xterm behaviour
 behave xterm
 
+let s:modemap = {
+      \ 'n':  'NORMAL',
+      \ 'no': 'NORMAL',
+      \ 'v':  'VISUAL',
+      \ 'V':  'VISUAL',
+      \ '': 'VISUAL',
+      \ 's':  'SELECT',
+      \ 'S':  'SELECT',
+      \ 'i':  'INSERT',
+      \ 'ic': 'INSERT',
+      \ 'ix': 'INSERT',
+      \ 'R':  'REPLACE',
+      \ 'Rc': 'REPLACE',
+      \ 'Rx': 'REPLACE',
+      \ 'Rb': 'REPLACE',
+      \ 'c':  'COMMAND',
+      \ 'cv': 'COMMAND',
+      \ 'ce': 'COMMAND',
+      \ 'r':  'COMMAND',
+      \ 'rm': 'COMMAND',
+      \ 'r?': 'COMMAND',
+      \ '!':  'SHELL',
+      \ 't':  'SHELL+'
+      \ }
+
+
+function! BenGetMode()
+  let l:m=mode()
+  if has_key( s:modemap, l:m )
+    return s:modemap[ l:m ]
+  endif
+  return "ERROR"
+endfunction
+
+set statusline=
+set statusline+=%1*
+set statusline+=\ %{BenGetMode()}\ 
+set statusline+=%2*
+set statusline+=\ %<%f
+set statusline+=%(\ [%M%R%H]%)
+set statusline+=%=
+set statusline+=%3*
+set statusline+=\ %y
+set statusline+=\ %l:%c/%L
+set statusline+=\ 
+
+function! BenGetCustomHighlighting()
+  hi! link User1 PmenuSel
+  hi! link User2 CursorLineNr
+  hi! link User3 ModeMsg
+
+  " Make comments a bit more readable in Apprentice
+  if s:cs =~ "^apprentice"
+    hi Comment ctermfg=yellow
+  endif
+endfunction
+
+augroup BenCustomHighlighting
+  au!
+  au ColorScheme * call BenGetCustomHighlighting()
+augroup END
+
 " enable my colour scheme
 let &t_8f = "\<Esc>[38:2:%lu:%lu:%lum"
 let &t_8b = "\<Esc>[48:2:%lu:%lu:%lum"
@@ -143,56 +205,6 @@ nnoremap <A-S-{> :tabprevious<CR>
 
 nnoremap <leader>W :botright vertical terminal ++cols=100 ++close
       \ env TERM=xterm-256color weechat<CR>
-
-let s:modemap = {
-      \ 'n':  'NORMAL',
-      \ 'no': 'NORMAL',
-      \ 'v':  'VISUAL',
-      \ 'V':  'VISUAL',
-      \ '': 'VISUAL',
-      \ 's':  'SELECT',
-      \ 'S':  'SELECT',
-      \ 'i':  'INSERT',
-      \ 'ic': 'INSERT',
-      \ 'ix': 'INSERT',
-      \ 'R':  'REPLACE',
-      \ 'Rc': 'REPLACE',
-      \ 'Rx': 'REPLACE',
-      \ 'Rb': 'REPLACE',
-      \ 'c':  'COMMAND',
-      \ 'cv': 'COMMAND',
-      \ 'ce': 'COMMAND',
-      \ 'r':  'COMMAND',
-      \ 'rm': 'COMMAND',
-      \ 'r?': 'COMMAND',
-      \ '!':  'SHELL',
-      \ 't':  'SHELL+'
-      \ }
-
-
-function! BenGetMode()
-  let l:m=mode()
-  if has_key( s:modemap, l:m )
-    return s:modemap[ l:m ]
-  endif
-  return "ERROR"
-endfunction
-
-set statusline=
-set statusline+=%1*
-set statusline+=\ %{BenGetMode()}\ 
-set statusline+=%2*
-set statusline+=\ %<%f
-set statusline+=%(\ [%M%R%H]%)
-set statusline+=%=
-set statusline+=%3*
-set statusline+=\ %y
-set statusline+=\ %l:%c/%L
-set statusline+=\ 
-
-au ColorScheme * hi! link User1 PmenuSel
-au ColorScheme * hi! link User2 CursorLineNr
-au ColorScheme * hi! link User3 ModeMsg
 
 set shortmess+=c
 set noshowmode
