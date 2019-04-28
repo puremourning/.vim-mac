@@ -71,13 +71,13 @@ function! s:RunTestUnderCursor()
   echo "Running test '" . l:test_func_name . "'"
 
   let l:test_arg = expand( '%:p' ) . ':' . l:test_func_name
-  execute 'Make --skip-build -- ' . l:test_arg
+  execute 'Make --skip-build --no-flake8 -- ' . l:test_arg
 endfunction
 
 function! s:RunTest()
   compiler ycmd_test
   update
-  Make --skip-build -- %:p
+  Make --no-flake8 --skip-build -- %:p
 endfunction
 
 function! s:RunTestUnderCursorInVimspector()
