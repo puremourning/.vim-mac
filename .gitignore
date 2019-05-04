@@ -4,3 +4,4 @@ bundle/
 !bundle/eclim
 workbench.xmi
 *.un~
+*.sw[a-p]
