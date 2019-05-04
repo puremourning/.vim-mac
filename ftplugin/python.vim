@@ -115,19 +115,19 @@ endfunction
 
 if ! has( 'gui_running' )
   " ® is right-option+r
-  nnoremap ® :call <SID>RunTest()<CR>
+  nnoremap <buffer> ® :call <SID>RunTest()<CR>
   " ® is right-option+r
-  nnoremap Â :call <SID>RunAllTests()<CR>
+  nnoremap <buffer> Â :call <SID>RunAllTests()<CR>
   " † is right-option+t
-  nnoremap † :call <SID>RunTestUnderCursor()<CR>
+  nnoremap <buffer> † :call <SID>RunTestUnderCursor()<CR>
   " Ê is right-option+shift+t
-  nnoremap Ê :call <SID>RunTestUnderCursorInVimspector()<CR>
+  nnoremap <buffer> Ê :call <SID>RunTestUnderCursorInVimspector()<CR>
   " ƒ is right-option+b
-  nnoremap ∫ :call <SID>Build()<CR>
+  nnoremap <buffer> ∫ :call <SID>Build()<CR>
   " å is the right-option+q
-  nnoremap å :cfirst<CR>
+  nnoremap <buffer> å :cfirst<CR>
   " å is the right-option+a
-  nnoremap œ :cnext<CR>
+  nnoremap <buffer> œ :cnext<CR>
   " Ω is the right-option+z
-  nnoremap Ω :cprevious<CR>
+  nnoremap <buffer> Ω :cprevious<CR>
 endif
