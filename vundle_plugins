@@ -38,7 +38,7 @@ let g:snips_author='Ben Jackson (puremourning@gmail.com)'
 
 let g:Verdin#cooperativemode = 1
 let g:Verdin#fuzzymatch = 0
-let g:Verdin#autocomplete = 1
+let g:Verdin#autocomplete = 0
 let g:Verdin#autobraketinsert = 0
 
 " vim-gitgutter config
@@ -104,6 +104,7 @@ let g:syntastic_rust_checkers = [ 'cargo' ]
 let g:neomake_cpp_enabled_makers = []
 let g:neomake_c_enabled_makers = []
 let g:neomake_objc_enabled_makers = []
+let g:neomake_java_enabled_makers = []
 
 " indent guides
 let g:indent_guides_start_level = 2
@@ -185,6 +186,7 @@ Plugin 'rdolgushin/groovy.vim'
 Plugin 'AndrewRadev/splitjoin.vim'
 Plugin 'romainl/Apprentice'
 Plugin 'machakann/vim-Verdin'
+Plugin 'dhruvasagar/vim-table-mode'
 
 "Plugin 'eclim', { 'pinned': 1 }
 
