@@ -42,9 +42,13 @@ function! s:GetCurrentFunction()
 
     if l:this_decl_is_test
       if l:this_decl_is_method
-        let l:test_method = l:this_decl
+        if l:test_method == ''
+          let l:test_method = l:this_decl
+        endif
       elseif l:this_decl_is_class
-        let l:test_class = l:this_decl
+        if l:test_class == ''
+          let l:test_class = l:this_decl
+        endif
       endif
 
       if indent( l:lnum ) == 0
