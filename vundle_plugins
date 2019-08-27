@@ -27,8 +27,77 @@ let g:ycm_keep_logfiles=1
 let g:ycm_echo_current_diagnostic=1
 let g:ycm_show_diagnostics_ui=1
 if !exists( 'g:ycm_use_clangd' )
-  let g:ycm_use_clangd=0
+  let g:ycm_use_clangd=get( g:, 'benj_test_ycm', 0 )
 endif
+
+let g:ycm_clangd_args = get( g:, 'ycm_clangd_args', [] )
+call extend( g:ycm_clangd_args, [
+      \ '-background-index',
+      \ '-completion-style=bundled',
+      \ '-pch-storage=memory'
+      \ ] )
+
+if get( g:, 'benj_test_ycm', 0 )
+  let g:ycm_clangd_binary_path = get( g:, 'ycm_clangd_binary_path',
+        \ expand( '$HOME/Development/llvm-project/build/bin/clangd' ) )
+
+  if executable( g:ycm_clangd_binary_path )
+    call extend( g:ycm_clangd_args, [
+          \ '-log=verbose',
+          \ '-suggest-missing-includes',
+          \ '-header-insertion=iwyu',
+          \ ] )
+  else
+    unlet g:ycm_clangd_binary_path
+  endif
+endif
+
+let g:ycm_language_server = [
+  \   {
+  \     'name': 'yaml',
+  \     'cmdline': [ 'node', expand( '$HOME/Development/lsp/yaml/node_modules/.bin/yaml-language-server' ), '--stdio' ],
+  \     'filetypes': [ 'yaml' ],
+  \   },
+  \   {
+  \     'name': 'php',
+  \     'cmdline': [ 'php', expand( '$HOME/Development/lsp/php/vendor/bin/php-language-server.php' ) ],
+  \     'filetypes': [ 'php' ],
+  \   },
+  \   {
+  \     'name': 'json',
+  \     'cmdline': [ 'node', expand( '$HOME/Development/lsp/json/node_modules/.bin/vscode-json-languageserver' ), '--stdio' ],
+  \     'filetypes': [ 'json' ],
+  \   },
+  \   {
+  \     'name': 'ruby',
+  \     'cmdline': [ expand( '$HOME/Development/lsp/ruby/bin/solargraph' ), 'stdio' ],
+  \     'filetypes': [ 'ruby' ],
+  \   },
+  \   { 'name': 'kotlin',
+  \     'filetypes': [ 'kotlin' ],
+  \     'cmdline': [ expand( '$HOME/Development/lsp/kotlin/server/build/install/server/bin/server' ) ],
+  \   },
+  \   { 'name': 'd',
+  \     'filetypes': [ 'd' ],
+  \     'cmdline': [ expand( '$HOME/Development/lsp/d/serve-d' ) ],
+  \   },
+  \   { 'name': 'vue',
+  \     'filetypes': [ 'vue' ],
+  \     'cmdline': [ expand( '$HOME/Development/lsp/vue/node_modules/.bin/vls' ) ]
+  \   },
+  \   { 'name': 'docker',
+  \     'filetypes': [ 'dockerfile' ],
+  \     'cmdline': [ expand( '$HOME/Development/lsp/docker/node_modules/.bin/docker-langserver' ), '--stdio' ]
+  \   },
+  \   { 'name': 'vim',
+  \     'filetypes': [ 'vim' ],
+  \     'cmdline': [ expand( '$HOME/Development/lsp/viml/node_modules/.bin/vim-language-server' ), '--stdio' ]
+  \   },
+  \   { 'name': 'groovy',
+  \     'filetypes': [ 'groovy' ],
+  \     'cmdline': [ 'java', '-jar', expand( '$HOME/Development/lsp/groovy/groovy-language-server/build/libs/groovy-language-server-all.jar' ) ]
+  \   },
+  \ ]
 
 let g:ycm_rust_src_path='/Users/ben/Development/rust/rust/src'
 
@@ -105,6 +174,7 @@ let g:neomake_cpp_enabled_makers = []
 let g:neomake_c_enabled_makers = []
 let g:neomake_objc_enabled_makers = []
 let g:neomake_java_enabled_makers = []
+let g:neomake_vim_enabled_makers = []
 
 " indent guides
 let g:indent_guides_start_level = 2
@@ -187,6 +257,7 @@ Plugin 'AndrewRadev/splitjoin.vim'
 Plugin 'romainl/Apprentice'
 Plugin 'machakann/vim-Verdin'
 Plugin 'dhruvasagar/vim-table-mode'
+Plugin 'posva/vim-vue'
 
 "Plugin 'eclim', { 'pinned': 1 }
 

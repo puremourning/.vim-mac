@@ -89,8 +89,9 @@ augroup END
 " enable my colour scheme
 let &t_8f = "\<Esc>[38:2:%lu:%lu:%lum"
 let &t_8b = "\<Esc>[48:2:%lu:%lu:%lum"
-set background=dark
+
 let s:cs = 'apprentice_low'
+
 if s:cs == 'solarized'
   silent! colorscheme solarized
 elseif s:cs == 'apprentice'
@@ -122,6 +123,10 @@ set smartcase
 
 " use more stuff for the completions
 set complete=.,w,b,u,i
+
+" Use a popup for the completion preview window
+set completeopt+=popup
+set completepopup=height:10,width:60,highlight:PmenuSbar
 
 " allow c++ like define macros
 set define=^\\(#\\s*define\\|[a-z]*\\s*const\\s*[a-z]*\\)
@@ -171,8 +176,8 @@ set colorcolumn=+1
 set modeline
 set modelines=5
 
-" always have spelling turned on, even if annoying
-set spell
+" don't have spelling turned on, it's too annoying
+" set spell
 
 " Better mouse support
 set mouse+=a
