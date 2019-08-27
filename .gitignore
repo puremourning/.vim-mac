@@ -2,6 +2,9 @@
 /*.sw[op]
 bundle/
 !bundle/eclim
+!bundle/lsp-examples
+!bundle/Vundle.vim
 workbench.xmi
 *.un~
 *.sw[a-p]
+spell/

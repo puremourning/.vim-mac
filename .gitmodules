@@ -1,3 +1,6 @@
 [submodule "bundle/Vundle.vim"]
 	path = bundle/Vundle.vim
 	url = https://github.com/gmarik/Vundle.vim.git
+[submodule "bundle/lsp-examples"]
+	path = bundle/lsp-examples
+	url = https://github.com/ycm-core/lsp-examples

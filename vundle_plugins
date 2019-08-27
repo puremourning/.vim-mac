@@ -52,52 +52,63 @@ if get( g:, 'benj_test_ycm', 0 )
   endif
 endif
 
-let g:ycm_language_server = [
-  \   {
-  \     'name': 'yaml',
-  \     'cmdline': [ 'node', expand( '$HOME/Development/lsp/yaml/node_modules/.bin/yaml-language-server' ), '--stdio' ],
-  \     'filetypes': [ 'yaml' ],
-  \   },
-  \   {
-  \     'name': 'php',
-  \     'cmdline': [ 'php', expand( '$HOME/Development/lsp/php/vendor/bin/php-language-server.php' ) ],
-  \     'filetypes': [ 'php' ],
-  \   },
-  \   {
-  \     'name': 'json',
-  \     'cmdline': [ 'node', expand( '$HOME/Development/lsp/json/node_modules/.bin/vscode-json-languageserver' ), '--stdio' ],
-  \     'filetypes': [ 'json' ],
-  \   },
-  \   {
-  \     'name': 'ruby',
-  \     'cmdline': [ expand( '$HOME/Development/lsp/ruby/bin/solargraph' ), 'stdio' ],
-  \     'filetypes': [ 'ruby' ],
-  \   },
-  \   { 'name': 'kotlin',
-  \     'filetypes': [ 'kotlin' ],
-  \     'cmdline': [ expand( '$HOME/Development/lsp/kotlin/server/build/install/server/bin/server' ) ],
-  \   },
-  \   { 'name': 'd',
-  \     'filetypes': [ 'd' ],
-  \     'cmdline': [ expand( '$HOME/Development/lsp/d/serve-d' ) ],
-  \   },
-  \   { 'name': 'vue',
-  \     'filetypes': [ 'vue' ],
-  \     'cmdline': [ expand( '$HOME/Development/lsp/vue/node_modules/.bin/vls' ) ]
-  \   },
-  \   { 'name': 'docker',
-  \     'filetypes': [ 'dockerfile' ],
-  \     'cmdline': [ expand( '$HOME/Development/lsp/docker/node_modules/.bin/docker-langserver' ), '--stdio' ]
-  \   },
-  \   { 'name': 'vim',
-  \     'filetypes': [ 'vim' ],
-  \     'cmdline': [ expand( '$HOME/Development/lsp/viml/node_modules/.bin/vim-language-server' ), '--stdio' ]
-  \   },
-  \   { 'name': 'groovy',
-  \     'filetypes': [ 'groovy' ],
-  \     'cmdline': [ 'java', '-jar', expand( '$HOME/Development/lsp/groovy/groovy-language-server/build/libs/groovy-language-server-all.jar' ) ]
-  \   },
-  \ ]
+
+let s:lsp_dir = expand( '<sfile>:p:h' ) . '/bundle/lsp-examples'
+
+if get( g:, 'benj_test_ycm', 0 )
+  if isdirectory( expand( '$HOME/Development/lsp' ) )
+    let s:lsp_dir = expand( '$HOME/Development/lsp' )
+  endif
+endif
+
+if isdirectory( s:lsp_dir )
+  let g:ycm_language_server = [
+    \   {
+    \     'name': 'yaml',
+    \     'cmdline': [ 'node', s:lsp_dir . '/yaml/node_modules/.bin/yaml-language-server', '--stdio' ],
+    \     'filetypes': [ 'yaml' ],
+    \   },
+    \   {
+    \     'name': 'php',
+    \     'cmdline': [ 'php', s:lsp_dir . '/php/vendor/bin/php-language-server.php' ],
+    \     'filetypes': [ 'php' ],
+    \   },
+    \   {
+    \     'name': 'json',
+    \     'cmdline': [ 'node', s:lsp_dir . '/json/node_modules/.bin/vscode-json-languageserver', '--stdio' ],
+    \     'filetypes': [ 'json' ],
+    \   },
+    \   {
+    \     'name': 'ruby',
+    \     'cmdline': [ s:lsp_dir . '/ruby/bin/solargraph', 'stdio' ],
+    \     'filetypes': [ 'ruby' ],
+    \   },
+    \   { 'name': 'kotlin',
+    \     'filetypes': [ 'kotlin' ],
+    \     'cmdline': [ s:lsp_dir . '/kotlin/server/build/install/server/bin/server' ],
+    \   },
+    \   { 'name': 'd',
+    \     'filetypes': [ 'd' ],
+    \     'cmdline': [ s:lsp_dir . '/d/serve-d' ],
+    \   },
+    \   { 'name': 'vue',
+    \     'filetypes': [ 'vue' ],
+    \     'cmdline': [ s:lsp_dir . '/vue/node_modules/.bin/vls' ]
+    \   },
+    \   { 'name': 'docker',
+    \     'filetypes': [ 'dockerfile' ],
+    \     'cmdline': [ s:lsp_dir . '/docker/node_modules/.bin/docker-langserver', '--stdio' ]
+    \   },
+    \   { 'name': 'vim',
+    \     'filetypes': [ 'vim' ],
+    \     'cmdline': [ s:lsp_dir . '/viml/node_modules/.bin/vim-language-server', '--stdio' ]
+    \   },
+    \   { 'name': 'groovy',
+    \     'filetypes': [ 'groovy' ],
+    \     'cmdline': [ 'java', '-jar', s:lsp_dir . '/groovy/groovy-language-server/build/libs/groovy-language-server-all.jar' ]
+    \   },
+    \ ]
+endif
 
 let g:ycm_rust_src_path='/Users/ben/Development/rust/rust/src'
 

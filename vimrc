@@ -124,9 +124,12 @@ set smartcase
 " use more stuff for the completions
 set complete=.,w,b,u,i
 
-" Use a popup for the completion preview window
-set completeopt+=popup
-set completepopup=height:10,width:60,highlight:PmenuSbar
+" Use a popup for the completion preview window if available
+try
+  set completeopt+=popup
+  set completepopup=height:10,width:60,highlight:PmenuSbar
+catch /.*/
+endtry
 
 " allow c++ like define macros
 set define=^\\(#\\s*define\\|[a-z]*\\s*const\\s*[a-z]*\\)
