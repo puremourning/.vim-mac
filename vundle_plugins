@@ -263,6 +263,7 @@ Plugin 'romainl/Apprentice'
 Plugin 'machakann/vim-Verdin'
 Plugin 'dhruvasagar/vim-table-mode'
 Plugin 'posva/vim-vue'
+Plugin 'keith/swift.vim'
 
 call vundle#end()
 filetype plugin indent on
