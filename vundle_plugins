@@ -34,12 +34,17 @@ let g:ycm_clangd_args = get( g:, 'ycm_clangd_args', [] )
 call extend( g:ycm_clangd_args, [
       \ '-background-index',
       \ '-completion-style=bundled',
-      \ '-pch-storage=memory'
+      \ '-pch-storage=memory',
+      \ '-j=8',
+      \ '--clang-tidy=0',
       \ ] )
 
 if get( g:, 'benj_test_ycm', 0 )
   let g:ycm_clangd_binary_path = get( g:, 'ycm_clangd_binary_path',
         \ expand( '$HOME/Development/llvm-project/build/bin/clangd' ) )
+
+  let g:ycm_clangd_binary_path = system( 'brew --prefix llvm' )->trim()
+                               \ . '/bin/clangd'
 
   if executable( g:ycm_clangd_binary_path )
     call extend( g:ycm_clangd_args, [
@@ -129,6 +134,8 @@ endif
 " Adds Vim
 let g:ycm_semantic_triggers =  {
   \   'vim' : [ '.', ':', '#' ],
+  \   'c': [ 're!\w{3}', '_' ],
+  \   'json': [ ' ' ],
   \ }
 
 " Remove:
@@ -224,43 +231,30 @@ else
   Plugin 'puremourning/vimspector',    { 'name': 'vimspector-Clean' }
 endif
 
-Plugin 'scrooloose/nerdtree'
 Plugin 'taglist.vim'
-Plugin 'sjl/gundo.vim'
 Plugin 'altercation/vim-colors-solarized'
 Plugin 'lifepillar/vim-solarized8'
 Plugin 'hallison/vim-markdown'
 Plugin 'airblade/vim-gitgutter'
 Plugin 'tpope/vim-repeat'
-"Plugin 'bling/vim-airline'
-Plugin 'godlygeek/tabular'
 Plugin 'SirVer/ultisnips'
 Plugin 'rust-lang/rust.vim'
 Plugin 'tfnico/vim-gradle'
 "Plugin 'artur-shaik/vim-javacomplete2'
 Plugin 'wesQ3/vim-windowswap'
-Plugin 'nathanaelkane/vim-indent-guides'
 Plugin 'ntpeters/vim-better-whitespace'
 Plugin 'Valloric/ListToggle'
 Plugin 'honza/vim-snippets'
-" Plugin 'scrooloose/syntastic'
 Plugin 'neomake/neomake'
 Plugin 'vim-scripts/applescript.vim'
 Plugin 'stephpy/vim-yaml'
 Plugin 'saltstack/salt-vim'
 Plugin 'tpope/vim-surround'
-Plugin 'tommcdo/vim-exchange'
-" NOTE: vim-fugitive breaks pyclewn
-"Plugin 'tpope/vim-fugitive'
-Plugin 'wincent/command-t'
 Plugin 'leafgarland/typescript-vim'
 Plugin 'FooSoft/vim-argwrap'
-"Plugin 'vim-ruby/vim-ruby'
 Plugin 'tpope/vim-dispatch'
 Plugin 'teoljungberg/vim-grep'
-"Plugin 'Superbil/llvm.vim'
 Plugin 'lyuts/vim-rtags'
-Plugin 'Shougo/neco-vim'
 Plugin 'toyamarinyon/vim-swift'
 Plugin 'cespare/vim-toml'
 Plugin 'rdolgushin/groovy.vim'
@@ -269,8 +263,6 @@ Plugin 'romainl/Apprentice'
 Plugin 'machakann/vim-Verdin'
 Plugin 'dhruvasagar/vim-table-mode'
 Plugin 'posva/vim-vue'
-
-"Plugin 'eclim', { 'pinned': 1 }
 
 call vundle#end()
 filetype plugin indent on

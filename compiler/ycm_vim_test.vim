@@ -25,7 +25,7 @@ setlocal errorformat=
 
 let s:run_tests = findfile( 'run_vim_tests', '.;' )
 let s:root_dir = fnamemodify( s:run_tests, ':h' )
-let &l:makeprg=fnamemodify( s:run_tests, ':p' ) . ' $* 2>&1'
+let &l:makeprg=fnamemodify( s:run_tests, ':p' ) . ' --stdout $* 2>&1'
 
 let s:make_cmd = get( g:, 'ycm_vim_test_make_cmd', 'Make' )
 

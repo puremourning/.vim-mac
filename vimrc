@@ -127,7 +127,7 @@ set complete=.,w,b,u,i
 " Use a popup for the completion preview window if available
 try
   set completeopt+=popup
-  set completepopup=height:10,width:60,highlight:PmenuSbar
+  set completepopup=height:10,width:60,highlight:PmenuSbar,border:off
 catch /.*/
 endtry
 
@@ -187,9 +187,6 @@ set mouse+=a
 if !has( 'nvim' )
   set ttymouse=sgr
   set clipboard+=autoselect
-else
-  let g:python_host_prog = '/usr/bin/python2.7'
-  let g:ycm_path_to_python_interpreter = '/usr/bin/python2.7'
 endif
 set title
 
@@ -243,3 +240,6 @@ cnoremap <Esc><C-B>    <S-Left>
 cnoremap <Esc><C-F>    <S-Right>
 
 command! YcmLogErr :botright vertical 75YcmToggleLogs ycmd*stderr*
+
+let g:netrw_liststyle = 3
+" let g:netrw_list_hide = netrw_gitignore#Hide()

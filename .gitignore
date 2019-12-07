@@ -8,3 +8,4 @@ workbench.xmi
 *.un~
 *.sw[a-p]
 spell/
+.netrwhist

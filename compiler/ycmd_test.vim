@@ -34,3 +34,5 @@ setlocal errorformat=
 
 let &l:makeprg=fnamemodify( findfile( 'run_tests.py', '.;' ), ':p' )
             \ . ' $* 2>&1'
+
+let $YCM_TEST_RETRY_TIMEOUT = 5
