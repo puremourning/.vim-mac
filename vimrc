@@ -1,6 +1,10 @@
 " use comma for commands
 let mapleader=','
 
+if has( 'win32' )
+  set encoding=utf-8
+endif
+
 " enable syntax hilighting
 syn on
 
@@ -92,6 +96,10 @@ let &t_8b = "\<Esc>[48:2:%lu:%lu:%lum"
 
 let s:cs = 'apprentice_low'
 
+if has( 'win32' )
+  set t_Co=256
+endif
+
 if s:cs == 'solarized'
   silent! colorscheme solarized
 elseif s:cs == 'apprentice'
@@ -110,7 +118,7 @@ set noshowmode
 set guifont=Lucida_Console:h9:cDEFAULT
 
 " visual selection copied to clipboard
-set guioptions+=a
+set guioptions=at
 
 " set the height and width (might be broken columns for diff)
 " set lines=50 columns=80

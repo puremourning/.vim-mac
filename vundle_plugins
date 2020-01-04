@@ -267,6 +267,8 @@ Plugin 'posva/vim-vue'
 call vundle#end()
 filetype plugin indent on
 
-call neomake#configure#automake( 'nrwi', 250 )
+if exists( '*neomake#configure#automake' )
+  call neomake#configure#automake( 'nrwi', 250 )
+endif
 
 " vim:ft=vim:foldmethod=marker
