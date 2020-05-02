@@ -248,7 +248,9 @@ Plugin 'lifepillar/vim-solarized8'
 Plugin 'tpope/vim-markdown'
 Plugin 'airblade/vim-gitgutter'
 Plugin 'tpope/vim-repeat'
-Plugin 'SirVer/ultisnips'
+if has( 'python3' )
+  Plugin 'SirVer/ultisnips'
+endif
 Plugin 'rust-lang/rust.vim'
 Plugin 'tfnico/vim-gradle'
 Plugin 'wesQ3/vim-windowswap'
