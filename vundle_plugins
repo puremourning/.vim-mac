@@ -114,6 +114,11 @@ if isdirectory( s:lsp_dir )
     \     'filetypes': [ 'groovy' ],
     \     'cmdline': [ 'java', '-jar', s:lsp_dir . '/groovy/groovy-language-server/build/libs/groovy-language-server-all.jar' ]
     \   },
+    \   { 'name': 'rust',
+    \     'filetypes': [ 'rust' ],
+    \     'cmdline': [ s:lsp_dir . '/rust/rust-analyzer/target/release/rust-analyzer' ],
+    \     'project_root_files': [ 'Cargo.toml' ],
+    \   },
     \ ]
 endif
 
@@ -195,6 +200,7 @@ let g:neomake_c_enabled_makers = []
 let g:neomake_objc_enabled_makers = []
 let g:neomake_java_enabled_makers = []
 let g:neomake_vim_enabled_makers = []
+let g:neomake_rust_enabled_makers = []
 
 " indent guides
 let g:indent_guides_start_level = 2
