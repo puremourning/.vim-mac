@@ -261,3 +261,17 @@ command! YcmLogErr :botright vertical 75YcmToggleLogs ycmd*stderr*
 
 let g:netrw_liststyle = 3
 " let g:netrw_list_hide = netrw_gitignore#Hide()
+
+" Make ctrl-space work in terminal
+tnoremap <Nul> <C-Space>
+
+" YCM popup, manual only
+let g:ycm_auto_hover = ''
+nmap <leader>D <Plug>(YCMHover)
+augroup CustYCMHover
+  autocmd!
+  autocmd FileType c,cpp,objc let b:ycm_hover = {
+        \ 'command': 'GetDoc',
+        \ 'syntax': &syntax
+        \ }
+augroup END

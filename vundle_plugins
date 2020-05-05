@@ -213,9 +213,6 @@ let g:CommandTFileScanner='find'
 " vim-grep - use the silver searcher
 let g:grepprg="ag --nogroup --column"
 
-" rtags
-let g:rtagsRcCmd=expand('$HOME/Development/rtags-root/bin/rc')
-
 " vimspector
 " let g:vimspector_enable_mappings = 'VISUAL_STUDIO'
 let g:vimspector_enable_mappings = 'HUMAN'
@@ -256,7 +253,6 @@ Plugin 'leafgarland/typescript-vim'
 Plugin 'FooSoft/vim-argwrap'
 Plugin 'tpope/vim-dispatch'
 Plugin 'teoljungberg/vim-grep'
-Plugin 'lyuts/vim-rtags'
 Plugin 'toyamarinyon/vim-swift'
 Plugin 'cespare/vim-toml'
 Plugin 'rdolgushin/groovy.vim'
