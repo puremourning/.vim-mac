@@ -200,20 +200,16 @@ let g:neomake_objc_enabled_makers = []
 let g:neomake_java_enabled_makers = []
 let g:neomake_vim_enabled_makers = []
 let g:neomake_rust_enabled_makers = []
+let g:neomake_python_python_exe = 'python3'
 
-" indent guides
-let g:indent_guides_start_level = 2
-let g:indent_guides_guide_size = 1
-let g:indent_guides_enable_on_vim_startup = 0
+let g:neomake_vim_enabled_makers = []
+if executable( 'vint' )
+  let g:neomake_vim_enabled_makers += [ 'vint' ]
+endif
 
 " windowswap mappings
 let g:windowswap_map_keys = 0
 nnoremap <silent> <leader>ww :call WindowSwap#EasyWindowSwap()<CR>
-
-" CommandT
-" we use <leader>t for taglist
-nnoremap <silent> <leader>t :CommandT<CR>
-let g:CommandTFileScanner='find'
 
 " vim-grep - use the silver searcher
 let g:grepprg="ag --nogroup --column"
@@ -221,6 +217,16 @@ let g:grepprg="ag --nogroup --column"
 " vimspector
 " let g:vimspector_enable_mappings = 'VISUAL_STUDIO'
 let g:vimspector_enable_mappings = 'HUMAN'
+
+sign define vimspectorBP text=🔴         texthl=Normal
+sign define vimspectorBPCond text=⭕     texthl=Normal
+sign define vimspectorBPDisabled text=🔵 texthl=Normal
+sign define vimspectorPC text=🔶         texthl=Normal
+
+" netrw
+let g:netrw_keepj = ""
+
+let g:markdown_fenced_languages = [ 'help', 'c++=cpp', 'bash=sh', 'viml=vim' ]
 
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
@@ -267,12 +273,11 @@ Plugin 'machakann/vim-Verdin'
 Plugin 'dhruvasagar/vim-table-mode'
 Plugin 'posva/vim-vue'
 Plugin 'keith/swift.vim'
+Plugin 'gavocanov/vim-js-indent'
 
 call vundle#end()
 filetype plugin indent on
 
-if exists( '*neomake#configure#automake' )
-  call neomake#configure#automake( 'nrwi', 250 )
-endif
+call neomake#configure#automake( 'nrwi', 250 )
 
 " vim:ft=vim:foldmethod=marker

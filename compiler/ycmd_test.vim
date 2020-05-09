@@ -20,19 +20,14 @@ if exists(":CompilerSet") != 2 " older Vim always used :setlocal
   command -nargs=* CompilerSet setlocal <args>
 endif
 
-setlocal errorformat=
-	\%A\ \ File\ \"%f\"\\\,\ line\ %l\\\,%m,
-	\%C\ \ \ \ %.%#,
-	\%+Z%.%#Error\:\ %.%#,
-	\%A\ \ File\ \"%f\"\\\,\ line\ %l,
-	\%+C\ \ %.%#,
-	\%-C%p^,
-	\%Z%m,
-	\%-G%.%#,
-        \%f:%l:\ fail:\ %m,
-        \%f:%l:\ error:\ %m
+CompilerSet errorformat=
+      \%C\ %.%#,
+      \%A\ \ File\ \"%f\"\\,
+      \\ line\ %l%.%#,
+      \%Z%[%^\ ]%\\@=%m
 
 let &l:makeprg=fnamemodify( findfile( 'run_tests.py', '.;' ), ':p' )
-            \ . ' $* 2>&1'
+      \ . ' --tb=native'
+      \ . ' $* 2>&1'
 
 let $YCM_TEST_RETRY_TIMEOUT = 5

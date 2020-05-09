@@ -74,7 +74,7 @@ function! s:RunTestUnderCursor()
 
   echo "Running test '" . l:test_func_name . "'"
 
-  let l:test_arg = expand( '%:p' ) . ':' . l:test_func_name
+  let l:test_arg = expand( '%:p' ) . '::' . l:test_func_name
   execute 'Make --skip-build --no-flake8 -- ' . l:test_arg
 endfunction
 
@@ -94,7 +94,7 @@ function! s:RunTestUnderCursorInVimspector()
     return
   endif
 
-  let l:test_arg = expand( '%:p' ) . ':' . l:test_func_name
+  let l:test_arg = expand( '%:p' ) . '::' . l:test_func_name
   echom "Running test '" . l:test_arg . "'"
 
 

@@ -86,7 +86,9 @@ function! s:RunTestUnderCursor()
 
   echo "Running test '" . l:test_func_name . "'"
 
-  let l:test_arg = expand( '%:p:t' ) . ':' . l:test_func_name
+  let fname = get( b:, 'ycm_test_script_name', expand( '%:p:t' ) )
+
+  let l:test_arg = fname . ':' . l:test_func_name
   let l:cwd = getcwd()
   execute 'lcd ' . s:root_dir
   try
@@ -100,8 +102,9 @@ function! s:RunTest()
   update
   let l:cwd = getcwd()
   execute 'lcd ' . s:root_dir
+  let fname = get( b:, 'ycm_test_script_name', expand( '%:p:t' ) )
   try
-    execute s:make_cmd . ' %:p:t'
+    execute s:make_cmd fname
   finally
     execute 'lcd ' . l:cwd
   endtry
