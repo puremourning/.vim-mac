@@ -16,7 +16,6 @@ let g:ycm_complete_in_comments=1
 let g:ycm_collect_identifiers_from_comments_and_strings=1
 let g:ycm_collect_identifiers_from_tags_files=1
 "let g:ycm_global_ycm_extra_conf = expand( '$HOME/.vim/ycm_extra_conf_global.py' )
-"let g:ycm_show_diagnostics_ui=0
 "let g:solarized_termcolors=256
 let g:ycm_python_binray_path='python3'
 let g:ycm_java_jdtls_use_clean_workspace=0
@@ -26,10 +25,8 @@ let g:ycm_server_log_level='debug'
 let g:ycm_keep_logfiles=1
 let g:ycm_echo_current_diagnostic=1
 let g:ycm_show_diagnostics_ui=1
-if !exists( 'g:ycm_use_clangd' )
-  let g:ycm_use_clangd=get( g:, 'benj_test_ycm', 0 )
-endif
 
+let g:ycm_use_clangd=get( g:, 'ycm_use_clangd', 1 )
 let g:ycm_clangd_args = get( g:, 'ycm_clangd_args', [] )
 call extend( g:ycm_clangd_args, [
       \ '-background-index',
@@ -39,11 +36,11 @@ call extend( g:ycm_clangd_args, [
       \ '--clang-tidy=0',
       \ ] )
 
-if get( g:, 'benj_test_ycm', 0 )
-  let g:ycm_clangd_binary_path = get( g:, 'ycm_clangd_binary_path',
-        \ expand( '$HOME/Development/llvm-project/build/bin/clangd' ) )
+if g:ycm_use_clangd
+  " let g:ycm_clangd_binary_path = get( g:, 'ycm_clangd_binary_path',
+  "       \ expand( '$HOME/Development/llvm-project/build/bin/clangd' ) )
 
-  let g:ycm_clangd_binary_path = system( 'brew --prefix llvm' )->trim()
+  let g:ycm_clangd_binary_path = trim( system( 'brew --prefix llvm' ) )
                                \ . '/bin/clangd'
 
   if executable( g:ycm_clangd_binary_path )
@@ -60,17 +57,10 @@ endif
 
 let s:lsp_dir = expand( '<sfile>:p:h' ) . '/bundle/lsp-examples'
 
-if get( g:, 'benj_test_ycm', 0 )
-  if isdirectory( expand( '$HOME/Development/lsp' ) )
-    let s:lsp_dir = expand( '$HOME/Development/lsp' )
-  endif
+if isdirectory( expand( '$HOME/Development/lsp' ) )
+  let s:lsp_dir = expand( '$HOME/Development/lsp' )
 endif
 
-"     \   { 'name': 'vim',
-"     \     'filetypes': [ 'vim' ],
-"     \     'cmdline': [ s:lsp_dir . '/viml/node_modules/.bin/vim-language-server', '--stdio' ]
-"     \   },
-"
 if isdirectory( s:lsp_dir )
   let g:ycm_language_server = [
     \   {
@@ -87,6 +77,7 @@ if isdirectory( s:lsp_dir )
     \     'name': 'json',
     \     'cmdline': [ 'node', s:lsp_dir . '/json/node_modules/.bin/vscode-json-languageserver', '--stdio' ],
     \     'filetypes': [ 'json' ],
+    \     'capabilities': { 'textDocument': { 'completion': { 'completionItem': { 'snippetSupport': v:true } } } },
     \   },
     \   {
     \     'name': 'ruby',
@@ -118,6 +109,17 @@ if isdirectory( s:lsp_dir )
     \     'cmdline': [ s:lsp_dir . '/rust/rust-analyzer/target/release/rust-analyzer' ],
     \     'project_root_files': [ 'Cargo.toml' ],
     \   },
+    \   { 'name': 'lua',
+    \     'filetypes': [ 'lua' ],
+    \     'cmdline': [ expand( '$HOME/Development/lsp/lua/lua-language-server/root/extension/server/bin/macOS/lua-language-server'),
+    \                  expand( '$HOME/Development/lsp/lua/lua-language-server/root/extension/server/main.lua' ) ],
+    \     'capabilities': { 'textDocument': { 'completion': { 'completionItem': { 'snippetSupport': v:true } } } },
+    \   },
+     \   { 'name': 'vim',
+     \     'filetypes': [ 'vim' ],
+     \     'cmdline': [ s:lsp_dir . '/viml/node_modules/.bin/vim-language-server', '--stdio' ],
+     \     'capabilities': { 'textDocument': { 'completion': { 'completionItem': { 'snippetSupport': v:false } } } },
+     \   },
     \ ]
 endif
 
@@ -244,13 +246,12 @@ endif
 Plugin 'taglist.vim'
 Plugin 'altercation/vim-colors-solarized'
 Plugin 'lifepillar/vim-solarized8'
-Plugin 'hallison/vim-markdown'
+Plugin 'tpope/vim-markdown'
 Plugin 'airblade/vim-gitgutter'
 Plugin 'tpope/vim-repeat'
 Plugin 'SirVer/ultisnips'
 Plugin 'rust-lang/rust.vim'
 Plugin 'tfnico/vim-gradle'
-"Plugin 'artur-shaik/vim-javacomplete2'
 Plugin 'wesQ3/vim-windowswap'
 Plugin 'ntpeters/vim-better-whitespace'
 Plugin 'Valloric/ListToggle'
