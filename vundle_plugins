@@ -3,29 +3,18 @@ filetype off
 
 " YCM config
 let g:ycm_seed_identifiers_with_syntax=1
-let g:ycm_autoclose_preview_window_after_completion=0
 let g:ycm_autoclose_preview_window_after_insertion=1
 let g:ycm_confirm_extra_conf=0
 let g:ycm_always_populate_location_list=1
-"let g:ycm_server_use_unix_domain_socket=1
-let g:ycm_cpp_flags = [ '-x',  'c++', '-Wall', '-Wextra', '-Werror' ]
-let g:ycm_extra_conf_vim_data = [ 'g:ycm_cpp_flags' ]
 let g:ycm_add_preview_window_to_completeopt = 1
-let g:ycm_always_populate_location_list=1
-let g:ycm_complete_in_comments=1
 let g:ycm_collect_identifiers_from_comments_and_strings=1
 let g:ycm_collect_identifiers_from_tags_files=1
-"let g:ycm_global_ycm_extra_conf = expand( '$HOME/.vim/ycm_extra_conf_global.py' )
-"let g:solarized_termcolors=256
-let g:ycm_python_binray_path='python3'
 let g:ycm_java_jdtls_use_clean_workspace=0
 let g:ycm_java_jdtls_workspace_root_path=$HOME . '/.ycmd/java/Workspace'
 let g:ycm_java_jdtls_extension_path=[ $HOME . '/.vscode/extensions' ]
 let g:ycm_server_log_level='debug'
 let g:ycm_keep_logfiles=1
-let g:ycm_echo_current_diagnostic=1
-let g:ycm_show_diagnostics_ui=1
-
+let g:ycm_auto_hover = ''
 let g:ycm_use_clangd=get( g:, 'ycm_use_clangd', 1 )
 let g:ycm_clangd_args = get( g:, 'ycm_clangd_args', [] )
 call extend( g:ycm_clangd_args, [
@@ -35,6 +24,15 @@ call extend( g:ycm_clangd_args, [
       \ '-j=4',
       \ '--clang-tidy=0',
       \ ] )
+
+nmap <leader>D <Plug>(YCMHover)
+augroup CustYCMHover
+  autocmd!
+  autocmd FileType c,cpp,objc let b:ycm_hover = {
+        \ 'command': 'GetDoc',
+        \ 'syntax': &syntax
+        \ }
+augroup END
 
 if g:ycm_use_clangd
   " let g:ycm_clangd_binary_path = get( g:, 'ycm_clangd_binary_path',
@@ -54,6 +52,26 @@ if g:ycm_use_clangd
   endif
 endif
 
+" Adds Vim
+let g:ycm_semantic_triggers =  {
+  \   'vim' : [ '.', ':', '#' ],
+  \   'c': [ 're!\w{3}', '_' ],
+  \   'json': [ ' ' ],
+  \ }
+
+" Remove:
+"     \ 'markdown' : 1,
+"     \ 'vimwiki' : 1,
+"     \ 'text' : 1,
+"     \ 'pandoc' : 1,
+let g:ycm_filetype_blacklist = {
+      \ 'tagbar' : 1,
+      \ 'qf' : 1,
+      \ 'notes' : 1,
+      \ 'unite' : 1,
+      \ 'infolog' : 1,
+      \ 'mail' : 1
+      \}
 
 let s:lsp_dir = expand( '<sfile>:p:h' ) . '/bundle/lsp-examples'
 
@@ -123,10 +141,6 @@ if isdirectory( s:lsp_dir )
     \ ]
 endif
 
-let g:ycm_rust_src_path='/Users/ben/Development/rust/rust/src'
-
-let g:ycm_use_syntastic_loc_list = 1
-
 let g:snips_author='Ben Jackson (puremourning@gmail.com)'
 
 let g:Verdin#cooperativemode = 1
@@ -138,27 +152,6 @@ let g:Verdin#autobraketinsert = 0
 if exists( '&signcolumn' )
   set signcolumn=yes
 endif
-
-" Adds Vim
-let g:ycm_semantic_triggers =  {
-  \   'vim' : [ '.', ':', '#' ],
-  \   'c': [ 're!\w{3}', '_' ],
-  \   'json': [ ' ' ],
-  \ }
-
-" Remove:
-"     \ 'markdown' : 1,
-"     \ 'vimwiki' : 1,
-"     \ 'text' : 1,
-"     \ 'pandoc' : 1,
-let g:ycm_filetype_blacklist = {
-      \ 'tagbar' : 1,
-      \ 'qf' : 1,
-      \ 'notes' : 1,
-      \ 'unite' : 1,
-      \ 'infolog' : 1,
-      \ 'mail' : 1
-      \}
 
 
 " taglist config
