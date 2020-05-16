@@ -228,7 +228,14 @@ sign define vimspectorPC text=🔶         texthl=Normal
 " netrw
 let g:netrw_keepj = ""
 
-let g:markdown_fenced_languages = [ 'help', 'c++=cpp', 'bash=sh', 'viml=vim' ]
+let g:markdown_fenced_languages = [
+      \ 'help',
+      \ 'c++=cpp',
+      \ 'bash=sh',
+      \ 'viml=vim',
+      \ 'json'
+      \ ]
+let g:markdown_syntax_conceal = 1
 
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
