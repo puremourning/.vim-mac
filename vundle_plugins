@@ -25,6 +25,13 @@ call extend( g:ycm_clangd_args, [
       \ '--clang-tidy=0',
       \ ] )
 
+" Ignore the error about comments not being allowed
+let g:ycm_filter_diagnostics = {
+      \   "json": {
+      \     "regex": [ 'Comments.*\[521\]' ],
+      \   },
+      \ }
+
 nmap <leader>D <Plug>(YCMHover)
 augroup CustYCMHover
   autocmd!
