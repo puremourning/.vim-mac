@@ -32,15 +32,6 @@ let g:ycm_filter_diagnostics = {
       \   },
       \ }
 
-nmap <leader>D <Plug>(YCMHover)
-augroup CustYCMHover
-  autocmd!
-  autocmd FileType c,cpp,objc let b:ycm_hover = {
-        \ 'command': 'GetDoc',
-        \ 'syntax': &syntax
-        \ }
-augroup END
-
 if g:ycm_use_clangd
   " let g:ycm_clangd_binary_path = get( g:, 'ycm_clangd_binary_path',
   "       \ expand( '$HOME/Development/llvm-project/build/bin/clangd' ) )
@@ -219,6 +210,7 @@ let g:grepprg="ag --nogroup --column"
 " vimspector
 " let g:vimspector_enable_mappings = 'VISUAL_STUDIO'
 let g:vimspector_enable_mappings = 'HUMAN'
+let g:vimspector_test_args = '--basedir test'
 
 sign define vimspectorBP text=🔴         texthl=Normal
 sign define vimspectorBPCond text=⭕     texthl=Normal
