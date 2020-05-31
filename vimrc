@@ -85,6 +85,12 @@ set statusline+=\ %l:%c/%L
 set statusline+=\ 
 
 function! BenGetCustomHighlighting()
+  " This is sufficient to make StatusLine _set_ and _different from
+  " StatusLineNC_, so that our statusline settings are applied sensibly to
+  " non-current windows
+  hi clear StatusLine
+  hi StatusLine gui=bold cterm=bold term=bold
+
   hi! link User1 PmenuSel
   hi! link User2 CursorLineNr
   hi! link User3 ModeMsg
@@ -93,11 +99,12 @@ function! BenGetCustomHighlighting()
   if s:cs =~ "^apprentice"
     hi Comment ctermfg=yellow
   endif
+
 endfunction
 
 augroup BenCustomHighlighting
-  au!
-  au ColorScheme * call BenGetCustomHighlighting()
+  autocmd!
+  autocmd ColorScheme * call BenGetCustomHighlighting()
 augroup END
 
 " enable my colour scheme
@@ -264,3 +271,8 @@ let g:netrw_liststyle = 3
 
 " Make ctrl-space work in terminal
 tnoremap <Nul> <C-Space>
+
+augroup BenTerminal
+  autocmd!
+  autocmd TerminalWinOpen * setlocal signcolumn=no textwidth=0 nonumber
+augroup END
