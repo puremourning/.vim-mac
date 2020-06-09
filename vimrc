@@ -88,8 +88,10 @@ function! BenGetCustomHighlighting()
   " This is sufficient to make StatusLine _set_ and _different from
   " StatusLineNC_, so that our statusline settings are applied sensibly to
   " non-current windows
-  hi clear StatusLine
-  hi StatusLine gui=bold cterm=bold term=bold
+  if !has( 'gui_running' ) && !&termguicolors
+    hi clear StatusLine
+    hi StatusLine gui=bold cterm=bold term=bold
+  endif
 
   hi! link User1 PmenuSel
   hi! link User2 CursorLineNr
@@ -97,7 +99,7 @@ function! BenGetCustomHighlighting()
 
   " Make comments a bit more readable in Apprentice
   if s:cs =~ "^apprentice"
-    hi Comment ctermfg=yellow
+    hi Comment ctermfg=101 guifg=#87875f
   endif
 
 endfunction
@@ -111,10 +113,11 @@ augroup END
 let &t_8f = "\<Esc>[38:2:%lu:%lu:%lum"
 let &t_8b = "\<Esc>[48:2:%lu:%lu:%lum"
 
-let s:cs = 'apprentice_low'
+let s:cs = 'apprentice'
 
 if has( 'win32' )
   set t_Co=256
+  let s:cs = 'apprentice_low'
 endif
 
 if s:cs == 'solarized'
