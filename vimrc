@@ -1,3 +1,5 @@
+runtime defaults.vim
+
 " use comma for commands
 let mapleader=','
 
@@ -275,7 +277,9 @@ let g:netrw_liststyle = 3
 " Make ctrl-space work in terminal
 tnoremap <Nul> <C-Space>
 
-augroup BenTerminal
-  autocmd!
-  autocmd TerminalWinOpen * setlocal signcolumn=no textwidth=0 nonumber
-augroup END
+if !has( 'nvim' )
+  augroup BenTerminal
+    autocmd!
+    autocmd TerminalWinOpen * setlocal signcolumn=no textwidth=0 nonumber
+  augroup END
+endif
