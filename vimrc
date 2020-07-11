@@ -111,10 +111,6 @@ augroup BenCustomHighlighting
   autocmd ColorScheme * call BenGetCustomHighlighting()
 augroup END
 
-" enable my colour scheme
-let &t_8f = "\<Esc>[38:2:%lu:%lu:%lum"
-let &t_8b = "\<Esc>[48:2:%lu:%lu:%lum"
-
 let s:cs = 'apprentice'
 
 if has( 'win32' )
@@ -122,15 +118,24 @@ if has( 'win32' )
   let s:cs = 'apprentice_low'
 endif
 
-if s:cs == 'solarized'
+if exists( '$TMUX' )
+  let &t_8f = "\<Esc>[38:2:%lu:%lu:%lum"
+  let &t_8b = "\<Esc>[48:2:%lu:%lu:%lum"
+endif
+
+if s:cs ==# 'solarized'
   silent! colorscheme solarized
-elseif s:cs == 'apprentice'
-  set termguicolors
+elseif s:cs ==# 'apprentice'
+  if $TERM_PROGRAM !=# 'Apple_Terminal'
+    set termguicolors
+  endif
   silent! colorscheme apprentice
-elseif s:cs == 'apprentice_low'
+elseif s:cs ==# 'apprentice_low'
   silent! colorscheme apprentice
-elseif s:cs == 'solarized8'
-  set termguicolors
+elseif s:cs ==# 'solarized8'
+  if $TERM_PROGRAM !=# 'Apple_Terminal'
+    set termguicolors
+  endif
   silent! colorscheme solarized8
 endif
 set cursorline
