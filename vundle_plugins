@@ -11,7 +11,6 @@ let g:ycm_collect_identifiers_from_comments_and_strings=1
 let g:ycm_collect_identifiers_from_tags_files=1
 let g:ycm_java_jdtls_use_clean_workspace=0
 let g:ycm_java_jdtls_workspace_root_path=$HOME . '/.ycmd/java/Workspace'
-let g:ycm_java_jdtls_extension_path=[ $HOME . '/.vscode/extensions' ]
 let g:ycm_server_log_level='debug'
 let g:ycm_keep_logfiles=1
 let g:ycm_auto_hover = ''
@@ -235,9 +234,14 @@ call vundle#begin()
 Plugin 'gmarik/Vundle.vim'
 
 if get(g:, 'benj_test_ycm')
+  let g:ycm_java_jdtls_extension_path=[
+        \ expand( '<sfile>:p:h' ) . '/bundle/vimspector/gadgets/macos/' ]
   Plugin 'puremourning/YouCompleteMe', { 'pinned': 1 }
   Plugin 'puremourning/vimspector',    { 'pinned': 1 }
 else
+  let g:ycm_java_jdtls_extension_path=[
+        \ expand( '<sfile>:p:h' ) . '/bundle/vimspector-Clean/gadgets/macos/' ]
+
   Plugin 'puremourning/YouCompleteMe', { 'name': 'YouCompleteMe-Clean' }
   Plugin 'puremourning/vimspector',    { 'name': 'vimspector-Clean' }
 endif
