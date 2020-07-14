@@ -209,7 +209,7 @@ let g:grepprg="ag --nogroup --column"
 " vimspector
 " let g:vimspector_enable_mappings = 'VISUAL_STUDIO'
 let g:vimspector_enable_mappings = 'HUMAN'
-let g:vimspector_test_args = '--basedir test'
+let g:vimspector_test_args = '--basedir test-base'
 
 sign define vimspectorBP text=🔴         texthl=Normal
 sign define vimspectorBPCond text=⭕     texthl=Normal
@@ -224,7 +224,8 @@ let g:markdown_fenced_languages = [
       \ 'c++=cpp',
       \ 'bash=sh',
       \ 'viml=vim',
-      \ 'json'
+      \ 'json',
+      \ 'rust',
       \ ]
 let g:markdown_syntax_conceal = 1
 
