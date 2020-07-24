@@ -210,14 +210,10 @@ let g:grepprg="ag --nogroup --column"
 " let g:vimspector_enable_mappings = 'VISUAL_STUDIO'
 let g:vimspector_enable_mappings = 'HUMAN'
 let g:vimspector_test_args = '--basedir test-base'
-
-sign define vimspectorBP text=🔴         texthl=Normal
-sign define vimspectorBPCond text=⭕     texthl=Normal
-sign define vimspectorBPDisabled text=🔵 texthl=Normal
-sign define vimspectorPC text=🔶         texthl=Normal
+let g:vimspector_install_gadgets = [ '--all', '--force-all' ]
 
 " netrw
-let g:netrw_keepj = ""
+let g:netrw_keepj = ''
 
 let g:markdown_fenced_languages = [
       \ 'help',
