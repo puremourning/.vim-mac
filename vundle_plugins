@@ -229,6 +229,38 @@ let g:markdown_fenced_languages = [
       \ ]
 let g:markdown_syntax_conceal = 1
 
+" fzf
+
+" Required:
+" - width [float range [0 ~ 1]]
+" - height [float range [0 ~ 1]]
+"
+" Optional:
+" - xoffset [float default 0.5 range [0 ~ 1]]
+" - yoffset [float default 0.5 range [0 ~ 1]]
+" - highlight [string default 'Comment']: Highlight group for border
+" - border [string default 'rounded']: Border style
+"   - 'rounded' / 'sharp' / 'horizontal' / 'vertical' / 'top' / 'bottom' / 'left' / 'right'
+let g:fzf_layout = { 'window': { 'width': 0.9, 'height': 0.6 } }
+
+" Customize fzf colors to match your color scheme
+" - fzf#wrap translates this to a set of `--color` options
+let g:fzf_colors =
+\ { 'fg':      ['fg', 'Normal'],
+  \ 'bg':      ['bg', 'Normal'],
+  \ 'hl':      ['fg', 'Comment'],
+  \ 'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
+  \ 'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
+  \ 'hl+':     ['fg', 'Statement'],
+  \ 'info':    ['fg', 'PreProc'],
+  \ 'border':  ['fg', 'Ignore'],
+  \ 'prompt':  ['fg', 'Conditional'],
+  \ 'pointer': ['fg', 'Exception'],
+  \ 'marker':  ['fg', 'Keyword'],
+  \ 'spinner': ['fg', 'Label'],
+  \ 'header':  ['fg', 'Comment'] }
+
+
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 
@@ -281,6 +313,9 @@ Plugin 'dhruvasagar/vim-table-mode'
 Plugin 'posva/vim-vue'
 Plugin 'keith/swift.vim'
 Plugin 'gavocanov/vim-js-indent'
+
+Plugin 'junegunn/fzf'
+Plugin 'junegunn/fzf.vim'
 
 call vundle#end()
 filetype plugin indent on
