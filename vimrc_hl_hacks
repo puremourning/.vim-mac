@@ -1,0 +1,122 @@
+function! GetSynAttrs( id ) abort
+  " hlID gets the ID of highlight group
+  " synIDtrans changes it into a synID (following any hi link)
+  " synIDattr returns a specific attr
+  let l:effective_name = synIDattr( synIDtrans( hlID( a:id ) ), 'name' )
+
+  redir => l:in_hl
+    exe 'silent hi ' . l:effective_name
+  redir END
+
+  " grab the section after the xxx in the output which looks like
+  " Group     xxx ....
+  let l:in_props = matchlist( l:in_hl, '\v\C<xxx>\s+(.*)' )[ 1 ]
+
+  return l:in_props
+endfunction
+
+
+function! ToggleHighlightAttr( in, out, attr ) abort
+  let l:in_props = GetSynAttrs( a:in )
+  let l:pat = '\v\C' . a:attr . ',|' . a:attr . '$'
+
+  " pluck out the properties for gui
+  let l:match = matchlist( l:in_props, '\v\Cgui\=([^ ]+)' )
+  if l:match != []
+    if match( l:match[ 1 ], l:pat ) >= 0
+      let l:gui = substitute( l:match[ 1 ], l:pat, '', 'g' )
+      if l:gui == ''
+        let l:gui = 'NONE'
+      endif
+    else
+      let l:gui = l:match[ 1 ] . ',' . a:attr
+    endif
+  else
+    let l:gui = a:attr
+  endif
+
+  " pluck out the properties for cterm
+  let l:match = matchlist( l:in_props, '\v\Ccterm\=([^ ]+)' )
+  if l:match != []
+    if match( l:match[ 1 ], l:pat ) >= 0
+      let l:cterm = substitute( l:match[ 1 ], l:pat, '', 'g' )
+      if l:cterm == ''
+        let l:cterm = 'NONE'
+      endif
+    else
+      let l:cterm = l:match[ 1 ] . ',' . a:attr
+    endif
+  else
+    let l:cterm = a:attr
+  endif
+
+  " pluck out the properties for term
+  let l:match = matchlist( l:in_props, '\v\Cterm\=([^ ]+)' )
+  if l:match != []
+    if match( l:match[ 1 ], l:pat ) >= 0
+      let l:term = substitute( l:match[ 1 ], l:pat, '', 'g' )
+      if l:term == ''
+        let l:term = 'NONE'
+      endif
+    else
+      let l:term = l:match[ 1 ] . ',' . a:attr
+    endif
+  else
+    let l:term = a:attr
+  endif
+
+  " now remove them all
+  let l:old = substitute( l:in_props,
+                        \ '\v\C(gui|term|cterm)\=([^ ]+)',
+                        \ '',
+                        \ 'g' )
+
+  let cmd = 'hi! ' . a:out . ' '
+          \ . l:old . ' ' 
+          \ . ' gui=' . l:gui
+          \ . ' cterm=' . l:cterm
+          \ . ' term=' . l:term
+
+  execute cmd
+endfunction
+
+function! CreateReversedHighlightGroup( in, default, out )
+  let l:in_props = GetSynAttrs( a:in )
+  let l:def_props = GetSynAttrs( a:default )
+
+  let l:cmd = 'hi! ' . a:out . ' '
+
+  for prefix in [ '', 'gui', 'cterm' ]
+    let l:in_bg = matchlist( l:in_props, '\v\C<' . prefix . 'bg>\=([^ ]+)' )
+    let l:def_bg = matchlist( l:def_props, '\v\C<' . prefix . 'bg>\=([^ ]+)' )
+    if l:in_bg != []
+      let l:cmd .= ' ' . prefix . 'fg=' . l:in_bg[ 1 ]
+      let l:in_props = substitute( l:in_props,
+                                 \ '\v\C<' . prefix . 'bg>\=([^ ]+)',
+                                 \ '',
+                                 \ 'g' )
+    elseif l:def_bg != []
+      let l:cmd .= ' ' . prefix . 'fg=' . l:def_bg[ 1 ]
+    endif
+
+    let l:in_fg = matchlist( l:in_props, '\v\C<' . prefix . 'fg>\=([^ ]+)' )
+    let l:def_fg = matchlist( l:def_props, '\v\C<' . prefix . 'fg>\=([^ ]+)' )
+    if l:in_fg != []
+      let l:cmd .= ' ' . prefix . 'bg=' . l:in_fg[ 1 ]
+      let l:in_props = substitute( l:in_props,
+                                 \ '\v\C<' . prefix . 'fg>\=([^ ]+)',
+                                 \ '',
+                                 \ 'g' )
+    elseif l:def_fg != []
+      let l:cmd .= ' ' . prefix . 'bg=' . l:def_fg[ 1 ]
+    endif
+  endfor
+
+  exe l:cmd
+endfunction
+
+function! CopyHighlightGroup( in, out )
+  let l:in_props = GetSynAttrs( a:in )
+  let l:cmd = 'hi! ' . a:out . ' ' . l:in_props
+  exe l:cmd
+endfunction
