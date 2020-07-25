@@ -262,6 +262,7 @@ call vundle#begin()
 
 Plugin 'gmarik/Vundle.vim'
 
+" Development environment
 if get(g:, 'benj_test_ycm')
   let g:ycm_java_jdtls_extension_path=[
         \ expand( '<sfile>:p:h' ) . '/bundle/vimspector/gadgets/macos/' ]
@@ -274,39 +275,39 @@ else
   Plugin 'puremourning/YouCompleteMe', { 'name': 'YouCompleteMe-Clean' }
   Plugin 'puremourning/vimspector',    { 'name': 'vimspector-Clean' }
 endif
-
-Plugin 'taglist.vim'
-Plugin 'altercation/vim-colors-solarized'
-Plugin 'lifepillar/vim-solarized8'
-Plugin 'tpope/vim-markdown'
-Plugin 'airblade/vim-gitgutter'
-Plugin 'tpope/vim-repeat'
 if has( 'python3' )
   Plugin 'SirVer/ultisnips'
+  Plugin 'honza/vim-snippets'
 endif
-Plugin 'rust-lang/rust.vim'
-Plugin 'tfnico/vim-gradle'
-Plugin 'wesQ3/vim-windowswap'
-Plugin 'ntpeters/vim-better-whitespace'
-Plugin 'Valloric/ListToggle'
-Plugin 'honza/vim-snippets'
 Plugin 'neomake/neomake'
-Plugin 'vim-scripts/applescript.vim'
-Plugin 'stephpy/vim-yaml'
-Plugin 'saltstack/salt-vim'
+Plugin 'airblade/vim-gitgutter'
+Plugin 'ntpeters/vim-better-whitespace'
+
+" Colour schemes
+Plugin 'romainl/Apprentice'
+
+" Quality of life improvements to built-in features
+Plugin 'tpope/vim-repeat'
+Plugin 'wesQ3/vim-windowswap'
+Plugin 'Valloric/ListToggle'
 Plugin 'tpope/vim-surround'
-Plugin 'leafgarland/typescript-vim'
-Plugin 'FooSoft/vim-argwrap'
 Plugin 'tpope/vim-dispatch'
 Plugin 'teoljungberg/vim-grep'
-Plugin 'toyamarinyon/vim-swift'
+Plugin 'wellle/targets.vim'
+
+" Filetype support
+Plugin 'tpope/vim-markdown'
+Plugin 'dhruvasagar/vim-table-mode'
+Plugin 'stephpy/vim-yaml'
+Plugin 'saltstack/salt-vim'
+Plugin 'leafgarland/typescript-vim'
 Plugin 'cespare/vim-toml'
 Plugin 'rdolgushin/groovy.vim'
-Plugin 'AndrewRadev/splitjoin.vim'
-Plugin 'romainl/Apprentice'
-Plugin 'machakann/vim-Verdin'
-Plugin 'dhruvasagar/vim-table-mode'
+Plugin 'vim-scripts/applescript.vim'
+Plugin 'rust-lang/rust.vim'
+Plugin 'tfnico/vim-gradle'
 Plugin 'posva/vim-vue'
+Plugin 'toyamarinyon/vim-swift'
 Plugin 'keith/swift.vim'
 Plugin 'gavocanov/vim-js-indent'
 
