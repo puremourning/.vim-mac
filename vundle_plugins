@@ -5,6 +5,8 @@ filetype off
 let g:ycm_seed_identifiers_with_syntax=1
 let g:ycm_autoclose_preview_window_after_insertion=1
 let g:ycm_confirm_extra_conf=0
+let g:ycm_complete_in_comments=1
+let g:ycm_complete_in_strings=1
 let g:ycm_always_populate_location_list=1
 let g:ycm_add_preview_window_to_completeopt = 1
 let g:ycm_collect_identifiers_from_comments_and_strings=1
@@ -20,6 +22,10 @@ call extend( g:ycm_clangd_args, [
       \ '-background-index',
       \ '-completion-style=bundled',
       \ '-pch-storage=memory',
+      \ '-cross-file-rename',
+      \ '-suggest-missing-includes',
+      \ '-header-insertion=iwyu',
+      \ '-log=verbose',
       \ '-j=4',
       \ '--clang-tidy=0',
       \ ] )
@@ -38,13 +44,7 @@ if g:ycm_use_clangd
   let g:ycm_clangd_binary_path = trim( system( 'brew --prefix llvm' ) )
                                \ . '/bin/clangd'
 
-  if executable( g:ycm_clangd_binary_path )
-    call extend( g:ycm_clangd_args, [
-          \ '-log=verbose',
-          \ '-suggest-missing-includes',
-          \ '-header-insertion=iwyu',
-          \ ] )
-  else
+  if !executable( g:ycm_clangd_binary_path )
     unlet g:ycm_clangd_binary_path
   endif
 endif
