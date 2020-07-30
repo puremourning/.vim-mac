@@ -76,6 +76,16 @@ if isdirectory( expand( '$HOME/Development/lsp' ) )
   let s:lsp_dir = expand( '$HOME/Development/lsp' )
 endif
 
+" let g:ycm_disable_jedi_completer = v:true
+"    \   { 'name': 'msptvs',
+"    \     'filetypes': [ 'python' ],
+"    \    'cmdline': [ 'dotnet', s:lsp_dir . '/python/microsoft/python-language-server/output/bin/Debug/Microsoft.Python.LanguageServer.dll' ],
+"    \   },
+"    \   { 'name': 'palantirpython',
+"    \     'filetypes': [ 'python' ],
+"    \    'cmdline': [ s:lsp_dir . '/python/palantir/env/bin/pyls' ],
+"    \   },
+
 if isdirectory( s:lsp_dir )
   let g:ycm_language_server = [
     \   {
@@ -130,11 +140,11 @@ if isdirectory( s:lsp_dir )
     \                  expand( '$HOME/Development/lsp/lua/lua-language-server/root/extension/server/main.lua' ) ],
     \     'capabilities': { 'textDocument': { 'completion': { 'completionItem': { 'snippetSupport': v:true } } } },
     \   },
-     \   { 'name': 'vim',
-     \     'filetypes': [ 'vim' ],
-     \     'cmdline': [ s:lsp_dir . '/viml/node_modules/.bin/vim-language-server', '--stdio' ],
-     \     'capabilities': { 'textDocument': { 'completion': { 'completionItem': { 'snippetSupport': v:false } } } },
-     \   },
+    \   { 'name': 'vim',
+    \     'filetypes': [ 'vim' ],
+    \     'cmdline': [ s:lsp_dir . '/viml/node_modules/.bin/vim-language-server', '--stdio' ],
+    \     'capabilities': { 'textDocument': { 'completion': { 'completionItem': { 'snippetSupport': v:false } } } },
+    \   },
     \ ]
 endif
 
