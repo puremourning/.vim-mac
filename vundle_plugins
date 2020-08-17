@@ -2,7 +2,7 @@ set nocompatible
 filetype off
 
 " YCM config
-let g:ycm_seed_identifiers_with_syntax=1
+let g:ycm_seed_identifiers_with_syntax=0
 let g:ycm_autoclose_preview_window_after_insertion=1
 let g:ycm_confirm_extra_conf=0
 let g:ycm_complete_in_comments=1
@@ -10,8 +10,11 @@ let g:ycm_complete_in_strings=1
 let g:ycm_always_populate_location_list=1
 let g:ycm_add_preview_window_to_completeopt = 1
 let g:ycm_collect_identifiers_from_comments_and_strings=1
-let g:ycm_collect_identifiers_from_tags_files=1
+let g:ycm_collect_identifiers_from_tags_files=0
 let g:ycm_java_jdtls_use_clean_workspace=0
+if executable( 'brew' )
+  let g:ycm_java_binary_path = trim( system( 'brew --prefix java11' ) ) .. '/bin/java'
+endif
 let g:ycm_java_jdtls_workspace_root_path=$HOME . '/.ycmd/java/Workspace'
 let g:ycm_server_log_level='debug'
 let g:ycm_keep_logfiles=1
@@ -41,11 +44,13 @@ if g:ycm_use_clangd
   " let g:ycm_clangd_binary_path = get( g:, 'ycm_clangd_binary_path',
   "       \ expand( '$HOME/Development/llvm-project/build/bin/clangd' ) )
 
-  let g:ycm_clangd_binary_path = trim( system( 'brew --prefix llvm' ) )
-                               \ . '/bin/clangd'
+  if !get( g:, 'ycm_clangd_clean', 0 )
+    let g:ycm_clangd_binary_path = trim( system( 'brew --prefix llvm' ) )
+                                 \ . '/bin/clangd'
 
-  if !executable( g:ycm_clangd_binary_path )
-    unlet g:ycm_clangd_binary_path
+    if !executable( g:ycm_clangd_binary_path )
+      unlet g:ycm_clangd_binary_path
+    endif
   endif
 endif
 
@@ -89,14 +94,15 @@ endif
 if isdirectory( s:lsp_dir )
   let g:ycm_language_server = [
     \   {
-    \     'name': 'yaml',
-    \     'cmdline': [ 'node', s:lsp_dir . '/yaml/node_modules/.bin/yaml-language-server', '--stdio' ],
-    \     'filetypes': [ 'yaml' ],
-    \   },
-    \   {
     \     'name': 'php',
     \     'cmdline': [ 'php', s:lsp_dir . '/php/vendor/bin/php-language-server.php' ],
     \     'filetypes': [ 'php' ],
+    \   },
+    \   {
+    \     'name': 'yaml',
+    \     'cmdline': [ 'node', s:lsp_dir . '/yaml/node_modules/.bin/yaml-language-server', '--stdio' ],
+    \     'filetypes': [ 'yaml' ],
+    \     'capabilities': { 'textDocument': { 'completion': { 'completionItem': { 'snippetSupport': v:true } } } },
     \   },
     \   {
     \     'name': 'json',
