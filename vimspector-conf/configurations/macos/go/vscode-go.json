@@ -1,0 +1,41 @@
+{
+  "configurations": {
+    "Run Current Dir": {
+      "adapter": "vscode-go",
+      "configuration": {
+        "request": "launch",
+        "program": "${fileDirname}",
+        "mode": "debug",
+        "dlvToolPath": "$HOME/go/bin/dlv"
+      }
+    },
+    "Attach Current Dir (Local)": {
+      "adapter": "vscode-go",
+      "configuration": {
+        "request": "attach",
+        "program": "${fileDirname}",
+        "remotePath": "${fileDirname}",
+        "cwd": "${fileDirname}",
+        "mode": "local",
+        "dlvToolPath": "$HOME/go/bin/dlv",
+        "processId": "${PID}",
+        "trace": "verbose"
+      }
+    },
+    "Attach Current Dir (Remote)": {
+      "adapter": "vscode-go",
+      "configuration": {
+        "request": "attach",
+        "program": "${fileDirname}",
+        "remotePath": "${fileDirname}",
+        "cwd": "${fileDirname}",
+        "mode": "remote",
+        "dlvToolPath": "$HOME/go/bin/dlv",
+        "trace": "verbose",
+        "host": "localhost",
+        "port": 4321
+      }
+    }
+  }
+}
+

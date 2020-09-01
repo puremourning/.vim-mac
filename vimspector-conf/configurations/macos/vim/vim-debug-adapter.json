@@ -1,0 +1,48 @@
+{
+  "configurations": {
+    "Vimscript Run": {
+      "adapter": {
+        "command": [ "node",
+                     "/Users/ben/Development/vim-debug-adapter/dist/index.js" ]
+      },
+      "configuration": {
+        "type": "vim",
+        "request": "launch",
+        "vim": "/Users/ben/Development/vim/src/vim",
+        "trace": {
+          "level": "Verbose"
+        }
+      }
+    },
+    "Vimscript Run Dev": {
+      "adapter": {
+        "command": [ "node",
+                     "/Users/ben/Development/vim-debug-adapter/dist/index.js" ]
+      },
+      "configuration": {
+        "type": "vim",
+        "request": "launch",
+        "vim": "/Users/ben/Development/vim/src/vim",
+        "args": [
+          "--cmd", "let g:benj_test_ycm=1"
+        ],
+        "trace": {
+          "level": "Verbose"
+        }
+      }
+    },
+    "Vimscript Attach": {
+      "adapter": {
+        "command": [ "node",
+                     "/Users/ben/Development/vim-debug-adapter/dist/index.js" ]
+      },
+      "configuration": {
+        "type": "vim",
+        "request": "attach",
+        "trace": {
+          "level": "Verbose"
+        }
+      }
+    }
+  }
+}

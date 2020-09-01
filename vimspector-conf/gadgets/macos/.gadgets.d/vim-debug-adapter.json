@@ -1,0 +1,16 @@
+{
+  "adapters": {
+    "vim-debug-adapter": {
+      "command": [
+        "node", "/Users/ben/Development/vim-debug-adapter/dist/index.js"
+      ],
+      "configuration": {
+        "type": "vim",
+        "vim": "/Users/ben/Development/vim/src/vim",
+        "trace": {
+          "level": "Verbose"
+        }
+      }
+    }
+  }
+}

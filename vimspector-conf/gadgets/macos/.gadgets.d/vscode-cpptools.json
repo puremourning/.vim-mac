@@ -1,0 +1,18 @@
+{
+  "adapters": {
+    "vscode-cpptools-launchInTTY": {
+      "attach": {
+        "pidProperty": "processId",
+        "pidSelect": "ask"
+      },
+      "command": [
+        "${gadgetDir}/vscode-cpptools/debugAdapters/OpenDebugAD7"
+      ],
+      "env": {
+        "LLDB_LAUNCH_FLAG_LAUNCH_IN_TTY": "TRUE"
+      },
+      "name": "cppdbg"
+    }
+  }
+}
+

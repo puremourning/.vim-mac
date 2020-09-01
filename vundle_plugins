@@ -281,6 +281,9 @@ Plugin 'gmarik/Vundle.vim'
 if get(g:, 'benj_test_ycm')
   let g:ycm_java_jdtls_extension_path=[
         \ expand( '<sfile>:p:h' ) . '/bundle/vimspector/gadgets/macos/' ]
+
+  let g:vimspector_base_dir = expand( '<sfile>' ) . '/vimspector-conf'
+
   Plugin 'puremourning/YouCompleteMe', { 'pinned': 1 }
   Plugin 'puremourning/vimspector',    { 'pinned': 1 }
 else

@@ -1,0 +1,14 @@
+{
+  "adapters": {
+    "vscode-javac": {
+      "attach": {
+        "pidSelect": "none"
+      }, 
+      "command": [
+        "${gadgetDir}/java-language-server/dist/debug_adapter_mac.sh"
+      ], 
+      "name": "vscode-javac", 
+      "type": "vscode-javac"
+    }
+  }
+}
