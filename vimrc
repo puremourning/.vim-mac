@@ -11,7 +11,7 @@ if has( 'nvim' )
   if exists( '$PYENV_ROOT' )
     let g:python_host_prog=expand( '$PYENV_ROOT/versions/nvim2/bin/python' )
     let g:python3_host_prog=expand( '$PYENV_ROOT/versions/nvim3/bin/python' )
-  else
+  elseif isdirectory( '$HOME/.pyenv' )
     let g:python_host_prog=expand( '$HOME/.pyenv/versions/nvim2/bin/python' )
     let g:python3_host_prog=expand( '$HOME/.pyenv/versions/nvim3/bin/python' )
   endif

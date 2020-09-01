@@ -12,3 +12,10 @@ augroup VimspectorCustom
   au!
   autocmd User VimspectorUICreated call s:SetUpUI()
 augroup END
+
+let g:vimspector_sign_priority = {
+      \ 'vimspectorBP': 11,
+      \ 'vimspectorBPCond': 11,
+      \ 'vimspectorBPDisabled': 11,
+      \ 'vimspectorPC': 12,
+      \ }
