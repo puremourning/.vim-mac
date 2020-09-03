@@ -58,6 +58,7 @@ let g:ycm_semantic_triggers =  {
   \   'vim' : [ '.', ':', '#' ],
   \   'c,cpp,objc': [ 're!\w{3}', '_' ],
   \   'json': [ ' ' ],
+  \   'VimspectorPrompt': [ '.', '->', ':', '<' ]
   \ }
 
 " Remove:
