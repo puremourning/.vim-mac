@@ -151,6 +151,10 @@ if isdirectory( s:lsp_dir )
     \     'cmdline': [ s:lsp_dir . '/viml/node_modules/.bin/vim-language-server', '--stdio' ],
     \     'capabilities': { 'textDocument': { 'completion': { 'completionItem': { 'snippetSupport': v:false } } } },
     \   },
+    \   { 'name': 'gdscript',
+    \     'filetypes': [ 'gdscript' ],
+    \     'port': 6008,
+    \   },
     \ ]
 endif
 
@@ -329,6 +333,7 @@ Plugin 'posva/vim-vue'
 Plugin 'toyamarinyon/vim-swift'
 Plugin 'keith/swift.vim'
 Plugin 'gavocanov/vim-js-indent'
+Plugin 'habamax/vim-godot'
 
 Plugin 'junegunn/fzf'
 Plugin 'junegunn/fzf.vim'
