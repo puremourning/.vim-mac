@@ -8,12 +8,21 @@ if has( 'win32' )
 endif
 
 if has( 'nvim' )
+  let s:pyenv = ''
   if exists( '$PYENV_ROOT' )
-    let g:python_host_prog=expand( '$PYENV_ROOT/versions/nvim2/bin/python' )
-    let g:python3_host_prog=expand( '$PYENV_ROOT/versions/nvim3/bin/python' )
+    let s:pyenv = $PYENV_ROOT
   elseif isdirectory( expand( '$HOME/.pyenv' ) )
-    let g:python_host_prog=expand( '$HOME/.pyenv/versions/nvim2/bin/python' )
-    let g:python3_host_prog=expand( '$HOME/.pyenv/versions/nvim3/bin/python' )
+    let s:pyenv = expand( '$HOME/.pyenv' )
+  endif
+
+  if !empty( s:pyenv )
+    if isdirectory( s:pyenv . '/versions/nvim2' )
+      let g:python_host_prog=s:pyenv . 'versions/nvim2/bin/python'
+    endif
+
+    if isdirectory( s:pyenv . '/versions/nvim3' )
+      let g:python3_host_prog=s:pyenv . '/versions/nvim3/bin/python'
+    endif
   endif
 endif
 

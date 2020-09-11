@@ -1,3 +1,7 @@
+if get( g:, 'vimspector_clean', 0 )
+  finish
+endif
+
 scriptencoding utf-8
 
 let g:vimspector_terminal_maxwidth = 85

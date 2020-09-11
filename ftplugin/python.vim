@@ -124,8 +124,8 @@ if ! has( 'gui_running' )
   nnoremap <buffer> Â :call <SID>RunAllTests()<CR>
   " † is right-option+t
   nnoremap <buffer> † :call <SID>RunTestUnderCursor()<CR>
-  " Ê is right-option+shift+t
-  nnoremap <buffer> Ê :call <SID>RunTestUnderCursorInVimspector()<CR>
+  " † is right-option+t
+  nnoremap <buffer> <leader>† :call <SID>RunTestUnderCursorInVimspector()<CR>
   " ƒ is right-option+b
   nnoremap <buffer> ∫ :call <SID>Build()<CR>
   " å is the right-option+q
