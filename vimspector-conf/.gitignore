@@ -1,0 +1,4 @@
+gadgets/macos/*
+gadgets/linux/*
+!gadgets/macos/.gadgets.d
+!gadgets/linux/.gadgets.d
