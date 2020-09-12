@@ -98,6 +98,26 @@ function! s:RunTestUnderCursor()
   endtry
 endfunction
 
+function! s:RunTestUnderCursorInVimspector()
+  update
+  let l:test_func_name = s:GetCurrentFunction()
+
+  if l:test_func_name ==# ''
+    echo 'No test method found'
+    return
+  endif
+
+  let fname = get( b:, 'ycm_test_script_name', expand( '%:p:t' ) )
+
+  echom "Running test '" . l:test_func_name . "'"
+
+  call vimspector#LaunchWithSettings( {
+        \ 'configuration': 'Run vim test',
+        \ 'TestScriptName': fname,
+        \ 'TestFunction': l:test_func_name
+        \ } )
+endfunction
+
 function! s:RunTest()
   update
   let l:cwd = getcwd()
@@ -128,6 +148,7 @@ if ! has( 'gui_running' )
   nnoremap <buffer> Â :call <SID>RunAllTests()<CR>
   " † is right-option+t
   nnoremap <buffer> † :call <SID>RunTestUnderCursor()<CR>
+  nnoremap <buffer> <leader>† :call <SID>RunTestUnderCursorInVimspector()<CR>
   " å is the right-option+q
   nnoremap <buffer> å :cfirst<CR>
   " å is the right-option+a

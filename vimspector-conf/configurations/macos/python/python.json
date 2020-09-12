@@ -16,6 +16,18 @@
           "uncaught": ""
         }
       }
+    },
+    "attach": {
+      "adapter": "multi-session",
+      "configuration": {
+        "request": "attach"
+      },
+      "breakpoints": {
+        "exception": {
+          "raised": "N",
+          "uncaught": ""
+        }
+      }
     }
   }
 }

@@ -8,7 +8,7 @@
       "configuration": {
         "type": "vim",
         "request": "launch",
-        "vim": "/Users/ben/Development/vim/src/vim",
+        "vim": "${Vim:/Users/ben/Development/vim-env/bin/vim}",
         "trace": {
           "level": "Verbose"
         }
@@ -22,7 +22,7 @@
       "configuration": {
         "type": "vim",
         "request": "launch",
-        "vim": "/Users/ben/Development/vim/src/vim",
+        "vim": "${Vim:/Users/ben/Development/vim-env/bin/vim}",
         "args": [
           "--cmd", "let g:benj_test_ycm=1"
         ],
