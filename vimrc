@@ -43,6 +43,9 @@ set path+=**
 
 " Persistent undo
 set undofile
+let &undodir = expand( '<sfile>:p:h' ) . '/undodir,.'
+set nobackup
+let &directory = expand( '<sfile>:p:h' ) . '/swap//,.'
 
 set wildignore=*.pyc
 

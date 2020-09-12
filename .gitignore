@@ -9,3 +9,9 @@ workbench.xmi
 *.sw[a-p]
 spell/
 .netrwhist
+
+undodir/*
+!undodir/.keep
+
+swap/*
+!swap/.keep
