@@ -27,7 +27,7 @@ function! s:GetCurrentFunction()
 
   let [ test_function, test_function_line ] = [ v:null, -1 ]
 
-  let pattern = '\V\C\s\*func\%\(tion\)\?!\?\s\+\(\<\w\+\>\)\.\*\$'
+  let pattern = '\V\C\s\*\%\(func\%\(tion\)\|def\)\?!\?\s\+\(\<\w\+\>\)\.\*\$'
 
   let lnum = prevnonblank( '.' )
 
