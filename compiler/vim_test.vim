@@ -73,7 +73,7 @@ endfunc
 
 func! s:RunTestUnderCursorInVimspector() abort
   call vimspector#internal#state#Reset()
-  let opts = #{ Test: expand( '%:t:r' ) }
+  let opts = #{ Test: expand( '%:t:r' ), Filter: '' }
   let func = s:GetCurrentFunction()[ 0 ]
   if func isnot v:null
     call extend( opts, #{ Filter: func } )
@@ -95,7 +95,7 @@ if ! has( 'gui_running' )
   " † is right-option+t
   nnoremap <buffer> † :call <SID>RunTestUnderCursor()<CR>
   " Ê is right-option+T
-  nnoremap <buffer> Ê :call <SID>RunTestUnderCursorInVimspector()<CR>
+  nnoremap <buffer> <leader>† :call <SID>RunTestUnderCursorInVimspector()<CR>
   " å is the right-option+q
   nnoremap <buffer> å :cfirst<CR>
   " Œ is the right-option+shift-q
