@@ -86,7 +86,7 @@ function! s:RunTestUnderCursor()
 
   echo "Running test '" . l:test_func_name . "'"
 
-  let fname = get( b:, 'ycm_test_script_name', expand( '%:p:t' ) )
+  let fname = b:ycm_test_script_name
 
   let l:test_arg = fname . ':' . l:test_func_name
   let l:cwd = getcwd()
@@ -107,7 +107,7 @@ function! s:RunTestUnderCursorInVimspector()
     return
   endif
 
-  let fname = get( b:, 'ycm_test_script_name', expand( '%:p:t' ) )
+  let fname = b:ycm_test_script_name
 
   echom "Running test '" . l:test_func_name . "'"
 
@@ -122,7 +122,7 @@ function! s:RunTest()
   update
   let l:cwd = getcwd()
   execute 'lcd ' . s:root_dir
-  let fname = get( b:, 'ycm_test_script_name', expand( '%:p:t' ) )
+  let fname = b:ycm_test_script_name
   try
     execute s:make_cmd fname
   finally
@@ -156,3 +156,5 @@ if ! has( 'gui_running' )
   " Ω is the right-option+z
   nnoremap <buffer> Ω :cprevious<CR>
 endif
+
+let b:ycm_test_script_name =  expand( '%:p:t' )
