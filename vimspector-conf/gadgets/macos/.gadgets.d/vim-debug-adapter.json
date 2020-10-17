@@ -6,7 +6,7 @@
       ],
       "configuration": {
         "type": "vim",
-        "vim": "/Users/ben/Development/vim/src/vim",
+        "vim": "${vim:/Users/ben/Development/vim-env/bin/vim}",
         "trace": {
           "level": "Verbose"
         }
