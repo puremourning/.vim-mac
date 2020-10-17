@@ -8,7 +8,14 @@ let g:ycm_confirm_extra_conf=0
 let g:ycm_complete_in_comments=1
 let g:ycm_complete_in_strings=1
 let g:ycm_always_populate_location_list=1
-let g:ycm_add_preview_window_to_completeopt = 1
+
+" Use a popup for the completion preview window if available
+let g:ycm_add_preview_to_completeopt = 'popup'
+try
+  set completepopup=height:10,width:60,highlight:PmenuSbar,border:off
+catch /.*/
+endtry
+
 let g:ycm_collect_identifiers_from_comments_and_strings=1
 let g:ycm_collect_identifiers_from_tags_files=0
 let g:ycm_java_jdtls_use_clean_workspace=0
@@ -239,9 +246,11 @@ let g:markdown_fenced_languages = [
       \ 'help',
       \ 'c++=cpp',
       \ 'bash=sh',
+      \ 'sh',
       \ 'viml=vim',
       \ 'json',
       \ 'rust',
+      \ 'python',
       \ ]
 let g:markdown_syntax_conceal = 1
 

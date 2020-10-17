@@ -1,10 +1,7 @@
 {
   "configurations": {
     "Vimscript Run": {
-      "adapter": {
-        "command": [ "node",
-                     "/Users/ben/Development/vim-debug-adapter/dist/index.js" ]
-      },
+      "adapter": "vim-debug-adapter",
       "configuration": {
         "type": "vim",
         "request": "launch",
@@ -15,10 +12,7 @@
       }
     },
     "Vimscript Run Dev": {
-      "adapter": {
-        "command": [ "node",
-                     "/Users/ben/Development/vim-debug-adapter/dist/index.js" ]
-      },
+      "adapter": "vim-debug-adapter",
       "configuration": {
         "type": "vim",
         "request": "launch",
@@ -32,10 +26,7 @@
       }
     },
     "Vimscript Attach": {
-      "adapter": {
-        "command": [ "node",
-                     "/Users/ben/Development/vim-debug-adapter/dist/index.js" ]
-      },
+      "adapter": "vim-debug-adapter",
       "configuration": {
         "type": "vim",
         "request": "attach",
