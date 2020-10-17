@@ -80,15 +80,13 @@ function! s:RunTestUnderCursor()
   let l:test_func_name = s:GetCurrentFunction()
 
   if l:test_func_name ==# ''
-    echo "No test method found"
+    echo 'No test method found'
     return
   endif
 
   echo "Running test '" . l:test_func_name . "'"
 
-  let fname = b:ycm_test_script_name
-
-  let l:test_arg = fname . ':' . l:test_func_name
+  let l:test_arg = b:ycm_test_script_name . ':' . l:test_func_name
   let l:cwd = getcwd()
   execute 'lcd ' . s:root_dir
   try
@@ -107,13 +105,11 @@ function! s:RunTestUnderCursorInVimspector()
     return
   endif
 
-  let fname = b:ycm_test_script_name
-
-  echom "Running test '" . l:test_func_name . "'"
+  echom "Debugging test '" . l:test_func_name . "'"
 
   call vimspector#LaunchWithSettings( {
         \ 'configuration': 'Run vim test',
-        \ 'TestScriptName': fname,
+        \ 'TestScriptName': b:ycm_test_script_name,
         \ 'TestFunction': l:test_func_name
         \ } )
 endfunction
@@ -122,9 +118,8 @@ function! s:RunTest()
   update
   let l:cwd = getcwd()
   execute 'lcd ' . s:root_dir
-  let fname = b:ycm_test_script_name
   try
-    execute s:make_cmd fname
+    execute s:make_cmd b:ycm_test_script_name
   finally
     execute 'lcd ' . l:cwd
   endtry
