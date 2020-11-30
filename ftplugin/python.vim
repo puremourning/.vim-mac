@@ -5,7 +5,7 @@ endfunction
 function! s:MakeMethodName( cls, mth )
   if a:cls != ''
     if a:mth != ''
-      return a:cls . '.' . a:mth
+      return a:cls . '::' . a:mth
     else
       return a:cls
     endif
