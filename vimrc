@@ -2,6 +2,7 @@ runtime defaults.vim
 
 " use comma for commands
 let mapleader=','
+let maplocalleader="\<Space>"
 
 if has( 'win32' )
   set encoding=utf-8

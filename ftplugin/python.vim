@@ -135,3 +135,33 @@ if ! has( 'gui_running' )
   " Ω is the right-option+z
   nnoremap <buffer> Ω :cprevious<CR>
 endif
+
+command! -buffer -nargs=* JupyterStartConsole
+      \ execute 'ActivateVirtualEnv' expand( "$HOME/Development/jupyter/env" )
+      \ | execute 'botright vertical terminal
+      \         ++cols=80
+      \         ++close
+      \         ++norestore
+      \         ++kill=term
+      \         jupyter-console
+      \         <args>'
+      \ | wincmd p
+      \ | echo "Giving it a chance..."
+      \ | sleep 1000m
+      \ | redraw
+      \ | JupyterConnect
+
+command! -buffer -nargs=* JupyterStartQtConsole
+      \ execute 'ActivateVirtualEnv' expand( "$HOME/Development/jupyter/env" )
+      \ | execute 'terminal
+      \         ++close
+      \         ++hidden
+      \         ++norestore
+      \         ++kill=term
+      \         jupyter-qtconsole
+      \         <args>'
+      \ | wincmd p
+      \ | echo "Giving it a chance..."
+      \ | sleep 1000m
+      \ | redraw
+      \ | JupyterConnect

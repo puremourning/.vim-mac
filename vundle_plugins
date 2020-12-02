@@ -348,6 +348,9 @@ Plugin 'habamax/vim-godot'
 Plugin 'junegunn/fzf'
 Plugin 'junegunn/fzf.vim'
 
+Plugin 'Jupyter-vim/jupyter-vim'
+Plugin 'puremourning/vim-activate-venv'
+
 call vundle#end()
 filetype plugin indent on
 
