@@ -50,6 +50,9 @@ let &directory = expand( '<sfile>:p:h' ) . '/swap//,.'
 
 set wildignore=*.pyc
 
+" Don't open folds when jumping around
+set foldopen-=block
+
 " default to xterm behaviour
 behave xterm
 
