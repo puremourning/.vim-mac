@@ -27,6 +27,11 @@ if has( 'nvim' )
   endif
 endif
 
+if has( 'gui_running' )
+  " Macvim currently requires python 3.8
+  set pythonthreedll=/usr/local/opt/python@3.8/Frameworks/Python.framework/Versions/3.8/lib/libpython3.8.dylib
+endif
+
 " enable syntax hilighting
 syn on
 
