@@ -301,4 +301,11 @@ if !has( 'nvim' )
     autocmd!
     autocmd TerminalWinOpen * setlocal signcolumn=no textwidth=0 nonumber
   augroup END
+
+  " Solid bar (StartInsert)
+  let &t_SI = "\<Esc>[6 q"
+  " Solid underline (StartReplace)
+  let &t_SR = "\<Esc>[4 q"
+  " Solid block (ExitInsert)
+  let &t_EI = "\<Esc>[2 q"
 endif
