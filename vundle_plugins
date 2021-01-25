@@ -326,7 +326,7 @@ Plugin 'tpope/vim-surround'
 Plugin 'tpope/vim-dispatch'
 Plugin 'teoljungberg/vim-grep'
 Plugin 'wellle/targets.vim'
-Plugin 'ludovicchabant/vim-gutentags'
+" Plugin 'ludovicchabant/vim-gutentags'
 
 " Filetype support
 Plugin 'tpope/vim-markdown'
