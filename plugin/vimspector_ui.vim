@@ -23,3 +23,47 @@ let g:vimspector_sign_priority = {
       \ 'vimspectorBPDisabled': 11,
       \ 'vimspectorPC': 12,
       \ }
+
+" Custom mappings while debuggins {{{
+let s:mapped = {}
+
+function! s:OnJumpToFrame() abort
+  if has_key( s:mapped, string( bufnr() ) )
+    return
+  endif
+
+  nmap <silent> <buffer> <LocalLeader>d <Plug>VimspectorBalloonEval
+  xmap <silent> <buffer> <LocalLeader>d <Plug>VimspectorBalloonEval
+
+  let s:mapped[ string( bufnr() ) ] = 1
+endfunction
+
+function! s:OnDebugEnd() abort
+
+  let original_buf = bufnr()
+  let hidden = &hidden
+
+  try
+    set hidden
+    for bufnr in keys( s:mapped )
+      try
+        execute 'noautocmd buffer' bufnr
+        silent! nunmap <buffer> <LocalLeader>d
+        silent! xunmap <buffer> <LocalLeader>d
+      endtry
+    endfor
+  finally
+    execute 'noautocmd buffer' original_buf
+    let &hidden = hidden
+  endtry
+
+  let s:mapped = {}
+endfunction
+
+augroup VimspectorCustomMappings
+  au!
+  autocmd User VimspectorJumpedToFrame call s:OnJumpToFrame()
+  autocmd User VimspectorDebugEnded call s:OnDebugEnd()
+augroup END
+
+" }}}
