@@ -1,0 +1,16 @@
+{
+  "adapters": {
+    "vscode-mono-debug-log": {
+      "attach": {
+        "pidSelect": "none"
+      },
+      "command": [
+        "mono",
+        "${gadgetDir}/vscode-mono-debug/bin/Release/mono-debug.exe",
+        "--trace=response",
+        "--log-file=mono-debug.log"
+      ],
+      "name": "mono-debug"
+    }
+  }
+}

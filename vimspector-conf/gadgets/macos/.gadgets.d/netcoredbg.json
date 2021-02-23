@@ -1,0 +1,19 @@
+{
+  "adapters": {
+    "netcoredbg-debug": {
+      "attach": {
+        "pidProperty": "processId",
+        "pidSelect": "ask"
+      },
+      "configuration": {
+        "cwd": "${workspaceRoot}"
+      },
+      "command": [
+        "$HOME/Development/vimspector/netcoredbg/bin/netcoredbg",
+        "--interpreter=vscode",
+        "--log=file"
+      ],
+      "name": "netcoredbg"
+    }
+  }
+}
