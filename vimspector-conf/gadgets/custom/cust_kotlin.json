@@ -1,0 +1,27 @@
+{
+  "cust_kotlin-debug-adapter": {
+    "download": {
+      "url": "https://github.com/fwcd/kotlin-debug-adapter/releases/download/${version}/adapter.zip"
+    },
+    "all": {
+      "version": "0.4.2",
+      "file_name": "adapter.zip",
+      "checksum": "434abbcc5600fa6d2424930a7c81e4c30ae5fbf05cce1cbb0af96b58db540294",
+      "make_executable": [
+        "bin/kotlin-debug-adapter"
+      ],
+      "extension_path": "adapter",
+      "adapters": {
+        "cust_kotlin-debug-adapter": {
+          "command": [
+            "${gadgetDir}/cust_kotlin-debug-adapter/bin/kotlin-debug-adapter"
+          ],
+          "name": "kotlin-debug-adapter",
+          "configuration": {
+            "projectRoot": "${workspaceRoot}"
+          }
+        }
+      }
+    }
+  }
+}

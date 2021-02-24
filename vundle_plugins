@@ -344,6 +344,7 @@ Plugin 'toyamarinyon/vim-swift'
 Plugin 'keith/swift.vim'
 Plugin 'gavocanov/vim-js-indent'
 Plugin 'habamax/vim-godot'
+Plugin 'udalov/kotlin-vim'
 
 Plugin 'junegunn/fzf'
 Plugin 'junegunn/fzf.vim'
