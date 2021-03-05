@@ -28,7 +28,19 @@ let g:ycm_java_jdtls_workspace_root_path=$HOME . '/.ycmd/java/Workspace'
 let g:ycm_server_log_level='debug'
 let g:ycm_keep_logfiles=1
 let g:ycm_auto_hover = ''
-let g:ycm_use_clangd=get( g:, 'ycm_use_clangd', 1 )
+function! s:DefaultClangd()
+  let l:use_clangd_default = 1
+  let l:extra_conf = findfile( '.ycm_extra_conf.py', '.;' )
+  if !empty( l:extra_conf )
+    if filereadable( fnamemodify( l:extra_conf, ':p:h' ) . '/.ycm_no_clangd' )
+      let l:use_clangd_default = 0
+    endif
+  endif
+  let g:ycm_use_clangd=get( g:, 'ycm_use_clangd', l:use_clangd_default )
+endfunction
+
+call s:DefaultClangd()
+
 let g:ycm_clangd_args = get( g:, 'ycm_clangd_args', [] )
 call extend( g:ycm_clangd_args, [
       \ '-background-index',
