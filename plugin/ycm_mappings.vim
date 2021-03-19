@@ -27,6 +27,8 @@ nnoremap <leader>ygs
             \ :<C-u>execute 'YcmCompleter GoToSymbol '.input('Symbol: ')<CR>
 
 nmap <leader>D <Plug>(YCMHover)
+nmap <localleader>yfw <Plug>(YCMFindSymbolInWorkspace)
+nmap <localleader>yfd <Plug>(YCMFindSymbolInDocument)
 augroup CustYCMHover
   autocmd!
   autocmd FileType c,cpp,objc let b:ycm_hover = {
