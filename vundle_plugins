@@ -343,6 +343,8 @@ Plugin 'tpope/vim-surround'
 Plugin 'tpope/vim-dispatch'
 Plugin 'teoljungberg/vim-grep'
 Plugin 'wellle/targets.vim'
+Plugin 'romainl/vim-cool'
+set hlsearch
 " Plugin 'ludovicchabant/vim-gutentags' (just gives errors all the damn time)
 
 " Filetype support
@@ -368,6 +370,8 @@ Plugin 'junegunn/fzf.vim'
 
 Plugin 'Jupyter-vim/jupyter-vim'
 Plugin 'puremourning/vim-activate-venv'
+
+Plugin 'puremourning/vim-dirvish'
 
 call vundle#end()
 filetype plugin indent on
