@@ -5,7 +5,6 @@
       "configuration": {
         "type": "vim",
         "request": "launch",
-        "vim": "${Vim:/Users/ben/Development/vim-env/bin/vim}",
         "trace": {
           "level": "Verbose"
         }
@@ -16,7 +15,6 @@
       "configuration": {
         "type": "vim",
         "request": "launch",
-        "vim": "${Vim:/Users/ben/Development/vim-env/bin/vim}",
         "args": [
           "--cmd", "let g:benj_test_ycm=1"
         ],

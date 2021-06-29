@@ -35,7 +35,17 @@ function! s:OnJumpToFrame() abort
   nmap <silent> <buffer> <LocalLeader>d <Plug>VimspectorBalloonEval
   xmap <silent> <buffer> <LocalLeader>d <Plug>VimspectorBalloonEval
 
-  let s:mapped[ string( bufnr() ) ] = 1
+  nmap <silent> <buffer> <LocalLeader>c <Plug>VimspectorContinue
+  nmap <silent> <buffer> <LocalLeader><LocalLeader> <Plug>VimspectorStopOver
+  nmap <silent> <buffer> <LocalLeader>n <Plug>VimspectorStepOver
+  nmap <silent> <buffer> <LocalLeader>s <Plug>VimspectorStepInto
+  nmap <silent> <buffer> <LocalLeader>f <Plug>VimspectorStepOut
+
+  nmap <silent> <buffer> <LocalLeader>k <Plug>VimspectorUpFrame
+  nmap <silent> <buffer> <LocalLeader>j <Plug>VimspectorDownFrame
+
+  let s:mapped[ string( bufnr() ) ] = &l:modifiable
+  setlocal nomodifiable
 endfunction
 
 function! s:OnDebugEnd() abort
@@ -50,6 +60,17 @@ function! s:OnDebugEnd() abort
         execute 'noautocmd buffer' bufnr
         silent! nunmap <buffer> <LocalLeader>d
         silent! xunmap <buffer> <LocalLeader>d
+
+        silent! nunmap <buffer> <LocalLeader>c
+        silent! nunmap <buffer> <LocalLeader><LocalLeader>
+        silent! nunmap <buffer> <LocalLeader>n
+        silent! nunmap <buffer> <LocalLeader>s
+        silent! nunmap <buffer> <LocalLeader>f
+
+        silent! nunmap <buffer> <LocalLeader>k
+        silent! nunmap <buffer> <LocalLeader>j
+
+        let &l:modifiable = s:mapped[ bufnr ]
       endtry
     endfor
   finally
