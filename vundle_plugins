@@ -312,6 +312,9 @@ let g:fzf_colors =
   \ 'spinner': ['fg', 'Label'],
   \ 'header':  ['fg', 'Comment'] }
 
+" Don't use tmux, prefer to use vim jobs
+let g:dispatch_no_tmux_make = 1
+
 
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
