@@ -382,6 +382,7 @@ Plugin 'Jupyter-vim/jupyter-vim'
 Plugin 'puremourning/vim-activate-venv'
 
 Plugin 'puremourning/vim-dirvish'
+Plugin 'tpope/vim-eunuch'
 
 call vundle#end()
 filetype plugin indent on
