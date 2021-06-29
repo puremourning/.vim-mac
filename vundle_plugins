@@ -100,7 +100,10 @@ if isdirectory( expand( '$HOME/Development/lsp' ) )
   let s:lsp_dir = expand( '$HOME/Development/lsp' )
 endif
 
+" Python language servers
 " let g:ycm_disable_jedi_completer = v:true
+"
+" these are all useless
 "    \   { 'name': 'msptvs',
 "    \     'filetypes': [ 'python' ],
 "    \    'cmdline': [ 'dotnet', s:lsp_dir . '/python/microsoft/python-language-server/output/bin/Debug/Microsoft.Python.LanguageServer.dll' ],
@@ -108,6 +111,13 @@ endif
 "    \   { 'name': 'palantirpython',
 "    \     'filetypes': [ 'python' ],
 "    \    'cmdline': [ s:lsp_dir . '/python/palantir/env/bin/pyls' ],
+"    \   },
+"
+" pyright - not bad
+"    \   {
+"    \     'name': 'python',
+"    \     'cmdline': [ 'node', s:lsp_dir . '/python/node_modules/.bin/pyright-langserver', '--stdio' ],
+"    \     'filetypes': [ 'python' ],
 "    \   },
 
 if isdirectory( s:lsp_dir )
@@ -175,9 +185,9 @@ if isdirectory( s:lsp_dir )
     \     'port': 6008,
     \   },
     \   {
-    \     'name': 'python',
-    \     'cmdline': [ 'node', s:lsp_dir . '/python/node_modules/.bin/pyright-langserver', '--stdio' ],
-    \     'filetypes': [ 'python' ],
+    \     'name': 'cmake',
+    \     'cmdline': [ expand( s:lsp_dir . '/cmake/venv/bin/cmake-language-server' )],
+    \     'filetypes': [ 'cmake' ],
     \   },
     \ ]
 endif
