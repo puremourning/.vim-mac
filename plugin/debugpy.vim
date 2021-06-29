@@ -4,4 +4,4 @@ function! s:Debugpy( ... ) abort
                 \    *vim.eval( '000' ) )
 endfunction
 
-command! -nargs=0 Debugpy call s:Debugpy( <f-args> )
+command! -nargs=* Debugpy call s:Debugpy( <f-args> )
