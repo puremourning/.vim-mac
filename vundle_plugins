@@ -309,21 +309,18 @@ call vundle#begin()
 Plugin 'gmarik/Vundle.vim'
 
 " Development environment
+let g:vimspector_base_dir = expand( '<sfile>:p:h' ) . '/vimspector-conf'
+let g:ycm_java_jdtls_extension_path=[
+      \ g:vimspector_base_dir . '/gadgets/macos' ]
+
 if get(g:, 'benj_test_ycm')
-  let g:vimspector_base_dir = expand( '<sfile>:p:h' ) . '/vimspector-conf'
-
-  let g:ycm_java_jdtls_extension_path=[
-        \ g:vimspector_base_dir . '/gadgets/macos' ]
-
   Plugin 'puremourning/YouCompleteMe', { 'pinned': 1 }
   Plugin 'puremourning/vimspector',    { 'pinned': 1 }
 else
-  let g:ycm_java_jdtls_extension_path=[
-        \ expand( '<sfile>:p:h' ) . '/bundle/vimspector-Clean/gadgets/macos/' ]
-
   Plugin 'puremourning/YouCompleteMe', { 'name': 'YouCompleteMe-Clean' }
   Plugin 'puremourning/vimspector',    { 'name': 'vimspector-Clean' }
 endif
+
 if has( 'python3' )
   Plugin 'SirVer/ultisnips'
   Plugin 'honza/vim-snippets'
