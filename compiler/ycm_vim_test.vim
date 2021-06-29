@@ -90,7 +90,7 @@ function! s:RunTestUnderCursor()
   let l:cwd = getcwd()
   execute 'lcd ' . s:root_dir
   try
-    execute s:make_cmd . ' ' . l:test_arg
+    execute s:make_cmd get( b:, 'ycm_test_args', '' ) l:test_arg
   finally
     execute 'lcd ' . l:cwd
   endtry
@@ -119,7 +119,7 @@ function! s:RunTest()
   let l:cwd = getcwd()
   execute 'lcd ' . s:root_dir
   try
-    execute s:make_cmd b:ycm_test_script_name
+    execute s:make_cmd get( b:, 'ycm_test_args', '' ) b:ycm_test_script_name
   finally
     execute 'lcd ' . l:cwd
   endtry
