@@ -107,6 +107,8 @@ set statusline+=\ %y
 set statusline+=\ %l:%c/%L
 set statusline+=\ 
 
+let s:done_property_types = 0
+
 function! BenGetCustomHighlighting()
   " This is sufficient to make StatusLine _set_ and _different from
   " StatusLineNC_, so that our statusline settings are applied sensibly to
@@ -121,8 +123,26 @@ function! BenGetCustomHighlighting()
   hi! link User3 ModeMsg
 
   " Make comments a bit more readable in Apprentice
-  if s:cs =~ "^apprentice"
+  if s:cs =~? '^apprentice'
     hi Comment ctermfg=101 guifg=#87875f
+  endif
+
+  let HIGHLIGHT_GROUP = {
+        \   'typeParameter': 'PreProc',
+        \   'parameter': 'Identifier',
+        \   'variable': 'Normal',
+        \   'property': 'Identifier',
+        \   'enumMember': 'Constant',
+        \   'event': 'Special',
+        \   'member': 'Normal',
+        \ }
+
+  if !s:done_property_types
+    for tokenType in keys( HIGHLIGHT_GROUP )
+      call prop_type_add( 'YCM_HL_' . tokenType,
+                        \ { 'highlight': HIGHLIGHT_GROUP[ tokenType ] } )
+    endfor
+    let s:done_property_types = 1
   endif
 
 endfunction
