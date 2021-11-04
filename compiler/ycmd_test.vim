@@ -27,9 +27,6 @@ CompilerSet errorformat=
       \%Z%[%^\ ]%\\@=%m
 
 let &l:makeprg=fnamemodify( findfile( 'run_tests.py', '.;' ), ':p' )
-      \ . ' --show-capture=stdout'
-      \ . ' --color=no'
-      \ . ' --tb=native'
       \ . ' $* 2>&1'
 
 let $YCM_TEST_RETRY_TIMEOUT = 5

@@ -1,16 +1,29 @@
 function! PythonGetCurrentFunction()
-  echom s:GetCurrentFunction()
+  echom s:GetCurrentModule() . '.' . s:GetCurrentFunction()
 endfunction
 
 function! s:MakeMethodName( cls, mth )
   if a:cls != ''
     if a:mth != ''
-      return a:cls . '::' . a:mth
+      return a:cls . '.' . a:mth
     else
       return a:cls
     endif
   endif
   return a:mth
+endfunction
+
+function! s:GetCurrentModule()
+  let cwd = expand( '%:p:h' )
+  " Take the file_name from /path/to/file_name.py
+  let mod = [ expand( '%:p:t:r' ) ]
+  while filereadable( cwd . '/__init__.py' )
+    " Add the current_path from /path/current_path/to/file_name.py
+    call add( mod, fnamemodify( cwd, ':t' ) )
+    let cwd = fnamemodify( cwd, ':h' )
+  endwhile
+
+  return join( reverse( mod ), '.' )
 endfunction
 
 function! s:GetCurrentFunction()
@@ -36,9 +49,16 @@ function! s:GetCurrentFunction()
 
     " FIXME: This is about as inefficient as it could be
     let l:this_decl = substitute( getline( l:lnum ), l:pattern, '\1', '' )
-    let l:this_decl_is_test = match( l:this_decl, '\V\C_test\$' ) >= 0
     let l:this_decl_is_method = match( getline( l:lnum ), '\V\C\s\*def') >= 0
     let l:this_decl_is_class = match( getline( l:lnum ), '\V\C\s\*class') >= 0
+
+    if l:this_decl_is_method
+      let l:this_decl_is_test = match( l:this_decl, '\V\C\^test_' ) >= 0
+    elseif l:this_decl_is_class
+      let l:this_decl_is_test = match( l:this_decl, '\V\CTest\$' ) >= 0
+    else
+      let l:this_decl_is_test = v:false
+    endif
 
     if l:this_decl_is_test
       if l:this_decl_is_method
@@ -60,6 +80,7 @@ function! s:GetCurrentFunction()
     let l:lnum = prevnonblank( l:lnum - 1 )
   endwhile
 
+  call cursor( l:row, l:col )
 endfunction
 
 function! s:RunTestUnderCursor()
@@ -74,14 +95,14 @@ function! s:RunTestUnderCursor()
 
   echo "Running test '" . l:test_func_name . "'"
 
-  let l:test_arg = expand( '%:p' ) . '::' . l:test_func_name
-  execute 'Make --skip-build --no-flake8 -- ' . l:test_arg
+  let l:test_arg = s:GetCurrentModule() . '.' . l:test_func_name
+  execute 'Make --skip-build -v --no-flake8 -- ' . l:test_arg
 endfunction
 
 function! s:RunTest()
   compiler ycmd_test
   update
-  Make --no-flake8 --skip-build -- %:p
+  Make --no-flake8 --skip-build -v -- %:p
 endfunction
 
 function! s:RunTestUnderCursorInVimspector()
@@ -94,7 +115,7 @@ function! s:RunTestUnderCursorInVimspector()
     return
   endif
 
-  let l:test_arg = expand( '%:p' ) . '::' . l:test_func_name
+  let l:test_arg = s:GetCurrentModule() . '.' . l:test_func_name
   echom "Running test '" . l:test_arg . "'"
 
 
@@ -109,7 +130,7 @@ endfunction
 function! s:RunAllTests()
   compiler ycmd_test
   update
-  Make --skip-build
+  Make --skip-build -v
 endfunction
 
 function! s:Build()
