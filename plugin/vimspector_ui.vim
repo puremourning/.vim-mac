@@ -83,6 +83,7 @@ endfunction
 
 augroup VimspectorCustomMappings
   au!
+  autocmd SessionLoadPost * silent! VimspectorLoadSession
   autocmd User VimspectorJumpedToFrame call s:OnJumpToFrame()
   autocmd User VimspectorDebugEnded call s:OnDebugEnd()
 augroup END

@@ -155,6 +155,7 @@ if ! has( 'gui_running' )
   nnoremap <buffer> œ :cnext<CR>
   " Ω is the right-option+z
   nnoremap <buffer> Ω :cprevious<CR>
+
 endif
 
 command! -buffer -nargs=* JupyterStartConsole
