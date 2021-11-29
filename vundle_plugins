@@ -60,6 +60,10 @@ call extend( g:ycm_clangd_args, [
       \ '--clang-tidy=0',
       \ ] )
 
+if get(g:, 'benj_test_ycm')
+  let g:ycm_enable_semantic_highlightng = 1
+endif
+
 " Ignore the error about comments not being allowed
 let g:ycm_filter_diagnostics = {
       \   "json": {
@@ -350,6 +354,7 @@ Plugin 'ntpeters/vim-better-whitespace'
 
 " Colour schemes
 Plugin 'romainl/Apprentice'
+Plugin 'habamax/vim-bronzage'
 
 " Quality of life improvements to built-in features
 Plugin 'tpope/vim-repeat'

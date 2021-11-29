@@ -129,12 +129,15 @@ function! BenGetCustomHighlighting()
 
   let HIGHLIGHT_GROUP = {
         \   'typeParameter': 'PreProc',
-        \   'parameter': 'Identifier',
+        \   'parameter': 'Normal',
         \   'variable': 'Normal',
-        \   'property': 'Identifier',
-        \   'enumMember': 'Constant',
+        \   'property': 'Normal',
+        \   'enumMember': 'Normal',
         \   'event': 'Special',
         \   'member': 'Normal',
+        \   'method': "Normal",
+        \   'class': 'Special',
+        \   'namespace': 'Special',
         \ }
 
   if !s:done_property_types
@@ -153,6 +156,7 @@ augroup BenCustomHighlighting
 augroup END
 
 let s:cs = 'apprentice'
+" let s:cs = 'bronzage'
 
 if has( 'win32' )
   set t_Co=256
@@ -171,6 +175,11 @@ elseif s:cs ==# 'apprentice'
     set termguicolors
   endif
   silent! colorscheme apprentice
+elseif s:cs ==# 'bronzage'
+  if $TERM_PROGRAM !=# 'Apple_Terminal'
+    set termguicolors
+  endif
+  silent! colorscheme bronzage
 elseif s:cs ==# 'apprentice_low'
   silent! colorscheme apprentice
 elseif s:cs ==# 'solarized8'
