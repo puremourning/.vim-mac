@@ -352,6 +352,9 @@ Plugin 'neomake/neomake'
 Plugin 'airblade/vim-gitgutter'
 Plugin 'ntpeters/vim-better-whitespace'
 
+" Source control
+Plugin 'tpope/vim-fugitive'
+
 " Colour schemes
 Plugin 'romainl/Apprentice'
 Plugin 'habamax/vim-bronzage'
