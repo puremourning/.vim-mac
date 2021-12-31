@@ -1,14 +1,21 @@
 {
   "configurations": {
-    "run": {
+    "run current script": {
       "adapter": "debugpy",
+      "variables": {
+        "python": {
+          "shell": "/bin/bash -c 'test -n ${VIRTUAL_ENV} && echo ${VIRTUAL_ENV}/bin/python || echo python3'"
+        }
+      },
       "configuration": {
         "request": "launch",
         "type": "python",
-        "cwd": "${workspaceRoot}",
+        "cwd": "${CWD:${workspaceRoot\\}}",
         "program": "${file}",
         "stopOnEntry": true,
-        "console": "integratedTerminal"
+        "console": "integratedTerminal",
+        "args": [ "*${args}" ],
+        "python": "${python}"
       },
       "breakpoints": {
         "exception": {
