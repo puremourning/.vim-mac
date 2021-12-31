@@ -10,6 +10,15 @@ let g:vimspector_bottombar_height = 15
 function! s:SetUpUI() abort
   call win_gotoid( g:vimspector_session_windows.output )
   q
+
+  call win_gotoid( g:vimspector_session_windows.variables )
+  nmap <silent> <buffer> <LocalLeader>d <Plug>VimspectorBalloonEval
+  xmap <silent> <buffer> <LocalLeader>d <Plug>VimspectorBalloonEval
+
+  call win_gotoid( g:vimspector_session_windows.watches )
+  nmap <silent> <buffer> <LocalLeader>d <Plug>VimspectorBalloonEval
+  xmap <silent> <buffer> <LocalLeader>d <Plug>VimspectorBalloonEval
+
 endfunction
 
 augroup VimspectorCustom
