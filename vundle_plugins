@@ -61,7 +61,7 @@ call extend( g:ycm_clangd_args, [
       \ ] )
 
 if get(g:, 'benj_test_ycm')
-  let g:ycm_enable_semantic_highlightng = 1
+  let g:ycm_enable_semantic_highlighting = 1
 endif
 
 " Ignore the error about comments not being allowed
