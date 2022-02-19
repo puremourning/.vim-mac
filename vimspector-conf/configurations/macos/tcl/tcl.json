@@ -1,0 +1,12 @@
+{
+  "$schema": "https://puremourning.github.io/vimspector/schema/vimspector.schema.json",
+  "configurations": {
+    "Run current file": {
+      "adapter": "tclpro",
+      "configuration": {
+        "filetypes": [ "tcl" ],
+        "request": "launch"
+      }
+    }
+  }
+}

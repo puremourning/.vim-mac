@@ -1,0 +1,20 @@
+{
+  "$schema": "https://puremourning.github.io/vimspector/schema/vimspector.schema.json",
+  "configurations": {
+    "Run Current File": {
+      "adapter": "CodeLLDB",
+      "configuration": {
+        "request": "launch",
+        "program": "${fileBasenameNoExtension}",
+        "cwd": "${fileDirname}",
+        "args": [ "*${args}" ],
+        "stdio": [
+          "${cin_file:/dev/null}",
+          null,
+          null
+        ],
+        "expressions": "native"
+      }
+    }
+  }
+}
