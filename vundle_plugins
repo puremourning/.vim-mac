@@ -137,12 +137,6 @@ if isdirectory( s:lsp_dir )
     \     'filetypes': [ 'php' ],
     \   },
     \   {
-    \     'name': 'yaml',
-    \     'cmdline': [ 'node', s:lsp_dir . '/yaml/node_modules/.bin/yaml-language-server', '--stdio' ],
-    \     'filetypes': [ 'yaml' ],
-    \     'capabilities': { 'textDocument': { 'completion': { 'completionItem': { 'snippetSupport': v:true } } } },
-    \   },
-    \   {
     \     'name': 'json',
     \     'cmdline': [ 'node', s:lsp_dir . '/json/node_modules/.bin/vscode-json-languageserver', '--stdio' ],
     \     'filetypes': [ 'json' ],
@@ -200,6 +194,34 @@ if isdirectory( s:lsp_dir )
     \   },
     \ ]
 endif
+
+"    \      '/Library/Developer/CommandLineTools//Library/PrivateFrameworks/LLDB.framework/Versions/A/Resources/debugserver',
+"    \      'localhost:54321',
+let g:ycm_language_server += [
+  \   {
+  \     'name': 'tcl-parse-test',
+  \     'cmdline': [
+  \        '/Users/ben/Development/tcl/tcl-parse-test/debug-Darwin-arm64/bin/server'
+  \     ],
+  \     'filetypes': [ 'tcl' ],
+  \   }
+  \ ]
+
+let g:ycm_language_server += [
+  \   {
+  \     'name': 'yaml',
+  \     'cmdline': [ 'node', expand( s:lsp_dir . '/yaml/node_modules/.bin/yaml-language-server' ), '--stdio' ],
+  \     'filetypes': [ 'yaml' ],
+  \     'capabilities': {
+  \       'workspace': { 'configuration': v:true },
+  \       'textDocument': {
+  \         'completion': {
+  \           'completionItem': { 'snippetSupport': v:true },
+  \         }
+  \       }
+  \     },
+  \   },
+  \ ]
 
 let g:snips_author='Ben Jackson (puremourning@gmail.com)'
 
