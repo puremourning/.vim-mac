@@ -1,4 +1,8 @@
-function! s:ShowGoToInPreviewWindow( result )
+function! s:ShowGoToInPreviewWindow( result ) abort
+  if type( a:result ) == v:t_none || empty( a:result )
+    return
+  endif
+
   if has_key( a:result, 'error' )
     echom a:result.error
     return
@@ -12,7 +16,7 @@ function! s:ShowGoToInPreviewWindow( result )
   execute 'pedit' '+' .. a:result.line_num a:result.filepath
 endfunction
 
-function! s:PreviewGoTo( cmd )
+function! s:PreviewGoTo( cmd ) abort
   call youcompleteme#GetRawCommandResponseAsync(
         \ function( 's:ShowGoToInPreviewWindow' ),
         \ a:cmd )
