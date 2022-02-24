@@ -3,7 +3,7 @@ function! s:ShowGoToInPreviewWindow( result ) abort
     return
   endif
 
-  if has_key( a:result, 'error' )
+  if type( a:result ) == v:t_dict && has_key( a:result, 'error' )
     echom a:result.error
     return
   endif
