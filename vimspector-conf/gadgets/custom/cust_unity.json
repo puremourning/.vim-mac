@@ -1,0 +1,28 @@
+{
+  "cust_vscode-unity-debug": {
+    "download": {
+      "url": "https://github.com/Unity-Technologies/vscode-unity-debug/releases/download/Version-${version}/unity-debug-${version}.vsix"
+    },
+    "all": {
+      "version": "2.7.2",
+      "file_name": "unity-debug-2.7.2.vsix",
+      "checksum": "",
+      "make_executable": [],
+      "extension_path": "adapter",
+      "adapters": {
+        "cust_vscode-unity-debug": {
+          "command": [
+            "node",
+            "${gadgetDir}/cust_vscode-unity-debug/js/UnityDebugAdapter.js"
+          ],
+          "configuration": {
+            // TODO: I don't know what this is, but it seems like some other
+            // thing that vscode uses?
+            "extensionPath": "~/.vscode-insiders/extensions/unity.unity-debug-3.0.2"
+          }
+        }
+      }
+    }
+  }
+}
+

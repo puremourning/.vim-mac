@@ -1,0 +1,13 @@
+{
+  "cust_dart-debug-adapter": {
+    "command": [
+      "node",
+      "${root}/out/dist/debug.js",
+      "dart"
+    ],
+    "type": "dart",
+    "variables": {
+      "root": "${HOME}/Development/vimspector/Dart-Code"
+    }
+  }
+}
