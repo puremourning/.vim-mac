@@ -131,28 +131,27 @@ function! BenGetCustomHighlighting()
     " hi SpellCap cterm=NONE
   endif
 
-  let HIGHLIGHT_GROUP = {
-        \   'typeParameter': 'PreProc',
-        \   'parameter': 'Normal',
-        \   'variable': 'Normal',
-        \   'property': 'Normal',
-        \   'enumMember': 'Normal',
-        \   'event': 'Special',
-        \   'member': 'Normal',
-        \   'method': 'Normal',
-        \   'class': 'Special',
-        \   'namespace': 'Special',
-        \ }
+  " let HIGHLIGHT_GROUP = {
+  "       \   'typeParameter': 'PreProc',
+  "       \   'parameter': 'Normal',
+  "       \   'variable': 'Normal',
+  "       \   'property': 'Normal',
+  "       \   'enumMember': 'Normal',
+  "       \   'event': 'Special',
+  "       \   'member': 'Normal',
+  "       \   'method': 'Function',
+  "       \   'class': 'Special',
+  "       \   'namespace': 'Special',
+  "       \ }
 
-   if !s:done_property_types
-     for tokenType in keys( HIGHLIGHT_GROUP )
-       call prop_type_add( 'YCM_HL_' . tokenType,
-                         \ { 'highlight': HIGHLIGHT_GROUP[ tokenType ],
-                         \   'combine': 0 } )
-     endfor
-     let s:done_property_types = 1
-   endif
-
+  " if !s:done_property_types
+  "   for tokenType in keys( HIGHLIGHT_GROUP )
+  "     call prop_type_add( 'YCM_HL_' . tokenType,
+  "                       \ { 'highlight': HIGHLIGHT_GROUP[ tokenType ] } )
+  "   endfor
+  "   let s:done_property_types = 1
+  " endif
+  "
   "hi link YcmInlayHint Comment
 
 endfunction
@@ -353,3 +352,10 @@ endif
 
 nmap <localleader>yfw <Plug>(YCMFindSymbolInWorkspace)
 nmap <localleader>yfd <Plug>(YCMFindSymbolInDocument)
+
+" Disable modifiyOtherKeys mode 2 when entering terminal, as libvterm doesn't
+" understand it
+" if &t_TI =~ "\<Esc>\\[>4;[12]m"
+"   autocmd ModeChanged *:t call echoraw(&t_TE)
+"   autocmd ModeChanged t:* call echoraw(&t_TI)
+" endif
