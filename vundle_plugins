@@ -55,12 +55,10 @@ call extend( g:ycm_clangd_args, [
       \ '-background-index',
       \ '-completion-style=bundled',
       \ '-pch-storage=memory',
-      \ '-cross-file-rename',
-      \ '-suggest-missing-includes',
       \ '-header-insertion=iwyu',
       \ '-log=verbose',
       \ '-j=4',
-      \ '--clang-tidy=0',
+      \ '--query-driver=/**/*',
       \ ] )
 
 let g:ycm_enable_semantic_highlighting =
@@ -191,7 +189,10 @@ if isdirectory( s:lsp_dir )
     \     'filetypes': [ 'cmake' ],
     \   },
     \ ]
+
+  let g:ycm_lsp_dir = s:lsp_dir
   execute 'source' s:lsp_dir . '/haskell/snippet.vim'
+  execute 'source' s:lsp_dir . '/dart/snippet.vim'
 endif
 
 " let g:ycm_language_server += [
@@ -392,10 +393,18 @@ let g:ycm_java_jdtls_extension_path=[
 if get(g:, 'benj_test_ycm')
   Plugin 'puremourning/YouCompleteMe', { 'pinned': 1 }
   Plugin 'puremourning/vimspector',    { 'pinned': 1 }
+  let g:ycm_roslyn_binary_path=expand( '<sfile>:p:h' )
+        \ . '/bundle/YouCompleteMe/third_party/ycmd/third_party/omnisharp-roslyn/run'
 else
   Plugin 'puremourning/YouCompleteMe', { 'name': 'YouCompleteMe-Clean' }
   Plugin 'puremourning/vimspector',    { 'name': 'vimspector-Clean' }
 endif
+
+if executable( '/Library/Frameworks/Mono.framework/Versions/Current/bin/mono' )
+  let g:ycm_mono_binary_path=
+        \ '/Library/Frameworks/Mono.framework/Versions/Current/bin/mono'
+endif
+
 
 if has( 'python3' )
   Plugin 'SirVer/ultisnips'

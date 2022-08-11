@@ -49,6 +49,7 @@ function! s:OnJumpToFrame() abort
   nmap <silent> <buffer> <LocalLeader>n <Plug>VimspectorStepOver
   nmap <silent> <buffer> <LocalLeader>s <Plug>VimspectorStepInto
   nmap <silent> <buffer> <LocalLeader>f <Plug>VimspectorStepOut
+  nmap <silent> <buffer> <LocalLeader>g <Plug>VimspectorGoToCurrentLine
 
   nmap <silent> <buffer> <LocalLeader>k <Plug>VimspectorUpFrame
   nmap <silent> <buffer> <LocalLeader>j <Plug>VimspectorDownFrame

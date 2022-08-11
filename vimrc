@@ -27,11 +27,6 @@ if has( 'nvim' )
   endif
 endif
 
-if has( 'gui_running' )
-  " Macvim currently requires python 3.8
-  set pythonthreedll=/usr/local/opt/python@3.8/Frameworks/Python.framework/Versions/3.8/lib/libpython3.8.dylib
-endif
-
 " enable syntax hilighting
 syn on
 
@@ -43,6 +38,9 @@ runtime! packages.vim
 
 set nocompatible
 set wildmode=longest:full,full
+if has( 'patch-8.2.4325' )
+  set wildoptions+=pum
+endif
 set wildmenu
 " For gf and :find
 set path+=**
