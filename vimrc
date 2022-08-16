@@ -58,6 +58,9 @@ set wildignore=*.pyc
 " Don't open folds when jumping around
 set foldopen-=block
 
+" Allow editing columns without text in visual block mode
+set virtualedit=block
+
 " default to xterm behaviour
 behave xterm
 
@@ -125,6 +128,9 @@ function! BenGetCustomHighlighting()
   " Make comments a bit more readable in Apprentice
   if s:cs =~? '^apprentice'
     hi Comment ctermfg=101 guifg=#87875f
+    " Disable undercurl (which doesn't render well in terminal)
+    " hi SpellBad cterm=NONE
+    " hi SpellCap cterm=NONE
   endif
 
   let HIGHLIGHT_GROUP = {
@@ -135,18 +141,21 @@ function! BenGetCustomHighlighting()
         \   'enumMember': 'Normal',
         \   'event': 'Special',
         \   'member': 'Normal',
-        \   'method': "Normal",
+        \   'method': 'Normal',
         \   'class': 'Special',
         \   'namespace': 'Special',
         \ }
 
-  if !s:done_property_types
-    for tokenType in keys( HIGHLIGHT_GROUP )
-      call prop_type_add( 'YCM_HL_' . tokenType,
-                        \ { 'highlight': HIGHLIGHT_GROUP[ tokenType ] } )
-    endfor
-    let s:done_property_types = 1
-  endif
+   if !s:done_property_types
+     for tokenType in keys( HIGHLIGHT_GROUP )
+       call prop_type_add( 'YCM_HL_' . tokenType,
+                         \ { 'highlight': HIGHLIGHT_GROUP[ tokenType ],
+                         \   'combine': 0 } )
+     endfor
+     let s:done_property_types = 1
+   endif
+
+  hi link YcmInlayHint Comment
 
 endfunction
 
@@ -167,6 +176,9 @@ if exists( '$TMUX' ) || $TERM ==# 'screen-256color'
   let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
   let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
 endif
+
+let &t_Cs = "\e[4:3m"
+let &t_Ce = "\e[4:0m"
 
 if s:cs ==# 'solarized'
   silent! colorscheme solarized

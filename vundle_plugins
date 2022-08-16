@@ -14,6 +14,8 @@ let g:ycm_confirm_extra_conf=0
 let g:ycm_complete_in_comments=1
 let g:ycm_complete_in_strings=1
 let g:ycm_always_populate_location_list=1
+let g:ycm_show_detailed_diag_in_popup=1
+let g:ycm_update_diagnostics_in_insert_mode=1
 
 " Use a popup for the completion preview window if available
 let g:ycm_add_preview_to_completeopt = 'popup'
@@ -32,7 +34,7 @@ elseif executable( s:brew . '/opt/java11/bin/java' )
 endif
 let g:ycm_java_jdtls_workspace_root_path=$HOME . '/.ycmd/java/Workspace'
 let g:ycm_server_log_level='debug'
-let g:ycm_keep_logfiles=1
+let g:ycm_keep_logfiles=0
 let g:ycm_auto_hover = ''
 function! s:DefaultClangd()
   let l:use_clangd_default = 1
@@ -62,6 +64,9 @@ call extend( g:ycm_clangd_args, [
 
 let g:ycm_enable_semantic_highlighting =
       \ get( g:, 'ycm_enable_semantic_highlighting', 1 )
+let g:ycm_enable_inlay_hints =
+      \ get( g:, 'ycm_enable_inlay_hints', 1 )
+let g:ycm_echo_current_diagnostic = 'virtual-text'
 
 " Ignore the error about comments not being allowed
 let g:ycm_filter_diagnostics = {
@@ -71,10 +76,12 @@ let g:ycm_filter_diagnostics = {
       \ }
 
 if g:ycm_use_clangd
-  " let g:ycm_clangd_binary_path = get( g:, 'ycm_clangd_binary_path',
-  "       \ expand( '$HOME/Development/llvm-project/build/bin/clangd' ) )
+  if g:ycm_enable_inlay_hints
+    let g:ycm_clangd_binary_path = get( g:, 'ycm_clangd_binary_path',
+          \ expand( '$HOME/Development/llvm-project/build/bin/clangd' ) )
+  endif
 
-  if !get( g:, 'ycm_clangd_clean', 0 )
+  if !get( g:, 'ycm_clangd_clean', 0 ) && !exists( 'g:ycm_clangd_binary_path' )
     if executable( s:brew . '/opt/llvm/bin/clangd' )
       let g:ycm_clangd_binary_path = s:brew . '/opt/llvm/bin/clangd'
     endif
@@ -123,11 +130,6 @@ endif
 "    \   },
 "
 " pyright - not bad
-"    \   {
-"    \     'name': 'python',
-"    \     'cmdline': [ 'node', s:lsp_dir . '/python/node_modules/.bin/pyright-langserver', '--stdio' ],
-"    \     'filetypes': [ 'python' ],
-"    \   },
 
 if isdirectory( s:lsp_dir )
   let g:ycm_language_server = [
@@ -193,10 +195,17 @@ if isdirectory( s:lsp_dir )
     \     'filetypes': [ 'cmake' ],
     \   },
     \ ]
+  execute 'source' s:lsp_dir . '/haskell/snippet.vim'
 endif
 
-"    \      '/Library/Developer/CommandLineTools//Library/PrivateFrameworks/LLDB.framework/Versions/A/Resources/debugserver',
-"    \      'localhost:54321',
+" let g:ycm_language_server += [
+"     \   {
+"     \     'name': 'python',
+"     \     'cmdline': [ 'node', s:lsp_dir . '/python/node_modules/.bin/pyright-langserver', '--stdio' ],
+"     \     'filetypes': [ 'python' ],
+"     \   },
+"     \ ]
+
 let g:ycm_language_server += [
   \   {
   \     'name': 'tcl-parse-test',
@@ -296,6 +305,33 @@ let g:grepprg="ag --nogroup --column"
 let g:vimspector_enable_mappings = 'HUMAN'
 let g:vimspector_test_args = '--basedir test-base'
 let g:vimspector_install_gadgets = [ '--all', '--force-all' ]
+
+let g:vimspector_adapters = #{
+      \   test_debugpy: #{ extends: 'debugpy' }
+      \ }
+
+let g:vimspector_configurations = {
+      \ "test_debugpy_config": {
+      \   "adapter": "test_debugpy",
+      \   "filetypes": [ "python" ],
+      \   "configuration": {
+      \     "request": "launch",
+      \     "type": "python",
+      \     "cwd": "${fileDirname}",
+      \     "args": [],
+      \     "program": "${file}",
+      \     "stopOnEntry": v:false,
+      \     "console": "integratedTerminal",
+      \     "integer": 123,
+      \   },
+      \   "breakpoints": {
+      \     "exception": {
+      \       "raised": "N",
+      \       "uncaught": "",
+      \       "userUnhandled": ""
+      \     }
+      \   }
+      \ } }
 
 " netrw
 let g:netrw_keepj = ''

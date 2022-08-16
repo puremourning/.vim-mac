@@ -30,7 +30,8 @@ nmap <leader>D <Plug>(YCMHover)
 nmap <localleader>yfw <Plug>(YCMFindSymbolInWorkspace)
 nmap <localleader>yfd <Plug>(YCMFindSymbolInDocument)
 nmap <localleader>ygd <Plug>(YCMPEditDefinition)
-
+nnoremap <silent> <localleader>ysd <cmd>YcmShowDetailedDiagnostic<CR>
+ 
 augroup CustYCMHover
   autocmd!
   autocmd FileType c,cpp,objc let b:ycm_hover = {

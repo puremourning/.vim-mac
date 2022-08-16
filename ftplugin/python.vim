@@ -119,10 +119,6 @@ function! s:RunTestUnderCursorInVimspector()
   echom "Running test '" . l:test_arg . "'"
 
 
-  " TODO: Do we need the file name here ?
-  " call vimspector#AddFunctionBreakpoint( l:test_func_name )
-  " HACK: NO IDEA WHY THIS IS NEEDED
-  call vimspector#internal#state#Reset()
   call vimspector#ToggleBreakpoint()
   call vimspector#LaunchWithSettings( { 'Test': l:test_arg } )
 endfunction

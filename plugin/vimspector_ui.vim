@@ -97,4 +97,6 @@ augroup VimspectorCustomMappings
   autocmd User VimspectorDebugEnded call s:OnDebugEnd()
 augroup END
 
+nmap <LocalLeader>B <Plug>VimspectorBreakpoints
+
 " }}}

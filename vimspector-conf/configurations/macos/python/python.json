@@ -4,7 +4,7 @@
       "adapter": "debugpy",
       "variables": {
         "python": {
-          "shell": "/bin/bash -c 'test -n ${VIRTUAL_ENV} && echo ${VIRTUAL_ENV}/bin/python || echo python3'"
+          "shell": "/bin/bash -c 'test -n \"$${VIRTUAL_ENV}\" && echo $${VIRTUAL_ENV}/bin/python || echo python3'"
         }
       },
       "configuration": {
