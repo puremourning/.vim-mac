@@ -27,9 +27,9 @@ function! s:GetCurrentFunction()
 
   let [ test_function, test_function_line ] = [ v:null, -1 ]
 
-  let pattern = '\V\C\s\*\%\(func\%\(tion\)\|def\)\?!\?\s\+\(\<\w\+\>\)\.\*\$'
+  let pattern = '\V\C\s\*\%\(func\%\(tion\)\?\|def\)!\?\s\+\(\<\w\+\>\)\.\*\$'
 
-  let lnum = prevnonblank( '.' )
+  let lnum = line( '.' )
 
   " Find the top-level method and class
   while lnum > 0
@@ -53,7 +53,7 @@ function! s:GetCurrentFunction()
       endif
     endif
 
-    let lnum = prevnonblank( lnum - 1 )
+    let lnum -= 1
   endwhile
 
   return [ v:null, -1 ]
