@@ -16,6 +16,7 @@ let g:ycm_complete_in_strings=1
 let g:ycm_always_populate_location_list=1
 let g:ycm_show_detailed_diag_in_popup=1
 let g:ycm_update_diagnostics_in_insert_mode=1
+let g:ycm_disable_tern=1
 
 " Use a popup for the completion preview window if available
 let g:ycm_add_preview_to_completeopt = 'popup'
@@ -168,11 +169,6 @@ if isdirectory( s:lsp_dir )
     \   { 'name': 'groovy',
     \     'filetypes': [ 'groovy' ],
     \     'cmdline': [ 'java', '-jar', s:lsp_dir . '/groovy/groovy-language-server/build/libs/groovy-language-server-all.jar' ]
-    \   },
-    \   { 'name': 'rust',
-    \     'filetypes': [ 'rust' ],
-    \     'cmdline': [ s:lsp_dir . '/rust/rust-analyzer/target/release/rust-analyzer' ],
-    \     'project_root_files': [ 'Cargo.toml' ],
     \   },
     \   { 'name': 'lua',
     \     'filetypes': [ 'lua' ],

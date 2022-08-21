@@ -155,7 +155,7 @@ function! BenGetCustomHighlighting()
      let s:done_property_types = 1
    endif
 
-  hi link YcmInlayHint Comment
+  "hi link YcmInlayHint Comment
 
 endfunction
 

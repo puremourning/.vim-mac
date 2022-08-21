@@ -30,7 +30,12 @@ nmap <leader>D <Plug>(YCMHover)
 nmap <localleader>yfw <Plug>(YCMFindSymbolInWorkspace)
 nmap <localleader>yfd <Plug>(YCMFindSymbolInDocument)
 nmap <localleader>ygd <Plug>(YCMPEditDefinition)
+nmap <silent> <localleader>h <Plug>(YCMToggleInlayHints)
 nnoremap <silent> <localleader>ysd <cmd>YcmShowDetailedDiagnostic<CR>
+
+" I hever use i_CTRL-E and i_CTRL-Y. While i hate overriding the builtin
+" function, this is more common for me.
+inoremap <silent> <C-E> <Plug>(YCMToggleSignatureHelp)
  
 augroup CustYCMHover
   autocmd!
@@ -41,3 +46,4 @@ augroup CustYCMHover
 augroup END
 
 nmap <leader>p :pclose!<cr>
+
