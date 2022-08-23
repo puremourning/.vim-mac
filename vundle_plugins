@@ -74,17 +74,18 @@ let g:ycm_filter_diagnostics = {
       \   },
       \ }
 
-if g:ycm_use_clangd
-  if !has( 'win32' ) && g:ycm_enable_inlay_hints
-    let g:ycm_clangd_binary_path = get( g:, 'ycm_clangd_binary_path',
-          \ expand( '$HOME/Development/llvm-project/build/bin/clangd' ) )
+if g:ycm_use_clangd &&
+    \ !get( g:, 'ycm_clangd_clean', 0 ) &&
+    \ !has_key( g: , 'ycm_clangd_binary_path' )
+
+  if g:ycm_enable_inlay_hints &&
+     \ executable( expand( '$HOME/Development/llvm-project/build/bin/clangd' ) )
+    let g:ycm_clangd_binary_path =
+          \ expand( '$HOME/Development/llvm-project/build/bin/clangd' )
+  elseif executable( s:brew . '/opt/llvm/bin/clangd' )
+    let g:ycm_clangd_binary_path = s:brew . '/opt/llvm/bin/clangd'
   endif
 
-  if !get( g:, 'ycm_clangd_clean', 0 ) && !exists( 'g:ycm_clangd_binary_path' )
-    if executable( s:brew . '/opt/llvm/bin/clangd' )
-      let g:ycm_clangd_binary_path = s:brew . '/opt/llvm/bin/clangd'
-    endif
-  endif
 endif
 
 " Adds Vim
