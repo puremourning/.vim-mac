@@ -45,6 +45,9 @@ set wildmenu
 " For gf and :find
 set path+=**
 
+" This is way too crashy
+"silent! set cmdheight=0
+
 " Persistent undo
 set undofile
 let &undodir = expand( '<sfile>:p:h' ) . '/undodir,.'
@@ -153,6 +156,7 @@ function! BenGetCustomHighlighting()
   " endif
   "
   "hi link YcmInlayHint Comment
+  hi link MessageWindow CursorLineNr
 
 endfunction
 
