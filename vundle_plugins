@@ -64,7 +64,7 @@ call extend( g:ycm_clangd_args, [
 let g:ycm_enable_semantic_highlighting =
       \ get( g:, 'ycm_enable_semantic_highlighting', 1 )
 let g:ycm_enable_inlay_hints =
-      \ get( g:, 'ycm_enable_inlay_hints', 1 )
+      \ get( g:, 'ycm_enable_inlay_hints', 0 )
 let g:ycm_echo_current_diagnostic = 'virtual-text'
 
 " Ignore the error about comments not being allowed
