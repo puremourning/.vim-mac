@@ -6,8 +6,5 @@
 "  " ∑ is the right-option+q
 "  nnoremap <buffer> œ :cprevious<CR>
 "else
-"  nnoremap <buffer> <M-r> :w<CR>:Make run<CR>
-"  nnoremap <buffer> <M-b> :w<CR>:Make build<CR>
-"  nnoremap <buffer> <M-w> :cnext<CR>
-"  nnoremap <buffer> <M-q> :cprevious<CR>
+nnoremap <silent> <buffer> <M-i> <cmd>update <bar> Make<CR>
 "endif
