@@ -100,4 +100,11 @@ augroup END
 
 nmap <LocalLeader>B <Plug>VimspectorBreakpoints
 
+let g:vimspector_custom_process_picker = expand( '<SID>' ) . 'PickProcess()'
+
+function! s:PickProcess() abort
+  return str2nr(split(fzf#run({'source': 'ps -e'})[0])[0])
+endfunction
+
+
 " }}}
