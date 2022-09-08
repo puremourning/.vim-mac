@@ -392,7 +392,13 @@ let g:ycm_java_jdtls_extension_path=[
       \ g:vimspector_base_dir . '/gadgets/macos' ]
 
 if get(g:, 'benj_test_ycm')
-  Plugin 'puremourning/YouCompleteMe', { 'pinned': 1 }
+  if has_key( g:, 'ycm_path' )
+    let &rtp .= ',' .. g:ycm_path
+  elseif exists( '$PATH_TO_YCM' )
+    let &rtp .= ',' .. $PATH_TO_YCM
+  else
+    Plugin 'puremourning/YouCompleteMe', { 'pinned': 1 }
+  endif
   Plugin 'puremourning/vimspector',    { 'pinned': 1 }
   let g:ycm_roslyn_binary_path=expand( '<sfile>:p:h' )
         \ . '/bundle/YouCompleteMe/third_party/ycmd/third_party/omnisharp-roslyn/run'
