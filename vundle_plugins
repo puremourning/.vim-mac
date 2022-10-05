@@ -87,10 +87,10 @@ if g:ycm_use_clangd &&
 
 endif
 
-" Adds Vim
+"   'c,cpp,objc': [ 're!\w{3}', '_' ],
 let g:ycm_semantic_triggers =  {
   \   'vim' : [ '.', ':', '#' ],
-  \   'c,cpp,objc': [ 're!\w{3}', '_' ],
+  \   'c,cpp,objc': [ '_' ],
   \   'json': [ ' ' ],
   \   'VimspectorPrompt': [ '.', '->', ':', '<' ]
   \ }
