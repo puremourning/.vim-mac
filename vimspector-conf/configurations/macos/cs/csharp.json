@@ -1,5 +1,12 @@
 {
   "configurations": {
+    "Attach": {
+      "adapter": "netcoredbg",
+      "autoselect": false,
+      "configuration": {
+        "request": "attach"
+      }
+    }/*,
     "launch - netcoredbg - localbuild": {
       "adapter": "netcoredbg-debug",
       "configuration": {
@@ -8,9 +15,7 @@
         "args": [],
         "stopAtEntry": true
       }
-    }
-  },
-  "configurations": {
+    },
     "launch - netcoredbg - socket": {
       "adapter": "multi-session",
       "variables": {
@@ -24,5 +29,6 @@
         "stopAtEntry": true
       }
     }
+    */
   }
 }
