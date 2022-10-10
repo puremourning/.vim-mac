@@ -296,7 +296,8 @@ let g:windowswap_map_keys = 0
 nnoremap <silent> <leader>ww :call WindowSwap#EasyWindowSwap()<CR>
 
 " vim-grep - use the silver searcher
-let g:grepprg="ag --nogroup --column"
+let g:vimgrep_ag_command="ag --vimgrep --nogroup --column --hidden"
+
 
 " vimspector
 " let g:vimspector_enable_mappings = 'VISUAL_STUDIO'
