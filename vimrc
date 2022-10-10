@@ -176,6 +176,14 @@ endif
 if exists( '$TMUX' ) || $TERM ==# 'screen-256color'
   let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
   let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
+
+  " Tmux doesn't support modifiyOtherKeys mode 2, so we have to use esc+<letter>
+  set timeoutlen=1000 ttimeoutlen=0
+  for i in range( char2nr( 'a' ), char2nr( 'z' ) )
+    let ch = nr2char( i )
+    execute 'set <M-' . ch . '>=' . ch
+    execute 'set <M-' . toupper( ch ) . '>=\e' . toupper( ch )
+  endfor
 endif
 
 let &t_Cs = "\e[4:3m"
