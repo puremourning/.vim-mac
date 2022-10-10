@@ -363,3 +363,5 @@ nmap <localleader>yfd <Plug>(YCMFindSymbolInDocument)
 "   autocmd ModeChanged *:t call echoraw(&t_TE)
 "   autocmd ModeChanged t:* call echoraw(&t_TI)
 " endif
+"
+let g:html_no_rendering = 1

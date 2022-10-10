@@ -19,11 +19,13 @@ function! s:SetUpUI() abort
   nmap <silent> <buffer> <LocalLeader>d <Plug>VimspectorBalloonEval
   xmap <silent> <buffer> <LocalLeader>d <Plug>VimspectorBalloonEval
 
+  nmap <LocalLeader>D <Plug>VimspectorDisassemble
 endfunction
 
 augroup VimspectorCustom
   au!
   autocmd User VimspectorUICreated call s:SetUpUI()
+  " autocmd FileType VimspectorDisassembly setlocal syntax=asm
 augroup END
 
 let g:vimspector_sign_priority = {
@@ -89,6 +91,8 @@ function! s:OnDebugEnd() abort
   endtry
 
   let s:mapped = {}
+
+  nunmap <LocalLeader>D
 endfunction
 
 augroup VimspectorCustomMappings
@@ -105,6 +109,5 @@ let g:vimspector_custom_process_picker = expand( '<SID>' ) . 'PickProcess()'
 function! s:PickProcess() abort
   return str2nr(split(fzf#run({'source': 'ps -e'})[0])[0])
 endfunction
-
 
 " }}}
