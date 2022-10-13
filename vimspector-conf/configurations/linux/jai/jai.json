@@ -1,0 +1,70 @@
+{
+  "$schema": "https://puremourning.github.io/vimspector/schema/vimspector.schema.json",
+  "adapters": {
+    "codelldb-with-build": {
+      "extends": "CodeLLDB",
+      "command": [
+        "$HOME/Development/vimspector/CodeLLDB/build-linux/adapter/codelldb",
+        "--port", "${unusedLocalPort}"
+      ],
+      "variables": {
+        "buildme": {
+          "shell": "jai ${buildArgs:${file\\}}"
+        },
+        "libDir": "$HOME/.vim/vimspector-conf/configurations/linux/jai"
+      },
+      "configuration": {
+        "preRunCommands": [
+          "command script import ${libDir}/jaitype.py"
+        ]
+      }
+    }
+  },
+  "configurations": {
+    "Base": {
+      "filetypes": [],
+      "configuration": {
+        "expressions": "native",
+        "assemblyFlavor": "intel"
+      }
+    },
+    "Run": {
+      "filetypes": [ "jai" ],
+      "adapter": "codelldb-with-build",
+      "extends": "Base",
+      "configuration": {
+        "request": "launch",
+        "program": "${workspaceRoot}/${binaryName:${fileBasenameNoExtension\\}}",
+        "args": [ "*${args}" ],
+        "stopAtEntry": true,
+        "stopOnEntry": true
+      }
+    },
+    "Attach": {
+      "filetypes": [ "jai" ],
+      "extends": "Base",
+      "adapter": {
+        "extends": "CodeLLDB",
+        "command": [
+          "$HOME/Development/vimspector/CodeLLDB/build-linux/adapter/codelldb",
+          "--port", "${unusedLocalPort}"
+        ]
+      },
+      "configuration": {
+        "request": "attach",
+        "program": "${workspaceRoot}/${binaryName:${fileBasenameNoExtension\\}}",
+        "pid": "${PID}"
+      }
+    }
+  }
+}
+
+
+/*
+
+
+"type summary add -o \"return bytes( valobj.GetChildMemberWithName( '__data' ).GetPointeeData( 0, int(valobj.GetChildMemberWithName( '__size' ).value) ).uint8s ).decode( 'utf-8' )\" -x std::.*::basic_string_view std::.*::string_view",
+
+type summary add -o "return bytes( valueobj.GetChildMemberWithName('data').GetPointeeData(0, int( valueobj.GetChildMemberWithName('count').value )).uint8s).decode( 'utf-8' )" -x string
+
+*/

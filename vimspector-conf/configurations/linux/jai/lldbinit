@@ -1,0 +1,3 @@
+script import jaitype
+type summary add -F jaitype.String -x string
+type synthetic add "[] string" --python-class jaitype.ArrayChildrenProvider
