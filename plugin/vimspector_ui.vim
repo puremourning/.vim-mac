@@ -92,7 +92,7 @@ function! s:OnDebugEnd() abort
 
   let s:mapped = {}
 
-  nunmap <LocalLeader>D
+  silent! nunmap <LocalLeader>D
 endfunction
 
 augroup VimspectorCustomMappings
