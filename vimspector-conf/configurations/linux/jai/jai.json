@@ -10,12 +10,11 @@
       "variables": {
         "buildme": {
           "shell": "jai ${buildArgs:${file\\}}"
-        },
-        "libDir": "$HOME/.vim/vimspector-conf/configurations/linux/jai"
+        }
       },
       "configuration": {
         "preRunCommands": [
-          "command script import ${libDir}/jaitype.py"
+          "command script import $HOME/.lldbinit"
         ]
       }
     }
@@ -24,11 +23,10 @@
     "Base": {
       "filetypes": [],
       "configuration": {
-        "expressions": "native",
-        "assemblyFlavor": "intel"
+        "expressions": "native"
       }
     },
-    "Run": {
+    "(standard) Run Current File": {
       "filetypes": [ "jai" ],
       "adapter": "codelldb-with-build",
       "extends": "Base",
@@ -40,7 +38,7 @@
         "stopOnEntry": true
       }
     },
-    "Attach": {
+    "(standard) Attach Current File": {
       "filetypes": [ "jai" ],
       "extends": "Base",
       "adapter": {

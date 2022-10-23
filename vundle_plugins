@@ -26,7 +26,7 @@ catch /.*/
 endtry
 
 let g:ycm_collect_identifiers_from_comments_and_strings=1
-let g:ycm_collect_identifiers_from_tags_files=0
+let g:ycm_collect_identifiers_from_tags_files=1
 let g:ycm_java_jdtls_use_clean_workspace=0
 if executable( s:brew . '/opt/java/bin/java' )
   let g:ycm_java_binary_path = s:brew . '/opt/java/bin/java'
@@ -193,7 +193,7 @@ if isdirectory( s:lsp_dir )
   let g:ycm_lsp_dir = s:lsp_dir
   execute 'source' s:lsp_dir . '/haskell/snippet.vim'
   execute 'source' s:lsp_dir . '/dart/snippet.vim'
-  if executable( 'jai' )
+  if executable( 'jai' ) && get( g:, 'enable_jsi_lsp', 0 )
     execute 'source' s:lsp_dir . '/jai/snippet.vim'
   endif
 endif
