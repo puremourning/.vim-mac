@@ -384,12 +384,15 @@ let g:fzf_colors =
 let g:dispatch_no_tmux_make = 1
 
 
-if has( 'win32' )
+if has( 'win32' ) && !has('win32unix')
   set rtp+=~/vimfiles/bundle/Vundle.vim
+  let s:plugindir='~/vimfiles/bundle'
 else
   set rtp+=~/.vim/bundle/Vundle.vim
+  let s:plugindir='~/.vim/bundle'
 endif
-call vundle#begin()
+
+call vundle#begin(s:plugindir)
 
 Plugin 'gmarik/Vundle.vim'
 
