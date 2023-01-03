@@ -27,6 +27,13 @@ CompilerSet errorformat=
       \%Z%[%^\ ]%\\@=%m
 
 let &l:makeprg=fnamemodify( findfile( 'run_tests.py', '.;' ), ':p' )
-      \ . ' $* 2>&1'
+      \ . ' $*'
+
+if has( 'win32' ) && ! has( 'win32unix' )
+  let &l:makeprg='python ' . &l:makeprg
+else
+  let &l:makeprg.=' 2>&1'
+endif
 
 let $YCM_TEST_RETRY_TIMEOUT = 5
+let $YCM_TEST_NO_RETRY = 1
