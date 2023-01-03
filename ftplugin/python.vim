@@ -151,7 +151,23 @@ if ! has( 'gui_running' )
   nnoremap <buffer> œ :cnext<CR>
   " Ω is the right-option+z
   nnoremap <buffer> Ω :cprevious<CR>
-
+else
+  " ® is right-option+r
+  nnoremap <buffer> <M-r> :call <SID>RunTest()<CR>
+  " ® is right-option+r
+  nnoremap <buffer> <M-S-r> :call <SID>RunAllTests()<CR>
+  " † is right-option+t
+  nnoremap <buffer> <M-t> :call <SID>RunTestUnderCursor()<CR>
+  " † is right-option+t
+  nnoremap <buffer> <leader><M-t> :call <SID>RunTestUnderCursorInVimspector()<CR>
+  " ƒ is right-option+b
+  nnoremap <buffer> <M-b> :call <SID>Build()<CR>
+  " å is the right-option+q
+  nnoremap <buffer> <M-q> :cfirst<CR>
+  " å is the right-option+a
+  nnoremap <buffer> <M-a> :cnext<CR>
+  " Ω is the right-option+z
+  nnoremap <buffer> <M-z> :cprevious<CR>
 endif
 
 command! -buffer -nargs=* JupyterStartConsole
