@@ -21,7 +21,7 @@ let g:ycm_disable_tern=1
 " Use a popup for the completion preview window if available
 let g:ycm_add_preview_to_completeopt = 'popup'
 try
-  set completepopup=height:10,width:60,highlight:PmenuSbar,border:off
+  set completepopup=height:10,width:60,highlight:PmenuSbar,border:off,align:menu
 catch /.*/
 endtry
 
@@ -436,6 +436,9 @@ Plugin 'tpope/vim-fugitive'
 
 " Colour schemes
 Plugin 'romainl/Apprentice'
+Plugin 'habamax/vim-habaurora'
+Plugin 'habamax/vim-freyeday'
+Plugin 'habamax/vim-saturnite'
 Plugin 'habamax/vim-bronzage'
 
 " Quality of life improvements to built-in features
