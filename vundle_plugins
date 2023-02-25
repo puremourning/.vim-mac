@@ -66,6 +66,7 @@ let g:ycm_enable_semantic_highlighting =
 let g:ycm_enable_inlay_hints =
       \ get( g:, 'ycm_enable_inlay_hints', 0 )
 let g:ycm_echo_current_diagnostic = 'virtual-text'
+let g:ycm_remove_inlay_hints_in_insert_mode = 1
 
 " Ignore the error about comments not being allowed
 let g:ycm_filter_diagnostics = {
@@ -168,12 +169,6 @@ if isdirectory( s:lsp_dir )
     \     'filetypes': [ 'groovy' ],
     \     'cmdline': [ 'java', '-jar', s:lsp_dir . '/groovy/groovy-language-server/build/libs/groovy-language-server-all.jar' ]
     \   },
-    \   { 'name': 'lua',
-    \     'filetypes': [ 'lua' ],
-    \     'cmdline': [ expand( '$HOME/Development/lsp/lua/lua-language-server/root/extension/server/bin/macOS/lua-language-server'),
-    \                  expand( '$HOME/Development/lsp/lua/lua-language-server/root/extension/server/main.lua' ) ],
-    \     'capabilities': { 'textDocument': { 'completion': { 'completionItem': { 'snippetSupport': v:true } } } },
-    \   },
     \   { 'name': 'vim',
     \     'filetypes': [ 'vim' ],
     \     'cmdline': [ s:lsp_dir . '/viml/node_modules/.bin/vim-language-server', '--stdio' ],
@@ -196,6 +191,7 @@ if isdirectory( s:lsp_dir )
   if executable( 'jai' ) && get( g:, 'enable_jsi_lsp', 0 )
     execute 'source' s:lsp_dir . '/jai/snippet.vim'
   endif
+  execute 'source' s:lsp_dir . '/lua/snippet.vim'
 endif
 
 " let g:ycm_language_server += [

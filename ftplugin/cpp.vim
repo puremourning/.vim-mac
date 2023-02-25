@@ -6,5 +6,11 @@
 "  " ∑ is the right-option+q
 "  nnoremap <buffer> œ :cprevious<CR>
 "else
-nnoremap <silent> <buffer> <M-i> <cmd>update <bar> Make<CR>
+
+function! s:Make()
+  let dir = get( b:, 'make_dir', get( g:, 'make_dir', getcwd() ) )
+  execute 'Make -j 10 -C' dir
+endfunction
+
+nnoremap <silent> <buffer> <M-i> <cmd>update <bar> call <SID>Make()<CR>
 "endif
