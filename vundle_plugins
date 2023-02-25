@@ -406,8 +406,8 @@ if get(g:, 'benj_test_ycm')
     Plugin 'puremourning/YouCompleteMe', { 'pinned': 1 }
   endif
   Plugin 'puremourning/vimspector',    { 'pinned': 1 }
-  let g:ycm_roslyn_binary_path=expand( '<sfile>:p:h' )
-        \ . '/bundle/YouCompleteMe/third_party/ycmd/third_party/omnisharp-roslyn/run'
+  "let g:ycm_roslyn_binary_path=expand( '<sfile>:p:h' )
+  "      \ . '/bundle/YouCompleteMe/third_party/ycmd/third_party/omnisharp-roslyn/run'
 else
   Plugin 'puremourning/YouCompleteMe', { 'name': 'YouCompleteMe-Clean' }
   Plugin 'puremourning/vimspector',    { 'name': 'vimspector-Clean' }
