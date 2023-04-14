@@ -33,6 +33,7 @@ let g:vimspector_sign_priority = {
       \ 'vimspectorBPCond': 11,
       \ 'vimspectorBPDisabled': 11,
       \ 'vimspectorPC': 12,
+      \ 'vimspectorNonActivePC': 11,
       \ }
 
 " Custom mappings while debuggins {{{

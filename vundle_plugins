@@ -423,7 +423,7 @@ if has( 'python3' )
   Plugin 'SirVer/ultisnips'
   Plugin 'honza/vim-snippets'
 endif
-Plugin 'neomake/neomake'
+Plugin 'puremourning/neomake'
 Plugin 'airblade/vim-gitgutter'
 Plugin 'ntpeters/vim-better-whitespace'
 
@@ -480,8 +480,6 @@ Plugin 'tpope/vim-eunuch'
 call vundle#end()
 filetype plugin indent on
 
-if exists( '*neomake#configure#automake' )
-  call neomake#configure#automake( 'nrwi', 250 )
-endif
+silent! call neomake#configure#automake( 'nrwi', 250 )
 
 " vim:ft=vim:foldmethod=marker
