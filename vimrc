@@ -167,7 +167,16 @@ augroup END
 
 " let s:cs = 'apprentice'
 " let s:cs = 'bronzage'
-let s:cs = 'saturnite'
+"
+let s:cs_light = 'freyeday'
+let s:cs_dark = 'saturnite'
+
+" On macOS switch to light colorscheme when system theme is light
+let s:cs = s:cs_dark
+if executable( 'defaults' ) &&
+      \ system( 'defaults read -g AppleInterfaceStyle' ) !~# '^Dark'
+  let s:cs = s:cs_light
+endif
 
 if has('gui_running')
   let s:cs = 'freyeday'
