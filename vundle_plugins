@@ -228,6 +228,17 @@ let g:ycm_language_server += [
   \   },
   \ ]
 
+if get( g:, 'ycm_use_ccls', 0 )
+  let g:ycm_language_server += [
+        \ {
+        \   'name': 'ccls',
+        \   'cmdline': [ 'ccls' ],
+        \   'filetypes': [ 'c', 'cpp', 'cuda', 'objc', 'objcpp' ],
+        \   'project_root_files': [ '.ccls-root', 'compile_commands.json' ]
+        \ }
+        \ ]
+endif
+
 let g:snips_author='Ben Jackson (puremourning@gmail.com)'
 
 let g:Verdin#cooperativemode = 1
