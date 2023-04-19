@@ -36,6 +36,12 @@ let g:vimspector_sign_priority = {
       \ 'vimspectorNonActivePC': 11,
       \ }
 
+let g:vimspector_presentation_hint_hl = {
+  \    'normal': 'Identifier',
+  \    'label':  'Title',
+  \ }
+
+
 " Custom mappings while debuggins {{{
 let s:mapped = {}
 

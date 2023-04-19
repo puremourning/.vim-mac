@@ -96,18 +96,43 @@ function! BenGetMode()
   if has_key( s:modemap, l:m )
     return s:modemap[ l:m ]
   endif
-  return "ERROR"
+  return 'ERROR'
+endfunction
+
+function! BenGetCustomInfo()
+  if !empty( &buftype )
+    return ''
+  endif
+
+  if !exists( '*vimspector#GetSessionName' )
+    return ''
+  endif
+
+  return vimspector#GetSessionName()
 endfunction
 
 set statusline=
+" Set User1 highlight
 set statusline+=%1*
+" Show mode
 set statusline+=\ %{BenGetMode()}\ 
+" Set User2 highlight
 set statusline+=%2*
+" truncate from here, print filename
 set statusline+=\ %<%f
+" Group(...) is removed if empty. Flags have commas removed
+" (Modified, ReadOnly, Help flags)
 set statusline+=%(\ [%M%R%H]%)
+" Switch to right-aligned section
 set statusline+=%=
+" Custom info
+set statusline+=%*
+set statusline+=%(\ %.20{BenGetCustomInfo()}\ %)
+" Set User3 highlight
 set statusline+=%3*
+" Filetype
 set statusline+=\ %y
+" Line:col/total lines
 set statusline+=\ %l:%c/%L
 set statusline+=\ 
 
