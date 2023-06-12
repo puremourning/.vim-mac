@@ -32,9 +32,13 @@ if executable( s:brew . '/opt/java/bin/java' )
   let g:ycm_java_binary_path = s:brew . '/opt/java/bin/java'
 elseif executable( s:brew . '/opt/java11/bin/java' )
   let g:ycm_java_binary_path = s:brew . '/opt/java11/bin/java'
+elseif executable( '/usr/lib/jvm/java-1.17.0-openjdk-amd64/bin/java' )
+  let g:ycm_java_binary_path = '/usr/lib/jvm/java-1.17.0-openjdk-amd64/bin/java'
 endif
 let g:ycm_java_jdtls_workspace_root_path=$HOME . '/.ycmd/java/Workspace'
-let g:ycm_server_log_level='debug'
+" let g:ycm_java_jdtls_repository_path = expand(
+"       \ '$HOME/repos/github/eclipse.jdt.ls/org.eclipse.jdt.ls.product/target/repository' )
+"let g:ycm_server_log_level='debug'
 let g:ycm_keep_logfiles=0
 let g:ycm_auto_hover = ''
 function! s:DefaultClangd()
@@ -50,15 +54,19 @@ endfunction
 
 call s:DefaultClangd()
 
+" query-driver causes problems when used in combination with --gcc-toolchain:
+" system include paths are added twice (and inconsistently); the solution for
+" tbricks code is to just remove it as the gcc-toolchain flag adds enough actual
+" paths
+      " \ '--query-driver=/**/*',
+      " \ '-log=verbose',
 let g:ycm_clangd_args = get( g:, 'ycm_clangd_args', [] )
 call extend( g:ycm_clangd_args, [
       \ '-background-index',
       \ '-completion-style=bundled',
       \ '-pch-storage=memory',
       \ '-header-insertion=iwyu',
-      \ '-log=verbose',
       \ '-j=4',
-      \ '--query-driver=/**/*',
       \ ] )
 
 let g:ycm_enable_semantic_highlighting =
@@ -149,10 +157,6 @@ if isdirectory( s:lsp_dir )
     \     'cmdline': [ s:lsp_dir . '/ruby/bin/solargraph', 'stdio' ],
     \     'filetypes': [ 'ruby' ],
     \   },
-    \   { 'name': 'kotlin',
-    \     'filetypes': [ 'kotlin' ],
-    \     'cmdline': [ s:lsp_dir . '/kotlin/server/build/install/server/bin/server' ],
-    \   },
     \   { 'name': 'd',
     \     'filetypes': [ 'd' ],
     \     'cmdline': [ s:lsp_dir . '/d/serve-d' ],
@@ -192,6 +196,7 @@ if isdirectory( s:lsp_dir )
     execute 'source' s:lsp_dir . '/jai/snippet.vim'
   endif
   execute 'source' s:lsp_dir . '/lua/snippet.vim'
+  execute 'source' s:lsp_dir . '/kotlin/snippet.vim'
 endif
 
 " let g:ycm_language_server += [

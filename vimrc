@@ -217,7 +217,7 @@ if exists( '$TMUX' ) || $TERM ==# 'screen-256color'
   let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
 
   " Tmux doesn't support modifiyOtherKeys mode 2, so we have to use esc+<letter>
-  set timeoutlen=1000 ttimeoutlen=0
+  set timeoutlen=500 ttimeoutlen=0
   for i in range( char2nr( 'a' ), char2nr( 'z' ) )
     let ch = nr2char( i )
     execute 'set <M-' . ch . '>=' . ch
@@ -318,6 +318,13 @@ if !has( 'nvim' )
 endif
 set title
 
+" These guys use mad non-breaking code
+set linebreak
+set breakindent
+set showbreak=>\ 
+set breakindentopt=shift:2,min:64
+
+
 " don't indent namespaces
 set cinoptions+=N-s
 " align continuations within open parens with the start of the parens
@@ -402,3 +409,5 @@ nmap <localleader>yfd <Plug>(YCMFindSymbolInDocument)
 " endif
 "
 let g:html_no_rendering = 1
+
+set secure exrc
