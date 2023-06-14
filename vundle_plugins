@@ -34,6 +34,8 @@ elseif executable( s:brew . '/opt/java11/bin/java' )
   let g:ycm_java_binary_path = s:brew . '/opt/java11/bin/java'
 elseif executable( '/usr/lib/jvm/java-1.17.0-openjdk-amd64/bin/java' )
   let g:ycm_java_binary_path = '/usr/lib/jvm/java-1.17.0-openjdk-amd64/bin/java'
+elseif executable( '/etc/alternatives/java_sdk_11/bin/java' )
+  let g:ycm_java_binary_path = '/etc/alternatives/java_sdk_11/bin/java'
 endif
 let g:ycm_java_jdtls_workspace_root_path=$HOME . '/.ycmd/java/Workspace'
 " let g:ycm_java_jdtls_repository_path = expand(
