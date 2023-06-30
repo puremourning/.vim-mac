@@ -39,7 +39,7 @@ runtime! packages.vim
 set nocompatible
 set wildmode=longest:full,full
 if has( 'patch-8.2.4325' )
-  set wildoptions+=pum
+  set wildoptions+=pum,fuzzy
 endif
 set wildmenu
 " For gf and :find
