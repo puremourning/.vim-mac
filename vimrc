@@ -251,7 +251,7 @@ set guioptions=at
 " set lines=50 columns=80
 
 " Set up indenting, and searching
-set shiftwidth=2 expandtab incsearch showmatch smartcase autoindent
+set shiftwidth=4 expandtab incsearch showmatch smartcase autoindent
 
 " use clever case searches when ignorecase is turned on
 set smartcase
