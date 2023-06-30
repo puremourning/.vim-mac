@@ -17,6 +17,7 @@ let g:ycm_always_populate_location_list=1
 let g:ycm_show_detailed_diag_in_popup=1
 let g:ycm_update_diagnostics_in_insert_mode=1
 let g:ycm_disable_tern=1
+let g:ycm_max_diagnostics_to_display=100 
 
 " Use a popup for the completion preview window if available
 let g:ycm_add_preview_to_completeopt = 'popup'
