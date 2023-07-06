@@ -31,12 +31,12 @@ let g:ycm_collect_identifiers_from_tags_files=1
 let g:ycm_java_jdtls_use_clean_workspace=0
 if executable( s:brew . '/opt/java/bin/java' )
   let g:ycm_java_binary_path = s:brew . '/opt/java/bin/java'
-elseif executable( s:brew . '/opt/java11/bin/java' )
-  let g:ycm_java_binary_path = s:brew . '/opt/java11/bin/java'
+elseif executable( s:brew . '/opt/java17/bin/java' )
+  let g:ycm_java_binary_path = s:brew . '/opt/java17/bin/java'
 elseif executable( '/usr/lib/jvm/java-1.17.0-openjdk-amd64/bin/java' )
   let g:ycm_java_binary_path = '/usr/lib/jvm/java-1.17.0-openjdk-amd64/bin/java'
-elseif executable( '/etc/alternatives/java_sdk_11/bin/java' )
-  let g:ycm_java_binary_path = '/etc/alternatives/java_sdk_11/bin/java'
+elseif executable( '/etc/alternatives/java_sdk_17/bin/java' )
+  let g:ycm_java_binary_path = '/etc/alternatives/java_sdk_17/bin/java'
 endif
 let g:ycm_java_jdtls_workspace_root_path=$HOME . '/.ycmd/java/Workspace'
 " let g:ycm_java_jdtls_repository_path = expand(
