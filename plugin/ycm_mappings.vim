@@ -1,15 +1,15 @@
 " Map YouCompleteMe shortcut
 
 nnoremap <silent> <Plug>YcmMappingGetType :YcmCompleter GetType<CR>
-            \ :call repeat#set("\<Plug>YcmMappingGetType")<CR>
+            \:call repeat#set("\<Plug>YcmMappingGetType")<CR>
 nnoremap <silent> <Plug>YcmMappingFixIt :YcmCompleter FixIt<CR>
-            \ :call repeat#set("\<Plug>YcmMappingFixIt")<CR>
+            \:call repeat#set("\<Plug>YcmMappingFixIt")<CR>
 nnoremap <silent> <Plug>YcmMappingGoTo :YcmCompleter GoTo<CR>
-            \ :call repeat#set("\<Plug>YcmMappingGoTo")<CR>
+            \:call repeat#set("\<Plug>YcmMappingGoTo")<CR>
 nnoremap <silent> <Plug>YcmMappingGetDoc :YcmCompleter GetDoc<CR>
-            \ :call repeat#set("\<Plug>YcmMappingGetDoc")<CR>
+            \:call repeat#set("\<Plug>YcmMappingGetDoc")<CR>
 nnoremap <silent> <Plug>YcmMappingGoToReferences :YcmCompleter GoToReferences<CR>
-            \ :call repeat#set("\<Plug>YcmMappingGoToReferences")<CR>
+            \:call repeat#set("\<Plug>YcmMappingGoToReferences")<CR>
 
 nmap <leader>ygt   <Plug>YcmMappingGetType
 nmap <leader>ygT   <Plug>YcmMappingGetType
