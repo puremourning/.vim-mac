@@ -78,7 +78,7 @@ let g:ycm_enable_semantic_highlighting =
 let g:ycm_enable_inlay_hints =
       \ get( g:, 'ycm_enable_inlay_hints', 0 )
 let g:ycm_echo_current_diagnostic = 'virtual-text'
-let g:ycm_remove_inlay_hints_in_insert_mode = 1
+let g:ycm_clear_inlay_hints_in_insert_mode = 1
 
 " Ignore the error about comments not being allowed
 let g:ycm_filter_diagnostics = {
