@@ -37,7 +37,6 @@ let g:vimspector_sign_priority = {
       \ }
 
 let g:vimspector_presentation_hint_hl = {
-  \    'normal': 'Identifier',
   \    'label':  'Title',
   \ }
 
