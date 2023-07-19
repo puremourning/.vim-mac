@@ -104,11 +104,15 @@ function! BenGetCustomInfo()
     return ''
   endif
 
-  if !exists( '*vimspector#GetSessionName' )
+  if !exists( '*vimspector#GetSessionName' ) ||
+        \ !exists( '*vimspector#GetSessionID' )
     return ''
   endif
 
   return vimspector#GetSessionName()
+        \ .. ' ('
+        \ .. vimspector#GetSessionID()
+        \ .. ')'
 endfunction
 
 set statusline=
