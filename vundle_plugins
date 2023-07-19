@@ -171,10 +171,6 @@ if isdirectory( s:lsp_dir )
     \     'filetypes': [ 'd' ],
     \     'cmdline': [ s:lsp_dir . '/d/serve-d' ],
     \   },
-    \   { 'name': 'vue',
-    \     'filetypes': [ 'vue' ],
-    \     'cmdline': [ s:lsp_dir . '/vue/node_modules/.bin/vls' ]
-    \   },
     \   { 'name': 'docker',
     \     'filetypes': [ 'dockerfile' ],
     \     'cmdline': [ s:lsp_dir . '/docker/node_modules/.bin/docker-langserver', '--stdio' ]
@@ -197,13 +193,13 @@ if isdirectory( s:lsp_dir )
 
   let g:ycm_lsp_dir = s:lsp_dir
   execute 'source' s:lsp_dir . '/groovy/snippet.vim'
+  execute 'source' s:lsp_dir . '/volar/snippet.vim'
   execute 'source' s:lsp_dir . '/haskell/snippet.vim'
   execute 'source' s:lsp_dir . '/dart/snippet.vim'
-  if executable( 'jai' ) && get( g:, 'enable_jsi_lsp', 0 )
-    execute 'source' s:lsp_dir . '/jai/snippet.vim'
-  endif
+  execute 'source' s:lsp_dir . '/jai/snippet.vim'
   execute 'source' s:lsp_dir . '/lua/snippet.vim'
-  execute 'source' s:lsp_dir . '/kotlin/snippet.vim'
+  execute  'source' s:lsp_dir . '/matlab/snippet.vim'
+  execute  'source' s:lsp_dir . '/kotlin/snippet.vim'
 endif
 
 " let g:ycm_language_server += [
