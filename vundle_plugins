@@ -70,6 +70,7 @@ call extend( g:ycm_clangd_args, [
       \ '-pch-storage=memory',
       \ '-header-insertion=iwyu',
       \ '-j=4',
+      \ '--query-driver=/usr/**/*',
       \ ] )
 
 let g:ycm_enable_semantic_highlighting =
@@ -95,6 +96,9 @@ if g:ycm_use_clangd &&
           \ expand( '$HOME/Development/llvm-project/build/bin/clangd' )
   elseif executable( s:brew . '/opt/llvm/bin/clangd' )
     let g:ycm_clangd_binary_path = s:brew . '/opt/llvm/bin/clangd'
+  elseif filereadable( '/etc/oracle-release' )
+              \ && executable( '/opt/llvm-14/bin/clangd' )
+    let g:ycm_clangd_binary_path = '/opt/llvm-14/bin/clangd'
   elseif filereadable( '/etc/oracle-release' )
               \ && executable( '/usr/bin/clangd' )
     let g:ycm_clangd_binary_path = '/usr/bin/clangd'
@@ -175,10 +179,6 @@ if isdirectory( s:lsp_dir )
     \     'filetypes': [ 'dockerfile' ],
     \     'cmdline': [ s:lsp_dir . '/docker/node_modules/.bin/docker-langserver', '--stdio' ]
     \   },
-    \   { 'name': 'groovy',
-    \     'filetypes': [ 'groovy' ],
-    \     'cmdline': [ 'java', '-jar', s:lsp_dir . '/groovy/groovy-language-server/build/libs/groovy-language-server-all.jar' ]
-    \   },
     \   { 'name': 'vim',
     \     'filetypes': [ 'vim' ],
     \     'cmdline': [ s:lsp_dir . '/viml/node_modules/.bin/vim-language-server', '--stdio' ],
@@ -196,6 +196,7 @@ if isdirectory( s:lsp_dir )
     \ ]
 
   let g:ycm_lsp_dir = s:lsp_dir
+  execute 'source' s:lsp_dir . '/groovy/snippet.vim'
   execute 'source' s:lsp_dir . '/haskell/snippet.vim'
   execute 'source' s:lsp_dir . '/dart/snippet.vim'
   if executable( 'jai' ) && get( g:, 'enable_jsi_lsp', 0 )
@@ -417,7 +418,8 @@ Plugin 'gmarik/Vundle.vim'
 " Development environment
 let g:vimspector_base_dir = expand( '<sfile>:p:h' ) . '/vimspector-conf'
 let g:ycm_java_jdtls_extension_path=[
-      \ g:vimspector_base_dir . '/gadgets/macos' ]
+      \ g:vimspector_base_dir . '/gadgets/macos',
+      \ g:vimspector_base_dir . '/gadgets/linux' ]
 
 if get(g:, 'benj_test_ycm')
   if has_key( g:, 'ycm_path' )
