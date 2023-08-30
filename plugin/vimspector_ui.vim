@@ -111,10 +111,32 @@ augroup END
 
 nmap <LocalLeader>B <Plug>VimspectorBreakpoints
 
-let g:vimspector_custom_process_picker = expand( '<SID>' ) . 'PickProcess()'
+let g:vimspector_custom_process_picker_func = expand( '<SID>' ) . 'PickProcess'
 
 function! s:PickProcess() abort
-  return str2nr(split(fzf#run({'source': 'ps -e'})[0])[0])
+  let ps = g:vimspector_home . '/support/vimspector_process_list/vimspector_process_list'
+  " a:0 is number of args
+  " a:1 is the optional binary name
+  if a:0 > 0
+    let ps .= ' ^' . a:1 . '$'
+  endif
+
+  let line_selected = fzf#run( {
+      \ 'source': ps,
+      \ 'options': '--header-lines=1  '
+      \          . '--prompt="Select Process: " '
+      \ ,
+      \
+      \ } )
+  if type( line_selected ) != v:t_list || len( line_selected ) != 1
+    return 0
+  endif
+  let line_selected = line_selected[ 0 ]
+  if empty( line_selected)
+    return 0
+  endif
+  let pid = split( line_selected )[ 0 ]
+  return str2nr( pid )
 endfunction
 
 " }}}
