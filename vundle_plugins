@@ -15,7 +15,7 @@ let g:ycm_complete_in_comments=1
 let g:ycm_complete_in_strings=1
 let g:ycm_always_populate_location_list=1
 let g:ycm_show_detailed_diag_in_popup=1
-let g:ycm_update_diagnostics_in_insert_mode=1
+let g:ycm_update_diagnostics_in_insert_mode=0
 let g:ycm_disable_tern=1
 let g:ycm_max_diagnostics_to_display=100 
 
@@ -436,6 +436,8 @@ else
   Plugin 'puremourning/YouCompleteMe', { 'name': 'YouCompleteMe-Clean' }
   Plugin 'puremourning/vimspector',    { 'name': 'vimspector-Clean' }
 endif
+
+Plugin 'github/copilot.vim'
 
 if executable( '/Library/Frameworks/Mono.framework/Versions/Current/bin/mono' )
   let g:ycm_mono_binary_path=
