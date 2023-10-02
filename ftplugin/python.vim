@@ -171,7 +171,8 @@ else
 endif
 
 command! -buffer -nargs=* JupyterStartConsole
-      \ execute 'ActivateVirtualEnv' expand( "$HOME/Development/jupyter/env" )
+      \ execute 'ActivateVirtualEnv' expand(
+        \ get( g:, 'jupyter_virtual_env', "$HOME/Development/jupyter/env" ) )
       \ | execute 'botright vertical terminal
       \         ++cols=80
       \         ++close
@@ -186,7 +187,8 @@ command! -buffer -nargs=* JupyterStartConsole
       \ | JupyterConnect
 
 command! -buffer -nargs=* JupyterStartQtConsole
-      \ execute 'ActivateVirtualEnv' expand( "$HOME/Development/jupyter/env" )
+      \ execute 'ActivateVirtualEnv' expand(
+        \ get( g:, 'jupyter_virtual_env', "$HOME/Development/jupyter/env" ) )
       \ | execute 'terminal
       \         ++close
       \         ++hidden
