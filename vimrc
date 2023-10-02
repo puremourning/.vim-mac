@@ -157,28 +157,21 @@ function! BenGetCustomHighlighting()
     " Disable undercurl (which doesn't render well in terminal)
     " hi SpellBad cterm=NONE
     " hi SpellCap cterm=NONE
+  elseif s:cs =~? '^saturnite'
+    hi link YcmInlayHint Conceal
   endif
 
-  " let HIGHLIGHT_GROUP = {
-  "       \   'typeParameter': 'PreProc',
-  "       \   'parameter': 'Normal',
-  "       \   'variable': 'Normal',
-  "       \   'property': 'Normal',
-  "       \   'enumMember': 'Normal',
-  "       \   'event': 'Special',
-  "       \   'member': 'Normal',
-  "       \   'method': 'Function',
-  "       \   'class': 'Special',
-  "       \   'namespace': 'Special',
-  "       \ }
+  let HIGHLIGHT_GROUP = {
+        \   'annotation': 'Special',
+        \ }
 
-  " if !s:done_property_types
-  "   for tokenType in keys( HIGHLIGHT_GROUP )
-  "     call prop_type_add( 'YCM_HL_' . tokenType,
-  "                       \ { 'highlight': HIGHLIGHT_GROUP[ tokenType ] } )
-  "   endfor
-  "   let s:done_property_types = 1
-  " endif
+  if !s:done_property_types
+    for tokenType in keys( HIGHLIGHT_GROUP )
+      call prop_type_add( 'YCM_HL_' . tokenType,
+                        \ { 'highlight': HIGHLIGHT_GROUP[ tokenType ] } )
+    endfor
+    let s:done_property_types = 1
+  endif
   "
   "hi link YcmInlayHint Comment
   hi link MessageWindow CursorLineNr
