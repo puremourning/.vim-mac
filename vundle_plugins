@@ -69,8 +69,8 @@ call extend( g:ycm_clangd_args, [
       \ '-completion-style=bundled',
       \ '-pch-storage=memory',
       \ '-header-insertion=iwyu',
-      \ '-j=4',
-      \ '--query-driver=/usr/**/*',
+      \ '-j=16',
+      \ '--query-driver=/usr/**/*,/opt/**/*',
       \ ] )
 
 let g:ycm_enable_semantic_highlighting =
