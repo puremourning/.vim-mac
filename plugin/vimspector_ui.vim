@@ -59,6 +59,7 @@ function! s:OnJumpToFrame() abort
   nmap <silent> <buffer> <LocalLeader>s <Plug>VimspectorStepInto
   nmap <silent> <buffer> <LocalLeader>f <Plug>VimspectorStepOut
   nmap <silent> <buffer> <LocalLeader>g <Plug>VimspectorGoToCurrentLine
+  nmap <silent> <buffer> <LocalLeader>r <Plug>VimspectorRunToCursor
 
   nmap <silent> <buffer> <LocalLeader>k <Plug>VimspectorUpFrame
   nmap <silent> <buffer> <LocalLeader>j <Plug>VimspectorDownFrame
@@ -85,6 +86,7 @@ function! s:OnDebugEnd() abort
         silent! nunmap <buffer> <LocalLeader>n
         silent! nunmap <buffer> <LocalLeader>s
         silent! nunmap <buffer> <LocalLeader>f
+        silent! nunmap <buffer> <LocalLeader>r
 
         silent! nunmap <buffer> <LocalLeader>k
         silent! nunmap <buffer> <LocalLeader>j
@@ -109,7 +111,8 @@ augroup VimspectorCustomMappings
   autocmd User VimspectorDebugEnded call s:OnDebugEnd()
 augroup END
 
-nmap <LocalLeader>B <Plug>VimspectorBreakpoints
+nmap <silent> <LocalLeader>B <Plug>VimspectorBreakpoints
+nmap <silent> <Leader><F10> <Plug>VimspectorRunToCursor
 
 let g:vimspector_custom_process_picker_func = expand( '<SID>' ) . 'PickProcess'
 
