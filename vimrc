@@ -316,11 +316,23 @@ if !has( 'nvim' )
 endif
 set title
 
-" These guys use mad non-breaking code
+" These guys use mad non-breaking code :wrap:
+
+" Break lines at textwidth
 set linebreak
+" Indent wrapped lines
 set breakindent
+" Prefix indented line with "> "
 set showbreak=>\ 
+" When indending broken lines:
+" min:   make sure there are at least 64 chars of actual text (after the indent)
+" shift: indent by 2 additional spaces (note add "> " to this, for 4 total)
 set breakindentopt=shift:2,min:64
+" Scroll broken lines as if real lines
+set smoothscroll
+" Display the last line even if it is broken, appended with @@@ (rather than not
+" at all)
+set display=lastline
 
 
 " don't indent namespaces
