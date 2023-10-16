@@ -4,6 +4,8 @@ bundle/
 !bundle/eclim
 !bundle/lsp-examples
 !bundle/Vundle.vim
+!bundle/YouCompleteMe
+!bundle/vimspector
 workbench.xmi
 *.un~
 *.sw[a-p]
