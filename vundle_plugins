@@ -185,14 +185,20 @@ if isdirectory( s:lsp_dir )
     \   },
     \ ]
 
+  function! Source(file) abort
+    if filereadable(a:file)
+      execute 'source' a:file
+    endif
+  endfunction
+
   let g:ycm_lsp_dir = s:lsp_dir
-  execute 'source' s:lsp_dir . '/volar/snippet.vim'
-  execute 'source' s:lsp_dir . '/haskell/snippet.vim'
-  execute 'source' s:lsp_dir . '/dart/snippet.vim'
-  execute 'source' s:lsp_dir . '/jai/snippet.vim'
-  execute 'source' s:lsp_dir . '/lua/snippet.vim'
-  execute  'source' s:lsp_dir . '/matlab/snippet.vim'
-  execute  'source' s:lsp_dir . '/kotlin/snippet.vim'
+  call Source(s:lsp_dir . '/volar/snippet.vim')
+  call Source(s:lsp_dir . '/haskell/snippet.vim')
+  call Source(s:lsp_dir . '/dart/snippet.vim')
+  call Source(s:lsp_dir . '/jai/snippet.vim')
+  call Source(s:lsp_dir . '/lua/snippet.vim')
+  call Source(s:lsp_dir . '/matlab/snippet.vim')
+  call Source(s:lsp_dir . '/kotlin/snippet.vim')
 endif
 
 " let g:ycm_language_server += [
