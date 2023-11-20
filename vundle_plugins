@@ -107,9 +107,9 @@ if g:ycm_use_clangd &&
 endif
 
 "   'c,cpp,objc': [ 're!\w{3}', '_' ],
+"  \   'c,cpp,objc': [ '_' ],
 let g:ycm_semantic_triggers =  {
   \   'vim' : [ '.', ':', '#' ],
-  \   'c,cpp,objc': [ '_' ],
   \   'json': [ ' ' ],
   \   'VimspectorPrompt': [ '.', '->', ':', '<' ]
   \ }
@@ -402,6 +402,19 @@ let g:fzf_colors =
 " Don't use tmux, prefer to use vim jobs
 let g:dispatch_no_tmux_make = 1
 
+" editorconfig
+let g:EditorConfig_exclude_patterns = ['fugitive://.*']
+let g:EditorConfig_enable_for_new_buf = 1
+" Don't faff with my other settings, just set shiftwidth!
+let g:EditorConfig_preserve_formatoptions = 1
+let g:EditorConfig_softtabstop_space = []
+let g:EditorConfig_softtabstop_tab = []
+
+augroup EditorConfig
+  autocmd!
+  autocmd BufWritePre .editorconfig EditorConfigReload
+  autocmd FileType gitcommit let b:EditorConfig_disable=1
+augroup END
 
 if has( 'win32' ) && !has('win32unix')
   set rtp+=~/vimfiles/bundle/Vundle.vim
@@ -474,6 +487,8 @@ Plugin 'wellle/targets.vim'
 Plugin 'romainl/vim-cool'
 set hlsearch
 " Plugin 'ludovicchabant/vim-gutentags' (just gives errors all the damn time)
+Plugin 'editorconfig/editorconfig-vim'
+
 
 " Filetype support
 Plugin 'tpope/vim-markdown'
@@ -503,9 +518,14 @@ Plugin 'puremourning/vim-activate-venv'
 Plugin 'puremourning/vim-dirvish'
 Plugin 'tpope/vim-eunuch'
 
+if isdirectory( expand( "$HOME/proj/vim-tblog" ) )
+    execute 'Plugin' "'file://" . expand("$HOME/proj/vim-tblog") ."'"
+endif
+
 call vundle#end()
 filetype plugin indent on
 
 silent! call neomake#configure#automake( 'nrwi', 250 )
+packadd matchit
 
 " vim:ft=vim:foldmethod=marker
