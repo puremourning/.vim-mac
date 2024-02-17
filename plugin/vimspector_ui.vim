@@ -62,6 +62,8 @@ function! s:OnJumpToFrame() abort
   nmap <silent> <buffer> <LocalLeader>k <Plug>VimspectorUpFrame
   nmap <silent> <buffer> <LocalLeader>j <Plug>VimspectorDownFrame
 
+  nmap <silent> <buffer> <Leader><F10> <Plug>VimspectorRunToCursor
+
   let s:mapped[ string( bufnr() ) ] = &l:modifiable
   setlocal nomodifiable
 endfunction
@@ -87,6 +89,8 @@ function! s:OnDebugEnd() abort
 
         silent! nunmap <buffer> <LocalLeader>k
         silent! nunmap <buffer> <LocalLeader>j
+
+        silent! nunmap <buffer> <Leader><F10>
 
         let &l:modifiable = s:mapped[ bufnr ]
       endtry
