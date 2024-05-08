@@ -28,7 +28,7 @@ endtry
 
 let g:ycm_collect_identifiers_from_comments_and_strings=1
 let g:ycm_collect_identifiers_from_tags_files=1
-let g:ycm_java_jdtls_use_clean_workspace=0
+let g:ycm_java_jdtls_use_clean_workspace=get(g:, 'ycm_java_jdtls_use_clean_workspace', 0)
 if executable( s:brew . '/opt/java/bin/java' )
   let g:ycm_java_binary_path = s:brew . '/opt/java/bin/java'
 elseif executable( s:brew . '/opt/java17/bin/java' )
@@ -41,7 +41,7 @@ endif
 let g:ycm_java_jdtls_workspace_root_path=$HOME . '/.ycmd/java/Workspace'
 " let g:ycm_java_jdtls_repository_path = expand(
 "       \ '$HOME/repos/github/eclipse.jdt.ls/org.eclipse.jdt.ls.product/target/repository' )
-"let g:ycm_server_log_level='debug'
+" let g:ycm_server_log_level='debug'
 let g:ycm_keep_logfiles=0
 let g:ycm_auto_hover = ''
 function! s:DefaultClangd()
@@ -91,7 +91,8 @@ if g:ycm_use_clangd &&
     \ !get( g:, 'ycm_clangd_clean', 0 ) &&
     \ !has_key( g: , 'ycm_clangd_binary_path' )
 
-  if executable( expand( '$HOME/Development/llvm-project/build/bin/clangd' ) )
+  if 0
+  elseif executable( expand( '$HOME/Development/llvm-project/build/bin/clangd' ) )
     let g:ycm_clangd_binary_path =
           \ expand( '$HOME/Development/llvm-project/build/bin/clangd' )
   elseif executable( s:brew . '/opt/llvm/bin/clangd' )
@@ -99,6 +100,8 @@ if g:ycm_use_clangd &&
   elseif filereadable( '/etc/oracle-release' )
               \ && executable( '/opt/llvm-14/bin/clangd' )
     let g:ycm_clangd_binary_path = '/opt/llvm-14/bin/clangd'
+  elseif executable( expand( '$HOME/repos/github/llvm-project/build/bin/clangd' ) )
+    let g:ycm_clangd_binary_path = expand( '$HOME/repos/github/llvm-project/build/bin/clangd' )
   elseif filereadable( '/etc/oracle-release' )
               \ && executable( '/usr/bin/clangd' )
     let g:ycm_clangd_binary_path = '/usr/bin/clangd'
@@ -191,6 +194,14 @@ if isdirectory( s:lsp_dir )
     \   },
     \ ]
 
+  let g:ycm_language_server += [
+    \   {
+    \     'name': 'gradle',
+    \     'cmdline': [ expand( '$HOME/repos/github/microsoft/vscode-gradle/gradle-language-server/build/install/gradle-language-server/bin/gradle-language-server' ) ],
+    \     'filetypes': [ 'gradle' ]
+    \   },
+    \ ]
+
   function! Source(file) abort
     if filereadable(a:file)
       execute 'source' a:file
@@ -198,7 +209,7 @@ if isdirectory( s:lsp_dir )
   endfunction
 
   let g:ycm_lsp_dir = s:lsp_dir
-  call Source(s:lsp_dir . '/groovy/snippet.vim')
+  " call Source(s:lsp_dir . '/groovy/snippet.vim')
   call Source(s:lsp_dir . '/volar/snippet.vim')
   call Source(s:lsp_dir . '/haskell/snippet.vim')
   call Source(s:lsp_dir . '/dart/snippet.vim')
@@ -310,6 +321,13 @@ let g:neomake_java_enabled_makers = []
 let g:neomake_vim_enabled_makers = []
 let g:neomake_rust_enabled_makers = []
 let g:neomake_python_python_exe = 'python3'
+
+let g:neomake_jsonnet_lint_maker = {
+            \ 'exe': 'jsonnet-lint',
+            \ 'args': [],
+            \ 'errorformat': '%f:%l:%c-%k %m'
+            \ }
+let g:neomake_jsonnet_enabled_makers = [ 'lint' ]
 
 let g:neomake_vim_enabled_makers = []
 if executable( 'vint' )
@@ -504,7 +522,8 @@ Plugin 'cespare/vim-toml'
 Plugin 'rdolgushin/groovy.vim'
 Plugin 'vim-scripts/applescript.vim'
 Plugin 'rust-lang/rust.vim'
-Plugin 'tfnico/vim-gradle'
+let g:vim_gradle_autoload=0
+Plugin 'hdiniz/vim-gradle'
 Plugin 'posva/vim-vue'
 Plugin 'toyamarinyon/vim-swift'
 Plugin 'keith/swift.vim'
@@ -512,6 +531,7 @@ Plugin 'gavocanov/vim-js-indent'
 Plugin 'habamax/vim-godot'
 Plugin 'udalov/kotlin-vim'
 Plugin 'puremourning/jai.vim'
+Plugin 'google/vim-jsonnet'
 
 Plugin 'junegunn/fzf'
 Plugin 'junegunn/fzf.vim'

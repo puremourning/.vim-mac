@@ -166,7 +166,9 @@ function! BenGetCustomHighlighting()
   endif
 
   let HIGHLIGHT_GROUP = {
-        \   'annotation': 'Special',
+        \   'annotation': 'Macro',
+        \   'annotationMember': 'Identifier',
+        \   'bracket': v:none
         \ }
 
   if !s:done_property_types
@@ -217,9 +219,13 @@ if exists( '$TMUX' ) || $TERM ==# 'screen-256color'
   set timeoutlen=500 ttimeoutlen=0
   for i in range( char2nr( 'a' ), char2nr( 'z' ) )
     let ch = nr2char( i )
-    execute 'set <M-' . ch . '>=' . ch
-    execute 'set <M-' . toupper( ch ) . '>=\e' . toupper( ch )
+    execute 'set <M-' . ch . ">=\e" . ch
+    execute 'set <M-' . toupper( ch ) . ">=\e" . toupper( ch )
   endfor
+  execute "set <M-{>=\e{"
+  execute "set <M-}>=\e}"
+  execute "set <M-[>=\e["
+  execute "set <M-]>=\e]"
 endif
 
 let &t_Cs = "\e[4:3m"
@@ -276,6 +282,13 @@ set showcmd
 
 " make sure that there are always 5 lines of context when scrolling
 set scrolloff=5
+
+" Don't wipe out buffers when they are not visible, as this can lead to extra
+" work for semantic engines closing/opening files
+set hidden
+set switchbuf+=useopen
+set switchbuf+=uselast
+set switchbuf+=split
 
 " Some shortcuts for commenting things
 map ,! :s/^/!/<CR>

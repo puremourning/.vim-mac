@@ -10,7 +10,7 @@ function! s:FindMakefile()
     return getcwd()
 endfunction
 
-function! s:Make( ... )
+function! TbMake( ... )
   let dir = get( b:, 'make_dir', get( g:, 'make_dir' ) )
   if empty(dir)
       let dir=s:FindMakefile()
@@ -19,8 +19,8 @@ function! s:Make( ... )
   execute 'Make -C' dir get( b:, 'make_args', '') join( a:000, ' ' )
 endfunction
 
-nnoremap <silent> <buffer> <M-i> <cmd>update <bar> call <SID>Make('RECURSIVE=NO')<CR>
-nnoremap <silent> <buffer> <leader><M-i> <cmd>update <bar> call <SID>Make()<CR>
+nnoremap <silent> <buffer> <M-i> <cmd>update <bar> call TbMake('RECURSIVE=NO')<CR>
+nnoremap <silent> <buffer> <leader><M-i> <cmd>update <bar> call TbMake()<CR>
 
 " tbricks team like to double-indent after line ending with (
 " e.g.

@@ -9,7 +9,10 @@ set cpo&vim
 
 " We can't use -s because Vim needs the enter/leave directory messages
 CompilerSet makeprg=tbmake\ -j
-let b:make_args='TESTS=YES MVN_SKIP=YES'
+
+let b:make_args=get(b:,
+                  \ 'make_args',
+                  \ get(g:, 'make_args', 'TESTS=YES MVN_SKIP=YES'))
 
 let &cpo = s:cpo_save
 unlet s:cpo_save
