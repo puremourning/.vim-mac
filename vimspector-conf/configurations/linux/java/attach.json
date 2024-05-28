@@ -1,0 +1,16 @@
+{
+  "$schema": "https://puremourning.github.io/vimspector/schema/vimspector.schema.json",
+  "adapters": {
+  },
+  "configurations": {
+    "Attach": {
+        "adapter": "vscode-java",
+        "configuration": {
+            "request": "attach",
+            "name": "Java Attach",
+            "hostName": "${hostName:localhost}",
+            "port": "${port:8000}"
+        }
+    }
+  }
+}

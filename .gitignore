@@ -17,3 +17,4 @@ undodir/*
 
 swap/*
 !swap/.keep
+view/
