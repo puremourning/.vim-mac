@@ -7,7 +7,7 @@ let current_compiler = "tbmaketest"
 let s:cpo_save = &cpo
 set cpo&vim
 
-let b:make_args='TESTS=FORCE MVN_SKIP=YES'
+let b:make_args='TESTS=FORCE MVN_SKIP=YES TEST_FLAGS="-l stdout:// -d debug"'
 
 function! s:GetTestUnderCursor()
     " Parse the test macros to find the nearest
@@ -45,7 +45,7 @@ endfunction
 
 function! s:RunTestUnderCursor()
     let [ test, line ] = s:GetTestUnderCursor()
-    call TbMake( 'RECURSIVE=NO TESTS=FORCE GTEST_FILTER=' . test )
+    call TbMake( 'RECURSIVE=NO GTEST_FILTER=' . test )
 endfunction
 
 function! s:RunTestUnderCursorInVimspector()
@@ -62,7 +62,7 @@ nnoremap <silent> <buffer> <M-P> <cmd>cfirst<CR>
 nnoremap <silent> <buffer> <M-}> <cmd>cnext<CR>
 nnoremap <silent> <buffer> <M-{> <cmd>cprevious<CR>
 
-nnoremap <silent> <buffer> <M-O> <cmd>call <SID>RunTestUnderCursorInVimspector()<CR>
+nnoremap <silent> <buffer> <leader><M-i> <cmd>call <SID>RunTestUnderCursorInVimspector()<CR>
 
 let &cpo = s:cpo_save
 unlet s:cpo_save

@@ -219,6 +219,7 @@ if isdirectory( s:lsp_dir )
   call Source(s:lsp_dir . '/lua/snippet.vim')
   call Source(s:lsp_dir . '/matlab/snippet.vim')
   call Source(s:lsp_dir . '/kotlin/snippet.vim')
+  call Source(s:lsp_dir . '/jsonnet/snippet.vim')
 endif
 
 " let g:ycm_language_server += [
@@ -322,12 +323,20 @@ let g:neomake_vim_enabled_makers = []
 let g:neomake_rust_enabled_makers = []
 let g:neomake_python_python_exe = 'python3'
 
-let g:neomake_jsonnet_lint_maker = {
-            \ 'exe': 'jsonnet-lint',
-            \ 'args': [],
-            \ 'errorformat': '%f:%l:%c-%k %m'
-            \ }
-let g:neomake_jsonnet_enabled_makers = [ 'lint' ]
+
+"function! NeomakeJsonnet(jobinfo) abort
+"    let maker = deepcopy(self)
+"    let maker.args += '-J' . expand( '%:p:h/lib' )
+"    return maker
+"endfunction
+" call neomake#config#set('ft.jsonnet.InitForJob', function('NeomakeJsonnet'))
+
+"let g:neomake_jsonnet_lint_maker = {
+"            \ 'exe': 'jsonnet-lint',
+"            \ 'args': [],
+"            \ 'errorformat': '%f:%l:%c-%k %m'
+"            \ }
+"let g:neomake_jsonnet_enabled_makers = [ 'lint' ]
 
 let g:neomake_vim_enabled_makers = []
 if executable( 'vint' )

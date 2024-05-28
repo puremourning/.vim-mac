@@ -222,10 +222,18 @@ if exists( '$TMUX' ) || $TERM ==# 'screen-256color'
     execute 'set <M-' . ch . ">=\e" . ch
     execute 'set <M-' . toupper( ch ) . ">=\e" . toupper( ch )
   endfor
-  execute "set <M-{>=\e{"
-  execute "set <M-}>=\e}"
-  execute "set <M-[>=\e["
-  execute "set <M-]>=\e]"
+  " Really strange bug when setting these during startup breaking termresponse
+  " _probably_, as ESC-] or ESC-[ is probably a real terminal escape seq
+  function! BenSetUpTmuxKeys(id)
+      execute "set <M-{>=\e{"
+      execute "set <M-}>=\e}"
+      execute "set <M-[>=\e["
+      execute "set <M-]>=\e]"
+  endfunction
+  augroup BenTmuxKeys
+    autocmd!
+    autocmd VimEnter * call timer_start(1000, function( 'BenSetUpTmuxKeys' ) )
+  augroup END
 endif
 
 let &t_Cs = "\e[4:3m"
@@ -286,6 +294,13 @@ set scrolloff=5
 " Don't wipe out buffers when they are not visible, as this can lead to extra
 " work for semantic engines closing/opening files
 set hidden
+augroup BenNoHiddenTerminal
+  autocmd!
+  " Don't allow 'hidden' terminal buffers, because I end up with too many of
+  " them.
+  autocmd TerminalWinOpen * setlocal bufhidden=unload
+augroup END
+
 set switchbuf+=useopen
 set switchbuf+=uselast
 set switchbuf+=split
