@@ -163,6 +163,8 @@ function! BenGetCustomHighlighting()
     " hi SpellCap cterm=NONE
   elseif s:cs =~? '^saturnite'
     hi link YcmInlayHint Conceal
+    hi SpellBad cterm=NONE gui=NONE
+    hi SpellCap cterm=NONE gui=NONE
   endif
 
   let HIGHLIGHT_GROUP = {
