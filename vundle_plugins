@@ -482,6 +482,8 @@ else
 endif
 
 Plugin 'github/copilot.vim'
+imap <M-n> <Plug>(copilot-next)
+imap <M-p> <Plug>(copilot-previous)
 
 if executable( '/Library/Frameworks/Mono.framework/Versions/Current/bin/mono' )
   let g:ycm_mono_binary_path=

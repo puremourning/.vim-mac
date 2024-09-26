@@ -32,6 +32,8 @@ nmap <localleader>yfd <Plug>(YCMFindSymbolInDocument)
 nmap <localleader>ygd <Plug>(YCMPEditDefinition)
 nmap <silent> <localleader>h <Plug>(YCMToggleInlayHints)
 nnoremap <silent> <localleader>ysd <cmd>YcmShowDetailedDiagnostic<CR>
+nmap <localleader>yth <Plug>(YCMTypeHierarchy)
+nmap <localleader>ych <Plug>(YCMCallHierarchy)
 
 " I hever use i_CTRL-E and i_CTRL-Y. While i hate overriding the builtin
 " function, this is more common for me.
