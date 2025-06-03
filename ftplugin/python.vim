@@ -2,6 +2,19 @@ function! PythonGetCurrentFunction()
   echom s:GetCurrentModule() . '.' . s:GetCurrentFunction()
 endfunction
 
+function! s:WorkspaceRelativePath(path)
+    let workspace_root = fnamemodify(findfile('pytest.ini', '.;'), ':p:h')
+    let cwd = getcwd()
+    try
+       call chdir(workspace_root)
+       return fnamemodify(a:path, ':p:~:.')
+    finally
+        call chdir(cwd)
+    endtry
+    return a:path
+endfunction
+
+
 function! s:MakeMethodName( cls, mth )
   if a:cls != ''
     if a:mth != ''
@@ -33,7 +46,7 @@ function! s:GetCurrentFunction()
   let l:test_method = ''
   let l:test_class = ''
 
-  let l:pattern = '\V\C\s\*\<\%(def\|class\)\>\s\+\(\<\w\+\>\)\w\*(\.\*\$'
+  let l:pattern = '\V\C\s\*\<\%(def\|class\|async\s\+def\)\>\s\+\(\<\w\+\>\)\w\*(\.\*\$'
 
   let l:lnum = prevnonblank( '.' )
 
@@ -49,7 +62,8 @@ function! s:GetCurrentFunction()
 
     " FIXME: This is about as inefficient as it could be
     let l:this_decl = substitute( getline( l:lnum ), l:pattern, '\1', '' )
-    let l:this_decl_is_method = match( getline( l:lnum ), '\V\C\s\*def') >= 0
+    let l:this_decl_is_method = match( getline( l:lnum ), '\V\C\s\*def') >= 0 ||
+                \ match( getline( l:lnum ), '\V\C\s\*async\s\+def')
     let l:this_decl_is_class = match( getline( l:lnum ), '\V\C\s\*class') >= 0
 
     if l:this_decl_is_method
@@ -84,7 +98,7 @@ function! s:GetCurrentFunction()
 endfunction
 
 function! s:RunTestUnderCursor()
-  compiler ycmd_test
+  compiler ttt
   update
   let l:test_func_name = s:GetCurrentFunction()
 
@@ -95,18 +109,18 @@ function! s:RunTestUnderCursor()
 
   echo "Running test '" . l:test_func_name . "'"
 
-  let l:test_arg = s:GetCurrentModule() . '.' . l:test_func_name
-  execute 'Make --skip-build -v --no-flake8 -- ' . l:test_arg
+  let l:test_arg = s:WorkspaceRelativePath(expand('%:p')) . ' -k ' . l:test_func_name
+  execute 'Make ' . l:test_arg
 endfunction
 
 function! s:RunTest()
-  compiler ycmd_test
+  compiler ttt
   update
-  Make --no-flake8 --skip-build -v -- %:p
+  execute 'Make ' s:WorkspaceRelativePath(expand('%:p'))
 endfunction
 
 function! s:RunTestUnderCursorInVimspector()
-  compiler ycmd_test
+  compiler ttt
   update
   let l:test_func_name = s:GetCurrentFunction()
 
@@ -115,89 +129,33 @@ function! s:RunTestUnderCursorInVimspector()
     return
   endif
 
-  let l:test_arg = s:GetCurrentModule() . '.' . l:test_func_name
+  let l:test_arg = s:WorkspaceRelativePath(expand('%:p')) . ' -k ' . l:test_func_name
   echom "Running test '" . l:test_arg . "'"
 
 
   call vimspector#ToggleBreakpoint()
-  call vimspector#LaunchWithSettings( { 'Test': l:test_arg } )
+  call vimspector#LaunchWithSettings( { 'args': l:test_arg } )
 endfunction
 
 function! s:RunAllTests()
-  compiler ycmd_test
+  compiler ttt
   update
-  Make --skip-build -v
-endfunction
-
-function! s:Build()
-  compiler ycmd_build
-  Make --all
+  Make
 endfunction
 
 if ! has( 'gui_running' )
   " ® is right-option+r
-  nnoremap <buffer> ® :call <SID>RunTest()<CR>
+  nnoremap <buffer> <M-o> :call <SID>RunTest()<CR>
   " ® is right-option+r
-  nnoremap <buffer> Â :call <SID>RunAllTests()<CR>
+  nnoremap <buffer> <leader><M-o> :call <SID>RunAllTests()<CR>
   " † is right-option+t
-  nnoremap <buffer> † :call <SID>RunTestUnderCursor()<CR>
+  nnoremap <buffer> <M-p> :call <SID>RunTestUnderCursor()<CR>
   " † is right-option+t
-  nnoremap <buffer> <leader>† :call <SID>RunTestUnderCursorInVimspector()<CR>
-  " ƒ is right-option+b
-  nnoremap <buffer> ∫ :call <SID>Build()<CR>
+  nnoremap <buffer> <leader><M-p> :call <SID>RunTestUnderCursorInVimspector()<CR>
   " å is the right-option+q
-  nnoremap <buffer> å :cfirst<CR>
+  nnoremap <buffer> <M-M> :cfirst<CR>
   " å is the right-option+a
-  nnoremap <buffer> œ :cnext<CR>
+  nnoremap <buffer> <M-[> :cnext<CR>
   " Ω is the right-option+z
-  nnoremap <buffer> Ω :cprevious<CR>
-else
-  " ® is right-option+r
-  nnoremap <buffer> <M-r> :call <SID>RunTest()<CR>
-  " ® is right-option+r
-  nnoremap <buffer> <M-S-r> :call <SID>RunAllTests()<CR>
-  " † is right-option+t
-  nnoremap <buffer> <M-t> :call <SID>RunTestUnderCursor()<CR>
-  " † is right-option+t
-  nnoremap <buffer> <leader><M-t> :call <SID>RunTestUnderCursorInVimspector()<CR>
-  " ƒ is right-option+b
-  nnoremap <buffer> <M-b> :call <SID>Build()<CR>
-  " å is the right-option+q
-  nnoremap <buffer> <M-q> :cfirst<CR>
-  " å is the right-option+a
-  nnoremap <buffer> <M-a> :cnext<CR>
-  " Ω is the right-option+z
-  nnoremap <buffer> <M-z> :cprevious<CR>
+  nnoremap <buffer> <M-]> :cprevious<CR>
 endif
-
-command! -buffer -nargs=* JupyterStartConsole
-      \ execute 'ActivateVirtualEnv' expand(
-        \ get( g:, 'jupyter_virtual_env', "$HOME/Development/jupyter/env" ) )
-      \ | execute 'botright vertical terminal
-      \         ++cols=80
-      \         ++close
-      \         ++norestore
-      \         ++kill=term
-      \         jupyter-console
-      \         <args>'
-      \ | wincmd p
-      \ | echo "Giving it a chance..."
-      \ | sleep 1000m
-      \ | redraw
-      \ | JupyterConnect
-
-command! -buffer -nargs=* JupyterStartQtConsole
-      \ execute 'ActivateVirtualEnv' expand(
-        \ get( g:, 'jupyter_virtual_env', "$HOME/Development/jupyter/env" ) )
-      \ | execute 'terminal
-      \         ++close
-      \         ++hidden
-      \         ++norestore
-      \         ++kill=term
-      \         jupyter-qtconsole
-      \         <args>'
-      \ | wincmd p
-      \ | echo "Giving it a chance..."
-      \ | sleep 1000m
-      \ | redraw
-      \ | JupyterConnect

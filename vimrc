@@ -366,6 +366,10 @@ set smoothscroll
 " at all)
 set display=lastline
 
+" Heathens also don't have editors that add trailing newlines to files which can
+" cause arguments
+set nofixeol
+
 
 " don't indent namespaces
 set cinoptions+=N-s

@@ -17,7 +17,11 @@ let g:ycm_always_populate_location_list=1
 let g:ycm_show_detailed_diag_in_popup=1
 let g:ycm_update_diagnostics_in_insert_mode=0
 let g:ycm_disable_tern=1
-let g:ycm_max_diagnostics_to_display=100 
+let g:ycm_max_diagnostics_to_display=100
+let g:ycm_echo_all_diagnostics=1
+let g:ycm_enable_diagnostic_signs=0
+let g:ycm_echo_current_diagnostic='virtual-text'
+let g:ycm_clear_inlay_hints_in_insert_mode=1
 
 " Use a popup for the completion preview window if available
 let g:ycm_add_preview_to_completeopt = 'popup'
@@ -31,17 +35,19 @@ let g:ycm_collect_identifiers_from_tags_files=1
 let g:ycm_java_jdtls_use_clean_workspace=get(g:, 'ycm_java_jdtls_use_clean_workspace', 0)
 if executable( s:brew . '/opt/java/bin/java' )
   let g:ycm_java_binary_path = s:brew . '/opt/java/bin/java'
-elseif executable( s:brew . '/opt/java17/bin/java' )
+elseif executable( s:brew . '/opt/java21/bin/java' )
   let g:ycm_java_binary_path = s:brew . '/opt/java17/bin/java'
-elseif executable( '/usr/lib/jvm/java-1.17.0-openjdk-amd64/bin/java' )
-  let g:ycm_java_binary_path = '/usr/lib/jvm/java-1.17.0-openjdk-amd64/bin/java'
-elseif executable( '/etc/alternatives/java_sdk_17/bin/java' )
-  let g:ycm_java_binary_path = '/etc/alternatives/java_sdk_17/bin/java'
+elseif executable( '/usr/lib/jvm/java-1.21.0-openjdk-amd64/bin/java' )
+  let g:ycm_java_binary_path = '/usr/lib/jvm/java-1.21.0-openjdk-amd64/bin/java'
+elseif executable( '/etc/alternatives/java_sdk_21/bin/java' )
+  let g:ycm_java_binary_path = '/etc/alternatives/java_sdk_21/bin/java'
 endif
 let g:ycm_java_jdtls_workspace_root_path=$HOME . '/.ycmd/java/Workspace'
+
 " let g:ycm_java_jdtls_repository_path = expand(
 "       \ '$HOME/repos/github/eclipse.jdt.ls/org.eclipse.jdt.ls.product/target/repository' )
-" let g:ycm_server_log_level='debug'
+"let g:ycm_server_log_level='debug'
+
 let g:ycm_keep_logfiles=0
 let g:ycm_auto_hover = ''
 function! s:DefaultClangd()
@@ -77,8 +83,6 @@ let g:ycm_enable_semantic_highlighting =
       \ get( g:, 'ycm_enable_semantic_highlighting', 1 )
 let g:ycm_enable_inlay_hints =
       \ get( g:, 'ycm_enable_inlay_hints', 0 )
-let g:ycm_echo_current_diagnostic = 'virtual-text'
-let g:ycm_clear_inlay_hints_in_insert_mode = 1
 
 " Ignore the error about comments not being allowed
 let g:ycm_filter_diagnostics = {
@@ -197,7 +201,10 @@ if isdirectory( s:lsp_dir )
   let g:ycm_language_server += [
     \   {
     \     'name': 'gradle',
-    \     'cmdline': [ expand( '$HOME/repos/github/microsoft/vscode-gradle/gradle-language-server/build/install/gradle-language-server/bin/gradle-language-server' ) ],
+    \     'cmdline': [
+    \           '/bin/env', 'JAVA_HOME=/etc/alternatives/java_sdk_17',
+    \           expand( '$HOME/repos/github/microsoft/vscode-gradle/gradle-language-server/build/install/gradle-language-server/bin/gradle-language-server' )
+    \     ],
     \     'filetypes': [ 'gradle' ]
     \   },
     \ ]
@@ -218,7 +225,7 @@ if isdirectory( s:lsp_dir )
   endif
   call Source(s:lsp_dir . '/lua/snippet.vim')
   call Source(s:lsp_dir . '/matlab/snippet.vim')
-  call Source(s:lsp_dir . '/kotlin/snippet.vim')
+  call Source(s:lsp_dir . '/jetbrains-kotlin/snippet.vim')
   call Source(s:lsp_dir . '/jsonnet/snippet.vim')
 endif
 
@@ -388,7 +395,6 @@ let g:vimspector_configurations = {
 let g:netrw_keepj = ''
 
 let g:markdown_fenced_languages = [
-      \ 'help',
       \ 'c++=cpp',
       \ 'bash=sh',
       \ 'sh',
@@ -524,7 +530,10 @@ Plugin 'editorconfig/editorconfig-vim'
 
 
 " Filetype support
+" vim-markdown seems to break java.vim syntax
+" let g:java_ignore_markdown=1
 Plugin 'tpope/vim-markdown'
+Plugin 'NikitaIvanovV/vim-markdown-outline'
 Plugin 'dhruvasagar/vim-table-mode'
 Plugin 'stephpy/vim-yaml'
 Plugin 'saltstack/salt-vim'
@@ -543,6 +552,8 @@ Plugin 'habamax/vim-godot'
 Plugin 'udalov/kotlin-vim'
 Plugin 'puremourning/jai.vim'
 Plugin 'google/vim-jsonnet'
+let g:jsonnet_fmt_on_save=0
+Plugin 'chrisbra/csv.vim'
 
 Plugin 'junegunn/fzf'
 Plugin 'junegunn/fzf.vim'

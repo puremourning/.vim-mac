@@ -6,7 +6,7 @@
       "configuration": {
         "request": "launch",
         "program": "${file}",
-        "cwd": "${cwd}",
+        "cwd": "${WD:${cwd\\}}",
         "args": [ "*${args}" ]
       }
     }
