@@ -324,6 +324,8 @@ imap <S-Del> <BS>
 set textwidth=80
 " enable carriage return auto-commenting
 set formatoptions+=r
+" Drop comment leaders when joining lines
+set formatoptions+=j
 
 " Highlight (textwidth? + 1)th colum
 set colorcolumn=+1
