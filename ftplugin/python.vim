@@ -133,7 +133,6 @@ function! s:RunTestUnderCursorInVimspector()
   echom "Running test '" . l:test_arg . "'"
 
 
-  call vimspector#ToggleBreakpoint()
   call vimspector#LaunchWithSettings( { 'args': l:test_arg } )
 endfunction
 

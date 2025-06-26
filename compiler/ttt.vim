@@ -41,7 +41,7 @@ CompilerSet errorformat=
       \%C%.%#,
 
 let &l:makeprg=fnamemodify( findfile( 'pytest.ini', '.;' ), ':p:h' )
-      \ . '/bin/ttt run -s --tb=short $*'
+      \ . '/bin/ttt exec python3 -m pytest -s --tb=short $*'
 
 if has( 'win32' ) && ! has( 'win32unix' )
   let &l:makeprg='python ' . &l:makeprg
