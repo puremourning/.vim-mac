@@ -114,10 +114,27 @@ augroup END
 
 nmap <LocalLeader>B <Plug>VimspectorBreakpoints
 
-let g:vimspector_custom_process_picker = expand( '<SID>' ) . 'PickProcess()'
+" I actually prefer the built in one for now
+" let g:vimspector_custom_process_picker_func = expand( '<SID>' ) . 'PickProcess'
 
-function! s:PickProcess() abort
-  return str2nr(split(fzf#run({'source': 'ps -e'})[0])[0])
+function! s:PickProcess( cmd ) abort
+  let ps = $HOME .. '/.vim/bundle/vimspector/support/vimspector_process_list/vimspector_process_list'
+  if ! empty( a:cmd )
+    let ps .= ' ^' . a:cmd . '$'
+  endif
+
+  let line_selected = fzf#run( {
+      \ 'source': ps,
+      \ 'options': '--header-lines=1  '
+      \          . '--prompt="Select Process: " '
+      \ ,
+      \
+      \ } )[ 0 ]
+  if empty( line_selected)
+    return 0
+  endif
+  let pid = split( line_selected )[ 0 ]
+  return str2nr( pid )
 endfunction
 
 " }}}

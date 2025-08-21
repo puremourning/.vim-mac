@@ -28,8 +28,12 @@ endtry
 let g:ycm_collect_identifiers_from_comments_and_strings=1
 let g:ycm_collect_identifiers_from_tags_files=1
 let g:ycm_java_jdtls_use_clean_workspace=0
+
 if executable( s:brew . '/opt/java/bin/java' )
   let g:ycm_java_binary_path = s:brew . '/opt/java/bin/java'
+elseif executable( '/usr/libexec/java_home' )
+  let $JAVA_HOME = trim( system( '/usr/libexec/java_home -v 21' ) )
+  let g:ycm_java_binary_path = $JAVA_HOME .. '/bin/java'
 elseif executable( s:brew . '/opt/java11/bin/java' )
   let g:ycm_java_binary_path = s:brew . '/opt/java11/bin/java'
 elseif executable( '/usr/lib/jvm/java-1.17.0-openjdk-amd64/bin/java' )
@@ -192,13 +196,14 @@ if isdirectory( s:lsp_dir )
   endfunction
 
   let g:ycm_lsp_dir = s:lsp_dir
-  call Source(s:lsp_dir . '/volar/snippet.vim')
-  call Source(s:lsp_dir . '/haskell/snippet.vim')
+  call Source(s:lsp_dir . '/bash/snippet.vim')
   call Source(s:lsp_dir . '/dart/snippet.vim')
+  call Source(s:lsp_dir . '/haskell/snippet.vim')
   call Source(s:lsp_dir . '/jai/snippet.vim')
+  call Source(s:lsp_dir . '/kotlin/snippet.vim')
   call Source(s:lsp_dir . '/lua/snippet.vim')
   call Source(s:lsp_dir . '/matlab/snippet.vim')
-  call Source(s:lsp_dir . '/kotlin/snippet.vim')
+  call Source(s:lsp_dir . '/volar/snippet.vim')
 endif
 
 " let g:ycm_language_server += [
@@ -358,6 +363,7 @@ let g:markdown_fenced_languages = [
       \ 'sh',
       \ 'viml=vim',
       \ 'json',
+      \ 'jsonc',
       \ 'rust',
       \ 'python',
       \ ]
@@ -418,7 +424,9 @@ let g:ycm_java_jdtls_extension_path=[
       \ g:vimspector_base_dir . '/gadgets/macos' ]
 
 if get(g:, 'benj_test_ycm')
-  if has_key( g:, 'ycm_path' )
+  if has_key( g:, 'ycm_use_packadd' )
+    packadd YouCompleteMe
+  elseif has_key( g:, 'ycm_path' )
     let &rtp .= ',' .. g:ycm_path
   elseif exists( '$PATH_TO_YCM' )
     let &rtp .= ',' .. $PATH_TO_YCM
@@ -438,6 +446,7 @@ if executable( '/Library/Frameworks/Mono.framework/Versions/Current/bin/mono' )
         \ '/Library/Frameworks/Mono.framework/Versions/Current/bin/mono'
 endif
 
+Plugin 'github/copilot.vim'
 
 if has( 'python3' )
   Plugin 'SirVer/ultisnips'

@@ -22,9 +22,9 @@ nmap <leader>ysd   <Plug>YcmMappingGetDoc
 nmap <leader>ygr   <Plug>YcmMappingGoToReferences
 nmap <leader>ygR   <Plug>YcmMappingGoToReferences
 nnoremap <leader>ygS
-            \ :<C-u>execute 'YcmCompleter GoToSymbol '.input('Symbol: ')<CR>
+            \:<C-u>execute 'YcmCompleter GoToSymbol '.input('Symbol: ')<CR>
 nnoremap <leader>ygs
-            \ :<C-u>execute 'YcmCompleter GoToSymbol '.input('Symbol: ')<CR>
+            \:<C-u>execute 'YcmCompleter GoToSymbol '.input('Symbol: ')<CR>
 
 nmap <leader>D <Plug>(YCMHover)
 nmap <localleader>yfw <Plug>(YCMFindSymbolInWorkspace)
