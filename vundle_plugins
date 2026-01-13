@@ -39,14 +39,23 @@ elseif executable( s:brew . '/opt/java21/bin/java' )
   let g:ycm_java_binary_path = s:brew . '/opt/java17/bin/java'
 elseif executable( '/usr/lib/jvm/java-1.21.0-openjdk-amd64/bin/java' )
   let g:ycm_java_binary_path = '/usr/lib/jvm/java-1.21.0-openjdk-amd64/bin/java'
-elseif executable( '/etc/alternatives/java_sdk_21/bin/java' )
-  let g:ycm_java_binary_path = '/etc/alternatives/java_sdk_21/bin/java'
+else
+    for jv in [ '24', '21' ]
+        if executable('/usr/lib/jvm/java-' .. jv .. '-openjdk/bin/java')
+            let g:ycm_java_binary_path = '/usr/lib/jvm/java-' .. jv .. '-openjdk/bin/java'
+            break
+        endif
+        if executable( '/etc/alternatives/java_sdk_' .. jv .. '/bin/java' )
+          let g:ycm_java_binary_path = '/etc/alternatives/java_sdk_' .. jv .. '/bin/java'
+          break
+        endif
+    endfor
 endif
 let g:ycm_java_jdtls_workspace_root_path=$HOME . '/.ycmd/java/Workspace'
 
 " let g:ycm_java_jdtls_repository_path = expand(
 "       \ '$HOME/repos/github/eclipse.jdt.ls/org.eclipse.jdt.ls.product/target/repository' )
-"let g:ycm_server_log_level='debug'
+" let g:ycm_server_log_level='debug'
 
 let g:ycm_keep_logfiles=0
 let g:ycm_auto_hover = ''
@@ -95,22 +104,12 @@ if g:ycm_use_clangd &&
     \ !get( g:, 'ycm_clangd_clean', 0 ) &&
     \ !has_key( g: , 'ycm_clangd_binary_path' )
 
-  if 0
-  elseif executable( expand( '$HOME/Development/llvm-project/build/bin/clangd' ) )
-    let g:ycm_clangd_binary_path =
-          \ expand( '$HOME/Development/llvm-project/build/bin/clangd' )
-  elseif executable( s:brew . '/opt/llvm/bin/clangd' )
-    let g:ycm_clangd_binary_path = s:brew . '/opt/llvm/bin/clangd'
-  elseif filereadable( '/etc/oracle-release' )
-              \ && executable( '/opt/llvm-14/bin/clangd' )
-    let g:ycm_clangd_binary_path = '/opt/llvm-14/bin/clangd'
-  elseif executable( expand( '$HOME/repos/github/llvm-project/build/bin/clangd' ) )
-    let g:ycm_clangd_binary_path = expand( '$HOME/repos/github/llvm-project/build/bin/clangd' )
-  elseif filereadable( '/etc/oracle-release' )
-              \ && executable( '/usr/bin/clangd' )
-    let g:ycm_clangd_binary_path = '/usr/bin/clangd'
-  endif
-
+    for options in [ '/opt/llvm-20/bin/clangd', '/usr/bin/clangd' ]
+      if executable( options )
+        let g:ycm_clangd_binary_path = options
+        break
+      endif
+    endfor
 endif
 
 "   'c,cpp,objc': [ 're!\w{3}', '_' ],
@@ -227,6 +226,7 @@ if isdirectory( s:lsp_dir )
   call Source(s:lsp_dir . '/matlab/snippet.vim')
   call Source(s:lsp_dir . '/jetbrains-kotlin/snippet.vim')
   call Source(s:lsp_dir . '/jsonnet/snippet.vim')
+  call Source(s:lsp_dir . '/svelte/snippet.vim')
 endif
 
 " let g:ycm_language_server += [
@@ -527,7 +527,7 @@ Plugin 'romainl/vim-cool'
 set hlsearch
 " Plugin 'ludovicchabant/vim-gutentags' (just gives errors all the damn time)
 Plugin 'editorconfig/editorconfig-vim'
-
+Plugin 'puremourning/oxtail'
 
 " Filetype support
 " vim-markdown seems to break java.vim syntax
@@ -554,6 +554,7 @@ Plugin 'puremourning/jai.vim'
 Plugin 'google/vim-jsonnet'
 let g:jsonnet_fmt_on_save=0
 Plugin 'chrisbra/csv.vim'
+Plugin 'evanleck/vim-svelte'
 
 Plugin 'junegunn/fzf'
 Plugin 'junegunn/fzf.vim'

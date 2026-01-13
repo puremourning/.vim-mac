@@ -55,12 +55,11 @@ function! s:ResolveClasspath() abort
             return {}
         endif
 
-        let main_classes = map(json_decode(main_class_info), {_, v -> v.mainClass})
-        let options = map(main_classes, {i, v -> string(i+1) .. ': ' .. v})
+        let main_classes = mapnew(json_decode(main_class_info), {_, v -> v.mainClass})
+        let options = mapnew(main_classes, {i, v -> string(i+1) .. ': ' .. v})
         let selected = inputlist(["Which main class?"] + options)
         if selected > 0
             let b:jdt_ls_main_class = main_classes[selected - 1]
-            echom "Storing main class in b:jdt_ls_main_class: " . b:jdt_ls_main_class
         endif
     endif
 
@@ -98,9 +97,18 @@ function! s:ResolveClasspath() abort
         \ }
 endfunction
 
-function s:JoinClasspaths(resolved)
+function! s:JoinClasspaths(resolved) abort
+    if empty(a:resolved)
+        return ''
+    endif
+
     " For some reason, the response is a list of lists
     let cps = json_decode(a:resolved)
+
+    if type(cps) != v:t_list
+        return ''
+    endif
+
     let entry_list = []
     for cp_list in cps
         call extend(entry_list, cp_list)
