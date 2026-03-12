@@ -357,13 +357,11 @@ let g:vimspector_configurations = {
 let g:netrw_keepj = ''
 
 let g:markdown_fenced_languages = [
-      \ 'help',
       \ 'c++=cpp',
       \ 'bash=sh',
       \ 'sh',
       \ 'viml=vim',
       \ 'json',
-      \ 'jsonc',
       \ 'rust',
       \ 'python',
       \ ]
