@@ -8,3 +8,4 @@ nnoremap å :cnext<CR>
 
 " TODO: Check for a Cargo.toml ?
 compiler cargo
+call youcompleteme#EnableFormatOnSaveForThisBuffer()
