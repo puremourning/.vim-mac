@@ -43,7 +43,7 @@ function! s:opfunc( motion_type = '' )
 endfunction
 
 nnoremap <silent> <expr> <leader>UU <SID>opfunc()
-vnoremap <leader>UU c<C-R>=UUIDGen()<CR>
+vnoremap <leader>UU c<C-R>=UUIDGen()<ESC><CR>
 
 
 let &cpoptions = s:cpo

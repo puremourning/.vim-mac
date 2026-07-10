@@ -227,6 +227,7 @@ if isdirectory( s:lsp_dir )
   call Source(s:lsp_dir . '/jetbrains-kotlin/snippet.vim')
   call Source(s:lsp_dir . '/jsonnet/snippet.vim')
   call Source(s:lsp_dir . '/svelte/snippet.vim')
+  call Source(s:lsp_dir . '/capnproto/snippet.vim')
 endif
 
 " let g:ycm_language_server += [
@@ -329,6 +330,7 @@ let g:neomake_java_enabled_makers = []
 let g:neomake_vim_enabled_makers = []
 let g:neomake_rust_enabled_makers = []
 let g:neomake_python_python_exe = 'python3'
+let g:neomake_capnp_enabled_makers = []
 
 
 "function! NeomakeJsonnet(jobinfo) abort
@@ -555,6 +557,7 @@ Plugin 'google/vim-jsonnet'
 let g:jsonnet_fmt_on_save=0
 Plugin 'chrisbra/csv.vim'
 Plugin 'evanleck/vim-svelte'
+Plugin 'puremourning/capnp.vim'
 
 Plugin 'junegunn/fzf'
 Plugin 'junegunn/fzf.vim'
@@ -564,6 +567,7 @@ Plugin 'puremourning/vim-activate-venv'
 
 Plugin 'puremourning/vim-dirvish'
 Plugin 'tpope/vim-eunuch'
+Plugin 'diepm/vim-rest-console'
 
 if isdirectory( expand( "$HOME/proj/vim-tblog" ) )
     execute 'Plugin' "'file://" . expand("$HOME/proj/vim-tblog") ."'"

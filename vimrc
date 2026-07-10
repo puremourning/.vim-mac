@@ -170,7 +170,16 @@ function! BenGetCustomHighlighting()
   let HIGHLIGHT_GROUP = {
         \   'annotation': 'Macro',
         \   'annotationMember': 'Identifier',
-        \   'bracket': v:none
+        \   'bracket': v:none,
+        \   'attributeBracket': 'Punctuation',
+        \   'generic': 'Macro',
+        \   'const': 'Constant',
+        \   'typeAlias': 'rustTypedef',
+        \   'derive': 'rustDerive',
+        \   'builtinAttribute': 'rustAttribute',
+        \   'builtinType': 'rustType',
+        \   'selfTypeKeyword': 'rustType',
+        \   'selfKeyword': 'rustSelf',
         \ }
 
   if !s:done_property_types
