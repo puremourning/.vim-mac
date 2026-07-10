@@ -353,12 +353,14 @@ set modelines=5
 set mouse+=a
 if !has( 'nvim' )
   set ttymouse=sgr
-  set clipboard^=autoselectplus
-  set clipboard-=autoselect
-  " Nomral, Visual, Select
-  noremap  <MiddleMouse> "+<MiddleMouse>
-  " Terminal
-  tnoremap <MiddleMouse> "+<MiddleMouse>
+  if  has( 'clipboard' )
+      set clipboard^=autoselectplus
+      set clipboard-=autoselect
+      " Nomral, Visual, Select
+      noremap  <MiddleMouse> "+<MiddleMouse>
+      " Terminal
+      tnoremap <MiddleMouse> "+<MiddleMouse>
+  endif
 endif
 set title
 
