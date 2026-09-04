@@ -228,6 +228,8 @@ if isdirectory( s:lsp_dir )
   call Source(s:lsp_dir . '/jsonnet/snippet.vim')
   call Source(s:lsp_dir . '/svelte/snippet.vim')
   call Source(s:lsp_dir . '/capnproto/snippet.vim')
+  " call Source(s:lsp_dir . '/cargo/snippet.vim')
+  call Source(s:lsp_dir . '/toml/snippet.vim')
 endif
 
 " let g:ycm_language_server += [
@@ -404,6 +406,7 @@ let g:markdown_fenced_languages = [
       \ 'json',
       \ 'rust',
       \ 'python',
+      \ 'capnp',
       \ ]
 let g:markdown_syntax_conceal = 1
 

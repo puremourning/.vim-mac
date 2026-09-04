@@ -180,6 +180,7 @@ function! BenGetCustomHighlighting()
         \   'builtinType': 'rustType',
         \   'selfTypeKeyword': 'rustType',
         \   'selfKeyword': 'rustSelf',
+        \   'lifetime': 'rustLifetime',
         \ }
 
   if !s:done_property_types
